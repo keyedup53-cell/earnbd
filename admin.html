@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EarnBD Admin Panel</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#f0f4f8;color:#172033;
+  font-family:Arial,sans-serif
+}
+header{
+  background:linear-gradient(135deg,#075e46,#0b9b70);
+  color:white;padding:25px 15px;text-align:center;
+  border-radius:0 0 22px 22px
+}
+header h1{margin:0;font-size:25px}
+header p{margin:7px 0 0;font-size:14px}
+main{max-width:950px;margin:auto;padding:14px}
+.card{
+  background:white;border-radius:15px;padding:17px;
+  margin:13px 0;box-shadow:0 4px 15px #0000000c
+}
+h3{margin:0 0 14px;color:#087f5b}
+input,select{
+  width:100%;padding:13px;margin:6px 0;
+  border:1px solid #d5dee8;border-radius:9px;
+  font-size:15px;background:#fff
+}
+button{
+  border:0;border-radius:9px;padding:12px 15px;
+  background:#087f5b;color:white;font-size:14px;
+  font-weight:bold;cursor:pointer;margin:5px 2px
+}
+button:active{opacity:.8}
+button.red{background:#dc3545}
+button.blue{background:#1769aa}
+button.gray{background:#64748b}
+button.orange{background:#e58b16}
+.full{width:100%}
+.hidden{display:none!important}
+nav{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:8px
+}
+nav button{margin:0;min-height:48px}
+.item{
+  border:1px solid #e0e7ee;border-radius:12px;
+  padding:13px;margin:10px 0;overflow-wrap:anywhere
+}
+.item p{margin:8px 0;font-size:14px}
+.item button{min-width:90px}
+small,.muted{color:#64748b}
+.status{
+  display:inline-block;padding:5px 9px;border-radius:20px;
+  background:#fff3cd;color:#856404;font-size:12px
+}
+.status.approved{background:#d1fae5;color:#087f5b}
+.status.rejected{background:#fee2e2;color:#b42318}
+.section-title{font-size:17px;margin-bottom:12px}
+#loginBox{max-width:440px;margin:35px auto}
+#loginMsg{color:#c62828;font-size:14px;overflow-wrap:anywhere}
+#adminEmail{overflow-wrap:anywhere}
+.grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px
+}
+.grid button{width:100%;margin:0}
+@media(max-width:450px){
+  main{padding:10px}
+  .card{padding:14px}
+  nav button{font-size:12px;padding:11px 5px}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>EarnBD Admin Panel</h1>
+  <p>আপনার ওয়েবসাইট নিয়ন্ত্রণ কেন্দ্র</p>
+</header>
+
+<main>
+
+<section id="loginBox" class="card">
+  <h3>অ্যাডমিন লগইন</h3>
+  <p class="muted">শুধু অনুমোদিত অ্যাডমিন প্রবেশ করতে পারবেন।</p>
+  <input id="email" type="email" placeholder="অ্যাডমিন ইমেইল">
+  <input id="password" type="password" placeholder="অ্যাডমিন পাসওয়ার্ড">
+  <button class="full" id="loginButton" onclick="adminLogin()">লগইন করুন</button>
+  <p id="loginMsg"></p>
+</section>
+
+<section id="panel" class="hidden">
+
+  <div class="card">
+    <div><b>অ্যাডমিন অ্যাকাউন্ট</b></div>
+    <p id="adminEmail" class="muted"></p>
+    <button class="red full" onclick="logout()">লগআউট</button>
+  </div>
+
+  <nav class="card">
+    <button onclick="showTab('requests')">📥 ডিপোজিট / উইথড্র</button>
+    <button onclick="showTab('users')">👥 ইউজার ম্যানেজ</button>
+    <button onclick="showTab('packages')">📦 প্যাকেজ ম্যানেজ</button>
+    <button onclick="showTab('payments')">💳 পেমেন্ট নম্বর</button>
+    <button onclick="showTab('general')">⚙️ ওয়েবসাইট সেটিংস</button>
+  </nav>
+
+  <section id="requests" class="card tab">
+    <h3 class="section-title">ডিপোজিট ও উইথড্র রিকোয়েস্ট</h3>
+    <button onclick="loadRequests()">🔄 রিফ্রেশ করুন</button>
+    <div id="requestList">রিকোয়েস্ট লোড হচ্ছে...</div>
+  </section>
+
+  <section id="users" class="card tab hidden">
+    <h3 class="section-title">ইউজার ম্যানেজমেন্ট</h3>
+    <input id="userSearch" placeholder="ইউজারের মোবাইল নম্বর">
+    <button class="full" onclick="searchUser()">ইউজার খুঁজুন</button>
+    <div id="userResult"></div>
+  </section>
+
+  <section id="packages" class="card tab hidden">
+    <h3 class="section-title">প্যাকেজ যোগ / পরিবর্তন</h3>
+    <input id="pkgId" placeholder="প্যাকেজ ID (নতুন হলে খালি রাখুন)">
+    <input id="pkgName" placeholder="প্যাকেজের নাম">
+    <input id="pkgPrice" type="number" placeholder="প্যাকেজ মূল্য">
+    <input id="pkgDaily" type="number" placeholder="দৈনিক আয়">
+    <input id="pkgDays" type="number" placeholder="মেয়াদ (দিন)">
+    <button class="full" onclick="savePackage()">প্যাকেজ সংরক্ষণ</button>
+    <button class="gray full" onclick="clearPackageForm()">নতুন প্যাকেজ লিখুন</button>
+    <hr>
+    <h3>প্যাকেজ তালিকা</h3>
+    <div id="packageList"></div>
+  </section>
+
+  <section id="payments" class="card tab hidden">
+    <h3 class="section-title">পেমেন্ট ও সাপোর্ট নম্বর</h3>
+    <label>বিকাশ এজেন্ট নম্বর</label>
+    <input id="bkashAgent" placeholder="বিকাশ এজেন্ট নম্বর">
+    <label>বিকাশ পারসোনাল নম্বর</label>
+    <input id="bkashPersonal" placeholder="বিকাশ পারসোনাল নম্বর">
+    <label>নগদ এজেন্ট নম্বর</label>
+    <input id="nagadAgent" placeholder="নগদ এজেন্ট নম্বর">
+    <label>নগদ পারসোনাল নম্বর</label>
+    <input id="nagadPersonal" placeholder="নগদ পারসোনাল নম্বর">
+    <label>Telegram Support Link</label>
+    <input id="telegramSupport" placeholder="Telegram লিংক">
+    <label>WhatsApp Support Link</label>
+    <input id="whatsappSupport" placeholder="WhatsApp লিংক">
+    <label>Facebook Support Link</label>
+    <input id="facebookSupport" placeholder="Facebook লিংক">
+    <button class="full" onclick="savePayments()">তথ্য সংরক্ষণ করুন</button>
+  </section>
+
+  <section id="general" class="card tab hidden">
+    <h3 class="section-title">ওয়েবসাইট সেটিংস</h3>
+    <label>ওয়েবসাইটের নাম</label>
+    <input id="siteName" placeholder="EarnBD">
+    <label>রেজিস্ট্রেশন বোনাস (টাকা)</label>
+    <input id="registerBonus" type="number" placeholder="270">
+    <label>সর্বনিম্ন উত্তোলন (টাকা)</label>
+    <input id="minWithdraw" type="number" placeholder="300">
+    <button class="full" onclick="saveGeneral()">সেটিংস সংরক্ষণ করুন</button>
+  </section>
+
+</section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyC6oSNTB27TJr9Ou2f9X_9xPlBmHVpjmaM",
+  authDomain: "hope-7d137.firebaseapp.com",
+  databaseURL: "https://hope-7d137-default-rtdb.firebaseio.com",
+  projectId: "hope-7d137",
+  storageBucket: "hope-7d137.firebasestorage.app",
+  messagingSenderId: "91647058567",
+  appId: "1:91647058567:web:28dd0f411adc8cd51e0e22",
+  measurementId: "G-W2MX9H850N"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+const ADMIN_UID = "tb1ICPv2GnTqLxltvvzHl2uORTu2";
+
+function msg(id,text){
+  document.getElementById(id).innerText=text;
+}
+
+function safe(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function showError(error){
+  return error && error.message ? error.message : String(error);
+}
+
+async function adminLogin(){
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  const btn=document.getElementById("loginButton");
+
+  if(!email||!password){
+    msg("loginMsg","ইমেইল ও পাসওয়ার্ড লিখুন।");
+    return;
+  }
+
+  btn.disabled=true;
+  btn.innerText="লগইন হচ্ছে...";
+  msg("loginMsg","");
+
+  try{
+    const result=await auth.signInWithEmailAndPassword(email,password);
+
+    if(result.user.uid!==ADMIN_UID){
+      await auth.signOut();
+      msg("loginMsg","এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।");
+      return;
+    }
+    openPanel(result.user);
+  }catch(e){
+    msg("loginMsg","লগইন হয়নি: "+showError(e));
+  }finally{
+    btn.disabled=false;
+    btn.innerText="লগইন করুন";
+  }
+}
+
+function openPanel(user){
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("panel").classList.remove("hidden");
+  msg("adminEmail",user.email||"Admin");
+  showTab("requests");
+  loadPayments();
+  loadGeneral();
+}
+
+auth.onAuthStateChanged(user=>{
+  if(user){
+    if(user.uid===ADMIN_UID){
+      openPanel(user);
+    }else{
+      auth.signOut();
+    }
+  }
+});
+
+async function logout(){
+  await auth.signOut();
+  location.reload();
+}
+
+function showTab(id){
+  document.querySelectorAll(".tab").forEach(x=>x.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+
+  if(id==="requests")loadRequests();
+  if(id==="packages")loadPackages();
+  if(id==="payments")loadPayments();
+  if(id==="general")loadGeneral();
+}
+
+async function loadRequests(){
+  const box=document.getElementById("requestList");
+  box.innerHTML="লোড হচ্ছে...";
+
+  try{
+    const snap=await db.ref("requests").once("value");
+    box.innerHTML="";
+
+    if(!snap.exists()){
+      box.innerHTML="কোনো রিকোয়েস্ট নেই।";
+      return;
+    }
+
+    snap.forEach(child=>{
+      const r=child.val()||{};
+      const id=child.key;
+      const status=r.status||"pending";
+      const type=r.type||"";
+      const statusClass=status==="approved"?"approved":
+        status==="rejected"?"rejected":"";
+
+      const div=document.createElement("div");
+      div.className="item";
+      div.innerHTML=`
+        <b>${safe(type==="deposit"?"ডিপোজিট":
+          type==="withdraw"?"উইথড্র":type)}</b>
+        — ${safe(r.userName||"নাম নেই")}
+        <p>ফোন: ${safe(r.phone||"")}</p>
+        <p>পরিমাণ: ৳${safe(r.amount||0)}</p>
+        <p>তথ্য: ${safe(r.info||"")}</p>
+        <p>তারিখ: ${safe(r.date||"")}</p>
+        <p>অবস্থা: <span class="status ${statusClass}">${safe(status)}</span></p>
+        ${r.screenshot?
+          `<p><a href="${safe(r.screenshot)}" target="_blank">স্ক্রিনশট দেখুন</a></p>`:""}
+        ${status==="pending"?`
+          <button onclick="handleRequest('${safe(id)}','approved')">অনুমোদন</button>
+          <button class="red" onclick="handleRequest('${safe(id)}','rejected')">বাতিল</button>
+        `:""}
+      `;
+      box.appendChild(div);
+    });
+  }catch(e){
+    box.innerText="লোড করা যায়নি: "+showError(e);
+  }
+}
+
+async function handleRequest(id,newStatus){
+  if(!confirm("আপনি কি নিশ্চিত?"))return;
+
+  try{
+    const ref=db.ref("requests/"+id);
+    const snap=await ref.once("value");
+
+    if(!snap.exists())throw new Error("রিকোয়েস্ট পাওয়া যায়নি");
+
+    const r=snap.val();
+    if(r.status!=="pending")
+      throw new Error("এই রিকোয়েস্ট আগে প্রসেস করা হয়েছে");
+
+    const amount=Number(r.amount||0);
+    const phone=r.phone;
+
+    if(!phone)throw new Error("ইউজারের ফোন নম্বর নেই");
+    if(!Number.isFinite(amount)||amount<=0)
+      throw new Error("রিকোয়েস্টের টাকার পরিমাণ সঠিক নয়");
+
+    if(r.type==="deposit" && newStatus==="approved"){
+      const result=await db.ref("users/"+phone+"/balance")
+        .transaction(v=>(Number(v)||0)+amount);
+      if(!result.committed)throw new Error("ব্যালেন্স আপডেট হয়নি");
+    }
+
+    if(r.type==="withdraw" && newStatus==="rejected"){
+      const result=await db.ref("users/"+phone+"/balance")
+        .transaction(v=>(Number(v)||0)+amount);
+      if(!result.committed)throw new Error("ব্যালেন্স ফেরত দেওয়া যায়নি");
+    }
+
+    await ref.update({
+      status:newStatus,
+      processedAt:new Date().toISOString()
+    });
+
+    alert("রিকোয়েস্ট আপডেট হয়েছে।");
+    loadRequests();
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+async function searchUser(){
+  const phone=document.getElementById("userSearch").value.trim();
+  const box=document.getElementById("userResult");
+
+  if(!phone){
+    box.innerText="ফোন নম্বর লিখুন";
+    return;
+  }
+
+  box.innerText="খোঁজা হচ্ছে...";
+
+  try{
+    const snap=await db.ref("users/"+phone).once("value");
+
+    if(!snap.exists()){
+      box.innerText="ইউজার পাওয়া যায়নি";
+      return;
+    }
+
+    const u=snap.val();
+
+    box.innerHTML=`
+      <div class="item">
+        <h3>${safe(u.name||"নাম নেই")}</h3>
+        <p>ফোন: ${safe(phone)}</p>
+        <p>ব্যালেন্স: ৳${safe(u.balance||0)}</p>
+        <p>অবস্থা: ${u.blocked?"Blocked":"Active"}</p>
+        <hr>
+        <label>নতুন ব্যালেন্স</label>
+        <input id="newBalance" type="number" placeholder="নতুন ব্যালেন্স">
+        <button class="blue" onclick="changeBalance('${safe(phone)}')">ব্যালেন্স পরিবর্তন</button>
+        <hr>
+        <label>বোনাসের পরিমাণ</label>
+        <input id="bonusAmount" type="number" placeholder="বোনাসের টাকা">
+        <input id="bonusNote" placeholder="বোনাসের কারণ">
+        <button onclick="giveBonus('${safe(phone)}')">বোনাস দিন</button>
+        <hr>
+        <button class="${u.blocked?'blue':'red'}"
+          onclick="toggleBlock('${safe(phone)}',${!u.blocked})">
+          ${u.blocked?"আনব্লক করুন":"ব্লক করুন"}
+        </button>
+      </div>`;
+  }catch(e){
+    box.innerText="সমস্যা: "+showError(e);
+  }
+}
+
+async function changeBalance(phone){
+  const value=Number(document.getElementById("newBalance").value);
+
+  if(!Number.isFinite(value)||value<0){
+    alert("সঠিক ব্যালেন্স লিখুন");
+    return;
+  }
+  if(!confirm("ব্যালেন্স পরিবর্তন করবেন?"))return;
+
+  try{
+    await db.ref("users/"+phone).update({balance:value});
+    alert("ব্যালেন্স পরিবর্তন হয়েছে");
+    searchUser();
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+async function giveBonus(phone){
+  const amount=Number(document.getElementById("bonusAmount").value);
+  const note=document.getElementById("bonusNote").value.trim();
+
+  if(!Number.isFinite(amount)||amount<=0){
+    alert("সঠিক বোনাস লিখুন");
+    return;
+  }
+  if(!confirm("বোনাস দিতে চান?"))return;
+
+  try{
+    await db.ref("users/"+phone+"/balance")
+      .transaction(v=>(Number(v)||0)+amount);
+
+    await db.ref("users/"+phone+"/bonusTotal")
+      .transaction(v=>(Number(v)||0)+amount);
+
+    await db.ref("adminBonusLogs").push({
+      phone,amount,note,date:new Date().toISOString()
+    });
+
+    alert("বোনাস দেওয়া হয়েছে");
+    searchUser();
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+async function toggleBlock(phone,blocked){
+  if(!confirm(blocked?"ইউজার ব্লক করবেন?":"ইউজার আনব্লক করবেন?"))
+    return;
+
+  try{
+    await db.ref("users/"+phone).update({blocked});
+    alert("ইউজারের অবস্থা পরিবর্তন হয়েছে");
+    searchUser();
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+function clearPackageForm(){
+  ["pkgId","pkgName","pkgPrice","pkgDaily","pkgDays"]
+    .forEach(id=>document.getElementById(id).value="");
+}
+
+async function loadPackages(){
+  const box=document.getElementById("packageList");
+  box.innerHTML="লোড হচ্ছে...";
+
+  try{
+    const snap=await db.ref("packages").once("value");
+    box.innerHTML="";
+
+    if(!snap.exists()){
+      box.innerText="কোনো প্যাকেজ নেই";
+      return;
+    }
+
+    snap.forEach(child=>{
+      const p=child.val()||{};
+      const id=child.key;
+      const div=document.createElement("div");
+      div.className="item";
+
+      div.innerHTML=`
+        <b>${safe(p.name||id)}</b>
+        <p>মূল্য: ৳${safe(p.price)} |
+        দৈনিক: ৳${safe(p.dailyIncome)} |
+        মেয়াদ: ${safe(p.days)} দিন</p>
+        <button class="blue" onclick="editPackage('${safe(id)}')">এডিট</button>
+        <button class="red" onclick="deletePackage('${safe(id)}')">মুছুন</button>
+      `;
+      box.appendChild(div);
+    });
+  }catch(e){
+    box.innerText="সমস্যা: "+showError(e);
+  }
+}
+
+async function editPackage(id){
+  try{
+    const snap=await db.ref("packages/"+id).once("value");
+    if(!snap.exists())return;
+
+    const p=snap.val();
+    document.getElementById("pkgId").value=id;
+    document.getElementById("pkgName").value=p.name||"";
+    document.getElementById("pkgPrice").value=p.price||"";
+    document.getElementById("pkgDaily").value=p.dailyIncome||"";
+    document.getElementById("pkgDays").value=p.days||"";
+
+    window.scrollTo({top:0,behavior:"smooth"});
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+async function savePackage(){
+  const id=document.getElementById("pkgId").value.trim()||
+    db.ref("packages").push().key;
+  const name=document.getElementById("pkgName").value.trim();
+  const price=Number(document.getElementById("pkgPrice").value);
+  const dailyIncome=Number(document.getElementById("pkgDaily").value);
+  const days=Number(document.getElementById("pkgDays").value);
+
+  if(!name||!Number.isFinite(price)||price<=0||
+     !Number.isFinite(dailyIncome)||dailyIncome<0||
+     !Number.isFinite(days)||days<=0){
+    alert("সব তথ্য সঠিকভাবে দিন");
+    return;
+  }
+
+  try{
+    await db.ref("packages/"+id).update({
+      id,name,price,dailyIncome,days,active:true
+    });
+    alert("প্যাকেজ সংরক্ষণ হয়েছে");
+    clearPackageForm();
+    loadPackages();
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+async function deletePackage(id){
+  if(!confirm("প্যাকেজটি মুছে ফেলবেন?"))return;
+
+  try{
+    await db.ref("packages/"+id).remove();
+    alert("প্যাকেজ মুছে ফেলা হয়েছে");
+    loadPackages();
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+async function loadPayments(){
+  try{
+    const snap=await db.ref("settings/numbers").once("value");
+    const s=snap.val()||{};
+
+    ["bkashAgent","bkashPersonal","nagadAgent","nagadPersonal",
+     "telegramSupport","whatsappSupport","facebookSupport"]
+      .forEach(k=>{
+        document.getElementById(k).value=s[k]||"";
+      });
+  }catch(e){
+    alert("পেমেন্ট তথ্য লোড হয়নি: "+showError(e));
+  }
+}
+
+async function savePayments(){
+  const data={};
+
+  ["bkashAgent","bkashPersonal","nagadAgent","nagadPersonal",
+   "telegramSupport","whatsappSupport","facebookSupport"]
+    .forEach(k=>{
+      data[k]=document.getElementById(k).value.trim();
+    });
+
+  try{
+    await db.ref("settings/numbers").update(data);
+    alert("পেমেন্ট ও সাপোর্ট তথ্য সংরক্ষণ হয়েছে");
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+
+async function loadGeneral(){
+  try{
+    const snap=await db.ref("settings/general").once("value");
+    const s=snap.val()||{};
+
+    document.getElementById("siteName").value=s.siteName||"EarnBD";
+    document.getElementById("registerBonus").value=s.registerBonus??270;
+    document.getElementById("minWithdraw").value=s.minWithdraw??300;
+  }catch(e){
+    alert("সেটিংস লোড হয়নি: "+showError(e));
+  }
+}
+
+async function saveGeneral(){
+  const data={
+    siteName:document.getElementById("siteName").value.trim(),
+    registerBonus:Number(document.getElementById("registerBonus").value),
+    minWithdraw:Number(document.getElementById("minWithdraw").value)
+  };
+
+  if(!data.siteName||!Number.isFinite(data.registerBonus)||
+     data.registerBonus<0||!Number.isFinite(data.minWithdraw)||
+     data.minWithdraw<0){
+    alert("সঠিক তথ্য দিন");
+    return;
+  }
+
+  try{
+    await db.ref("settings/general").update(data);
+    alert("ওয়েবসাইট সেটিংস সংরক্ষণ হয়েছে");
+  }catch(e){
+    alert("সমস্যা: "+showError(e));
+  }
+}
+</script>
+</body>
+</html>
