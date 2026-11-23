@@ -113,6 +113,64 @@
       .pkg-detail { font-size:.88rem; }
       .balance-amount { font-size:2.05rem; }
     }
+
+    /* স্ক্রিনশট দেখার লিংক ও মোডাল */
+    .ss-view-link {
+      display: inline-block;
+      margin: 6px 0 10px;
+      color: #0284c7;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.9rem;
+    }
+    .ss-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 9999;
+    }
+    .ss-modal-backdrop.open { display: flex; }
+    .ss-modal-box {
+      background: #ffffff;
+      color: #0f172a;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+    }
+    .ss-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .ss-modal-close {
+      border: none;
+      background: #ef4444;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .ss-modal-img {
+      width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -209,8 +267,8 @@
     <!-- প্যাকেজ -->
     <div id="view-packages">
       <div class="card" style="padding:14px; margin-bottom:14px;">
-        <h2 style="margin-bottom:8px;">আমার সক্রিয় পণ্য / প্যাকেজ</h2>
-        <div id="myActivePackagesList" style="font-size:0.84rem; color:#64748b;">কোনো পণ্য কেনা হয়নি।</div>
+        <h2 style="margin-bottom:8px;">আমার সক্রিয় পণ্য / প্যাকেজ</h2>
+        <div id="myActivePackagesList" style="font-size:0.84rem; color:#64748b;">কোনো পণ্য কেনা হয়নি।</div>
       </div>
       <div id="userPackagesList">প্যাকেজ লোড হচ্ছে...</div>
     </div>
@@ -280,7 +338,7 @@
       <div class="card">
         <h2>রেফার করে আয় করুন</h2>
         <p style="font-size:0.82rem; color:#94a3b8; margin-bottom:10px;">
-          বন্ধুদের আপনার রেফার লিংক শেয়ার করুন। তারা ডিপোজিট করলে আপনি পাবেন ৩ স্তর পর্যন্ত কমিশন:
+          বন্ধুদের আপনার রেফার লিংক শেয়ার করুন। তারা প্রথমবার যেকোনো পণ্য কিনলেই আপনি সাথে সাথে পাবেন ৩ স্তর পর্যন্ত কমিশন:
         </p>
 
         <div class="ref-stat-grid">
@@ -401,6 +459,20 @@
   </footer>
 </div>
 
+<!-- স্ক্রিনশট দেখার মোডাল -->
+<div id="screenshotModal" class="ss-modal-backdrop" onclick="handleBackdropClick(event)">
+  <div class="ss-modal-box">
+    <div class="ss-modal-header">
+      <strong id="screenshotModalTitle">ডিপোজিট স্ক্রিনশট</strong>
+      <button type="button" class="ss-modal-close" onclick="closeScreenshotModal()">বন্ধ করুন</button>
+    </div>
+    <img id="screenshotModalImg" class="ss-modal-img" src="" alt="ডিপোজিট স্ক্রিনশট" />
+    <div id="screenshotModalEmpty" style="display:none; color:#dc2626; font-size:0.9rem; padding:12px 0;">
+      এই রিকোয়েস্টের সাথে কোনো স্ক্রিনশট সংযুক্ত নেই।
+    </div>
+  </div>
+</div>
+
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -429,6 +501,7 @@
   let generalSettings = { siteName: "EarnBD", registerBonus: 150, minWithdraw: 300 };
   let adminUsersCache = {};
   let latestUserData = null;
+  window.requestsCache = window.requestsCache || {};
 
   const defaultNumbers = {
     bkashAgent: "01700-000000",
@@ -451,7 +524,52 @@
   let currentNumbers = { ...defaultNumbers };
   let currentPackages = { ...defaultPackages };
 
-  // বাংলাদেশ সময় (Asia/Dhaka) অনুযায়ী আজকের তারিখ YYYY-MM-DD
+  // স্ক্রিনশট মোডাল ফাংশনসমূহ
+  window.openScreenshotModal = function(reqId) {
+    const reqItem = window.requestsCache[reqId];
+    const modal = document.getElementById('screenshotModal');
+    const imgEl = document.getElementById('screenshotModalImg');
+    const emptyEl = document.getElementById('screenshotModalEmpty');
+    const titleEl = document.getElementById('screenshotModalTitle');
+
+    if (!modal || !imgEl || !emptyEl) return;
+
+    const src = reqItem && typeof reqItem.screenshot === 'string' ? reqItem.screenshot.trim() : '';
+    titleEl.textContent = reqItem ? `স্ক্রিনশট — ${reqItem.userName || reqItem.phone || 'ইউজার'}` : 'ডিপোজিট স্ক্রিনশট';
+
+    if (src) {
+      emptyEl.style.display = 'none';
+      imgEl.style.display = 'block';
+      imgEl.onerror = function() {
+        imgEl.style.display = 'none';
+        emptyEl.textContent = 'স্ক্রিনশট ছবিটি লোড করা যাচ্ছে না।';
+        emptyEl.style.display = 'block';
+      };
+      imgEl.src = src;
+    } else {
+      imgEl.removeAttribute('src');
+      imgEl.style.display = 'none';
+      emptyEl.textContent = 'এই রিকোয়েস্টের সাথে কোনো স্ক্রিনশট সংযুক্ত নেই।';
+      emptyEl.style.display = 'block';
+    }
+
+    modal.classList.add('open');
+  };
+
+  window.closeScreenshotModal = function() {
+    const modal = document.getElementById('screenshotModal');
+    const imgEl = document.getElementById('screenshotModalImg');
+    if (modal) modal.classList.remove('open');
+    if (imgEl) imgEl.removeAttribute('src');
+  };
+
+  window.handleBackdropClick = function(event) {
+    if (event.target && event.target.id === 'screenshotModal') {
+      closeScreenshotModal();
+    }
+  };
+
+  // বাংলাদেশ সময় (Asia/Dhaka) অনুযায়ী আজকের তারিখ YYYY-MM-DD
   function getBangladeshDateStr() {
     const now = new Date();
     const bdTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Dhaka" }));
@@ -461,7 +579,6 @@
     return `${y}-${m}-${d}`;
   }
 
-  // ইউজারের কোনো পণ্য/প্যাকেজ কেনা আছে কি না তা যাচাই
   function hasAnyPurchasedPackage(userData) {
     if (!userData || !userData.purchasedPackages) return false;
     return Object.keys(userData.purchasedPackages).length > 0;
@@ -617,7 +734,28 @@
     return `ERAN${last4}${rand}`;
   }
 
-  // রাত ১২টার পর বকেয়া দৈনিক পণ্য ইনকাম অটোমেটিক ব্যালেন্সে যোগ করা
+  // ৩-স্তর রেফার কমিশন প্রদান (১ম স্তর: ২৮%, ২য় স্তর: ১%, ৩য় স্তর: ১%)
+  async function distributeReferralCommission(buyerUser, purchaseAmount) {
+    const rates = [0.28, 0.01, 0.01];
+    let currentRefPhone = buyerUser.referredBy;
+
+    for (let level = 0; level < 3; level++) {
+      if (!currentRefPhone) break;
+      const uplineUser = await getUserData(currentRefPhone);
+      if (!uplineUser) break;
+
+      const commission = Number((purchaseAmount * rates[level]).toFixed(2));
+      if (commission > 0) {
+        uplineUser.balance = Number(uplineUser.balance || 0) + commission;
+        uplineUser.refEarned = Number(uplineUser.refEarned || 0) + commission;
+        await saveUserData(uplineUser.phone, uplineUser);
+      }
+
+      currentRefPhone = uplineUser.referredBy;
+    }
+  }
+
+  // রাত ১২টার পর বকেয়া দৈনিক পণ্য ইনকাম অটোমেটিক ব্যালেন্সে যোগ করা
   async function checkAndCreditDailyIncome(phone) {
     if (!phone) return;
     const user = await getUserData(phone);
@@ -660,7 +798,7 @@
     if (hasChanges) {
       updates[`users/${phone}/balance`] = balance;
       await update(ref(db), updates);
-      showMsg('dashMsg', `রাত ১২টার পর দৈনিক পণ্য ইনকাম ৳${totalCredited.toFixed(2)} আপনার ব্যালেন্সে জমা হয়েছে!`, 'success');
+      showMsg('dashMsg', `রাত ১২টার পর দৈনিক পণ্য ইনকাম ৳${totalCredited.toFixed(2)} আপনার ব্যালেন্সে জমা হয়েছে!`, 'success');
     }
   }
 
@@ -686,7 +824,7 @@
     if (!container) return;
     const pkgs = Object.values(userData?.purchasedPackages || {});
     if (!pkgs.length) {
-      container.innerHTML = 'আপনার অ্যাকাউন্টে এখনো কোনো পণ্য কেনা নেই। উত্তোলনের জন্য অন্তত একটি পণ্য কিনুন।';
+      container.innerHTML = 'আপনার অ্যাকাউন্টে এখনো কোনো পণ্য কেনা হয়নি। উত্তোলনের জন্য অন্তত একটি পণ্য কিনুন।';
       return;
     }
     container.innerHTML = pkgs.map(pkg => `
@@ -721,7 +859,8 @@
         balance: REGISTER_BONUS,
         refCode: generateUserRefCode(phone),
         referredBy: referredByPhone,
-        refEarned: 0
+        refEarned: 0,
+        firstPurchaseCommissionGiven: false
       };
 
       await saveUserData(phone, newUser);
@@ -920,15 +1059,22 @@
     }).join('');
   }
 
+  // পণ্য কেনার সাথে সাথে ব্যালেন্স কাটা, প্যাকেজ চালু করা এবং শুধুমাত্র ১ম বার পণ্য কিনলে রেফার কমিশন দেওয়া
   window.buyPackage = async function(planName, price, dailyIncome, days) {
     const u = await getUserData(currentUserPhone);
-    if (!u || Number(u.balance || 0) < Number(price)) {
+    const pkgPrice = Number(price || 0);
+    if (!u || Number(u.balance || 0) < pkgPrice) {
       return showMsg('dashMsg', 'পর্যাপ্ত ব্যালেন্স নেই!', 'error');
     }
 
+    const existingPurchasesCount = u.purchasedPackages && typeof u.purchasedPackages === 'object'
+      ? Object.keys(u.purchasedPackages).length
+      : 0;
+    const isFirstPurchase = !u.firstPurchaseCommissionGiven && existingPurchasesCount === 0;
+
     const todayBD = getBangladeshDateStr();
     const purchaseId = 'PUR_' + Date.now();
-    u.balance = Number(u.balance || 0) - Number(price);
+    u.balance = Number(u.balance || 0) - pkgPrice;
     if (!u.purchasedPackages || typeof u.purchasedPackages !== 'object') {
       u.purchasedPackages = {};
     }
@@ -936,7 +1082,7 @@
     u.purchasedPackages[purchaseId] = {
       id: purchaseId,
       name: planName,
-      price: Number(price),
+      price: pkgPrice,
       dailyIncome: Number(dailyIncome || 0),
       totalDays: Number(days || 30),
       remainingDays: Number(days || 30),
@@ -945,7 +1091,17 @@
       status: 'active'
     };
 
+    if (isFirstPurchase) {
+      u.firstPurchaseCommissionGiven = true;
+    }
+
     await saveUserData(currentUserPhone, u);
+
+    // শুধুমাত্র ১ম বার পণ্য কিনলেই আপলাইন রেফারারদের একাউন্টে সাথে সাথে কমিশন জমা হবে
+    if (isFirstPurchase && u.referredBy) {
+      await distributeReferralCommission(u, pkgPrice);
+    }
+
     showMsg('dashMsg', `${planName} কেনা হয়েছে! প্রতিদিন রাত ১২টার পর ৳${Number(dailyIncome || 0)} জমা হবে।`, 'success');
   };
 
@@ -1024,7 +1180,6 @@
         btn.textContent = 'রিকোয়েস্ট পাঠান';
       }
     } else {
-      // উত্তোলনের শর্ত: অ্যাকাউন্টে অন্তত একটি পণ্য কেনা থাকতে হবে
       if (!hasAnyPurchasedPackage(u)) {
         return showMsg('dashMsg', 'উত্তোলন আবেদন করতে হলে আপনার অ্যাকাউন্টে যেকোনো একটি পণ্য/প্যাকেজ কেনা থাকতে হবে!', 'error');
       }
@@ -1052,7 +1207,8 @@
   };
 
   function renderRequests(reqsObj) {
-    const allReqs = Object.values(reqsObj || {}).reverse();
+    window.requestsCache = reqsObj || {};
+    const allReqs = Object.values(window.requestsCache).reverse();
 
     const userList = document.getElementById('userHistoryList');
     const myReqs = allReqs.filter(r => r.phone === currentUserPhone);
@@ -1068,23 +1224,33 @@
     `).join('') : '<p style="font-size:0.85rem; color:#94a3b8;">কোনো রিকোয়েস্ট নেই।</p>';
 
     const adminList = document.getElementById('adminRequestsList');
-    adminList.innerHTML = allReqs.length ? allReqs.map(r => `
-      <div class="req-item">
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-          <strong>${r.userName} (${r.phone})</strong>
-          <span class="badge badge-${r.status}">${r.status.toUpperCase()}</span>
-        </div>
-        <div>ধরন: <strong>${r.type === 'deposit' ? 'ডিপোজিট (+)' : 'উইথড্র (-)'}</strong> | পরিমাণ: <strong>৳${r.amount}</strong></div>
-        <div style="color:#94a3b8; font-size:0.8rem; margin:4px 0 6px;">${r.info} • ${r.date}</div>
-        ${r.screenshot ? `<img src="${r.screenshot}" class="ss-preview" alt="Deposit Screenshot" style="margin-bottom:10px;" />` : ''}
-        ${r.status === 'pending' ? `
-          <div style="display:flex; gap:8px;">
-            <button class="btn-green" onclick="processRequest('${r.id}', 'approved')">Approve</button>
-            <button class="btn-red" onclick="processRequest('${r.id}', 'rejected')">Reject</button>
+    adminList.innerHTML = allReqs.length ? allReqs.map(r => {
+      const safeId = String(r.id || '').replace(/[^a-zA-Z0-9_-]/g, '');
+      const hasSs = Boolean(r.screenshot && String(r.screenshot).trim());
+      return `
+        <div class="req-item">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <strong>${r.userName} (${r.phone})</strong>
+            <span class="badge badge-${r.status}">${r.status.toUpperCase()}</span>
           </div>
-        ` : ''}
-      </div>
-    `).join('') : '<p style="font-size:0.85rem; color:#94a3b8;">কোনো রিকোয়েস্ট নেই।</p>';
+          <div>ধরন: <strong>${r.type === 'deposit' ? 'ডিপোজিট (+)' : 'উইথড্র (-)'}</strong> | পরিমাণ: <strong>৳${r.amount}</strong></div>
+          <div style="color:#94a3b8; font-size:0.8rem; margin:4px 0 6px;">${r.info} • ${r.date}</div>
+          ${
+            r.type === 'deposit'
+              ? (hasSs
+                ? `<button type="button" class="ss-view-link" onclick="openScreenshotModal('${safeId}')">স্ক্রিনশট দেখুন</button>`
+                : `<div style="color:#ef4444; font-size:0.8rem; margin:4px 0 8px;">স্ক্রিনশট সংযুক্ত নেই</div>`)
+              : ''
+          }
+          ${r.status === 'pending' ? `
+            <div style="display:flex; gap:8px; margin-top:6px;">
+              <button type="button" class="btn-green" onclick="processRequest('${safeId}', 'approved')">Approve</button>
+              <button type="button" class="btn-red" onclick="processRequest('${safeId}', 'rejected')">Reject</button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('') : '<p style="font-size:0.85rem; color:#94a3b8;">কোনো রিকোয়েস্ট নেই।</p>';
   }
 
   function loadRequests() {
@@ -1093,26 +1259,7 @@
     });
   }
 
-  async function distributeReferralCommission(depositorUser, depositAmount) {
-    const rates = [0.28, 0.01, 0.01];
-    let currentRefPhone = depositorUser.referredBy;
-
-    for (let level = 0; level < 3; level++) {
-      if (!currentRefPhone) break;
-      const uplineUser = await getUserData(currentRefPhone);
-      if (!uplineUser) break;
-
-      const commission = Number((depositAmount * rates[level]).toFixed(2));
-      if (commission > 0) {
-        uplineUser.balance = Number(uplineUser.balance || 0) + commission;
-        uplineUser.refEarned = Number(uplineUser.refEarned || 0) + commission;
-        await saveUserData(uplineUser.phone, uplineUser);
-      }
-
-      currentRefPhone = uplineUser.referredBy;
-    }
-  }
-
+  // ডিপোজিট Approve করলে শুধু ব্যালেন্স যোগ হবে (রেফার কমিশন এখন ১ম বার পণ্য কেনার সময় দেওয়া হয়)
   window.processRequest = async function(reqId, action) {
     const snap = await get(ref(db, 'requests/' + reqId));
     const reqData = snap.val();
@@ -1124,7 +1271,6 @@
       const amount = Number(reqData.amount);
       u.balance = Number(u.balance || 0) + amount;
       await saveUserData(reqData.phone, u);
-      await distributeReferralCommission(u, amount);
     } else if (action === 'rejected' && reqData.type === 'withdraw') {
       u.balance = Number(u.balance || 0) + Number(reqData.amount);
       await saveUserData(reqData.phone, u);
