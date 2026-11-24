@@ -559,6 +559,56 @@
             font-size: 15px;
         }
 
+        /* Custom Clean Center Popup Modal */
+        .clean-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 999;
+        }
+
+        .clean-modal-backdrop.active {
+            display: flex;
+        }
+
+        .clean-modal-box {
+            background: white;
+            width: 100%;
+            max-width: 340px;
+            border-radius: 20px;
+            padding: 26px 20px 20px;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.22);
+            text-align: center;
+        }
+
+        .clean-modal-text {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+
+        .clean-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .clean-modal-ok {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 9px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
         /* Bottom Nav */
         .bottom-nav {
             position: fixed;
@@ -585,6 +635,16 @@
     </style>
 </head>
 <body>
+
+    <!-- Clean Popup Modal (No URL header) -->
+    <div id="cleanModalBackdrop" class="clean-modal-backdrop">
+        <div class="clean-modal-box">
+            <div id="cleanModalMessage" class="clean-modal-text">আবেদন জমা হয়েছে অপেক্ষা করেন</div>
+            <div class="clean-modal-actions">
+                <button type="button" id="cleanModalOkBtn" class="clean-modal-ok" onclick="closeCleanModal()">OK</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Top Header -->
     <div class="header">
@@ -723,7 +783,7 @@
                 <div class="payment-number-box">
                     <p class="intro-label" id="paymentIntroLabel">নির্বাচিত মেথডের নম্বরসমূহ:</p>
                     <div id="adminPayNumber"></div>
-                    <p style="font-size:12px; color:#dc2626; margin-top:8px;">পেমেন্ট করার পর স্ক্রিনশট ও TrxID নিচে জমা দিন</p>
+                    <p style="font-size:12px; color:#dc2626; margin-top:8px;">পেমেন্ট করার পর স্ক্রিনশট ও TrxID নিচে জমা দিন (একটি স্ক্রিনশট ও TrxID শুধু একবার দেওয়া যাবে)</p>
                 </div>
 
                 <div class="form-group">
@@ -916,6 +976,24 @@
         const SESSION_KEY = 'earnbd_logged_in_flag_v1';
         const REGISTRATION_BONUS = 300;
 
+        let pendingModalCallback = null;
+
+        function openCleanModal(message, onOk = null) {
+            const backdrop = document.getElementById('cleanModalBackdrop');
+            const msgEl = document.getElementById('cleanModalMessage');
+            pendingModalCallback = typeof onOk === 'function' ? onOk : null;
+            if (msgEl) msgEl.textContent = message;
+            if (backdrop) backdrop.classList.add('active');
+        }
+
+        function closeCleanModal() {
+            const backdrop = document.getElementById('cleanModalBackdrop');
+            if (backdrop) backdrop.classList.remove('active');
+            const cb = pendingModalCallback;
+            pendingModalCallback = null;
+            if (cb) cb();
+        }
+
         const defaultProducts = [
             {
                 id: 'PROD-STARTER',
@@ -971,6 +1049,10 @@
 
         function normalizeCode(code) {
             return String(code || '').trim().toUpperCase();
+        }
+
+        function normalizeTrx(trx) {
+            return String(trx || '').replace(/\s+/g, '').trim().toUpperCase();
         }
 
         function getTodayDateKey() {
@@ -1231,22 +1313,23 @@
             const refCode = normalizeCode(document.getElementById('regRefCode').value);
 
             if (!name || !phone || !password) {
-                alert('সব প্রয়োজনীয় তথ্য পূরণ করুন!');
+                openCleanModal('সব প্রয়োজনীয় তথ্য পূরণ করুন!');
                 return;
             }
 
             if (phone.length < 10) {
-                alert('সঠিক মোবাইল নম্বর লিখুন!');
+                openCleanModal('সঠিক মোবাইল নম্বর লিখুন!');
                 return;
             }
 
             const accounts = getRegisteredAccounts();
             const exists = accounts.find((acc) => normalizePhone(acc.phone) === phone);
             if (exists) {
-                alert('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট রেজিস্ট্রেশন করা আছে। অনুগ্রহ করে লগইন করুন।');
-                switchAuthTab('login');
-                document.getElementById('loginPhone').value = phone;
-                document.getElementById('loginPassword').value = '';
+                openCleanModal('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট রেজিস্ট্রেশন করা আছে। অনুগ্রহ করে লগইন করুন।', () => {
+                    switchAuthTab('login');
+                    document.getElementById('loginPhone').value = phone;
+                    document.getElementById('loginPassword').value = '';
+                });
                 return;
             }
 
@@ -1295,7 +1378,7 @@
             syncWithAdminPanel();
             updateUI();
             showPage('homePage');
-            alert(`অভিনন্দন! রেজিস্ট্রেশন সফল হয়েছে এবং আপনার একাউন্টে ৳${REGISTRATION_BONUS} বোনাস যুক্ত হয়েছে!`);
+            openCleanModal(`অভিনন্দন! রেজিস্ট্রেশন সফল হয়েছে এবং আপনার একাউন্টে ৳${REGISTRATION_BONUS} বোনাস যুক্ত হয়েছে!`);
         }
 
         function handleUserLogin(event) {
@@ -1304,7 +1387,7 @@
             const password = document.getElementById('loginPassword').value;
 
             if (!phone || !password) {
-                alert('মোবাইল নম্বর এবং পাসওয়ার্ড লিখুন!');
+                openCleanModal('মোবাইল নম্বর এবং পাসওয়ার্ড লিখুন!');
                 return;
             }
 
@@ -1312,12 +1395,12 @@
             const matchedPhoneAccount = accounts.find((acc) => normalizePhone(acc.phone) === phone);
 
             if (!matchedPhoneAccount) {
-                alert('এই মোবাইল নম্বরে কোনো অ্যাকাউন্ট রেজিস্ট্রেশন করা নেই! লগইন করতে আগে রেজিস্ট্রেশন করুন।');
+                openCleanModal('এই মোবাইল নম্বরে কোনো অ্যাকাউন্ট রেজিস্ট্রেশন করা নেই! লগইন করতে আগে রেজিস্ট্রেশন করুন।');
                 return;
             }
 
             if (matchedPhoneAccount.password !== password) {
-                alert('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড লিখুন।');
+                openCleanModal('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড লিখুন।');
                 return;
             }
 
@@ -1517,6 +1600,7 @@
         }
 
         let currentScreenshotBase64 = '';
+        let currentScreenshotMeta = '';
 
         function updateUI() {
             document.getElementById('userNameDisplay').textContent = userState.userName || 'Member';
@@ -1587,7 +1671,7 @@
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(input.value).catch(() => {});
             }
-            alert('আপনার রেফার লিংক কপি হয়েছে: ' + input.value);
+            openCleanModal('আপনার রেফার লিংক কপি হয়েছে: ' + input.value);
         }
 
         function showPage(pageId) {
@@ -1633,7 +1717,7 @@
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).catch(() => {});
             }
-            alert('কপি হয়েছে: ' + text);
+            openCleanModal('কপি হয়েছে: ' + text);
         }
 
         function updatePayNumber() {
@@ -1682,9 +1766,11 @@
             const img = document.getElementById('ssPreview');
             if (!file) {
                 currentScreenshotBase64 = '';
+                currentScreenshotMeta = '';
                 img.style.display = 'none';
                 return;
             }
+            currentScreenshotMeta = `${file.name}__${file.size}`;
             const reader = new FileReader();
             reader.onload = function (e) {
                 currentScreenshotBase64 = e.target.result;
@@ -1694,17 +1780,52 @@
             reader.readAsDataURL(file);
         }
 
+        function isDuplicateDepositTrxOrScreenshot(trxCode, screenshotData, screenshotMeta) {
+            const cleanTrx = normalizeTrx(trxCode);
+            const adminState = getAdminState();
+            const adminReqs = Array.isArray(adminState.requests) ? adminState.requests : [];
+            const localDeps = Array.isArray(userState.deposits) ? userState.deposits : [];
+
+            const trxUsedInAdmin = adminReqs.some((r) => normalizeTrx(r.trxId) === cleanTrx);
+            const trxUsedLocally = localDeps.some((d) => normalizeTrx(d.trx) === cleanTrx);
+            if (trxUsedInAdmin || trxUsedLocally) {
+                return 'এই Transaction ID (TrxID) ইতিমধ্যে একবার ব্যবহার করা হয়েছে! একই TrxID একাধিকবার দেওয়া যাবে না।';
+            }
+
+            if (screenshotData) {
+                const ssUsedInAdmin = adminReqs.some((r) => r.screenshot && r.screenshot === screenshotData);
+                const ssUsedLocally = localDeps.some((d) => d.screenshot && d.screenshot === screenshotData);
+                const metaUsedLocally = screenshotMeta && localDeps.some((d) => d.screenshotMeta && d.screenshotMeta === screenshotMeta);
+
+                if (ssUsedInAdmin || ssUsedLocally || metaUsedLocally) {
+                    return 'এই স্ক্রিনশটটি ইতিমধ্যে একবার জমা দেওয়া হয়েছে! একই স্ক্রিনশট একাধিকবার দেওয়া যাবে না।';
+                }
+            }
+
+            return '';
+        }
+
         function submitDeposit() {
             const method = document.getElementById('depMethod').value;
             const amount = parseFloat(document.getElementById('depAmount').value);
             const trx = document.getElementById('depTrx').value.trim();
 
             if (!amount || amount <= 0) {
-                alert('সঠিক টাকার পরিমাণ লিখুন!');
+                openCleanModal('সঠিক টাকার পরিমাণ লিখুন!');
                 return;
             }
             if (!trx) {
-                alert('Transaction ID (TrxID) লিখুন!');
+                openCleanModal('Transaction ID (TrxID) লিখুন!');
+                return;
+            }
+            if (!currentScreenshotBase64) {
+                openCleanModal('অনুগ্রহ করে পেমেন্টের স্ক্রিনশট আপলোড করুন!');
+                return;
+            }
+
+            const duplicateError = isDuplicateDepositTrxOrScreenshot(trx, currentScreenshotBase64, currentScreenshotMeta);
+            if (duplicateError) {
+                openCleanModal(duplicateError);
                 return;
             }
 
@@ -1717,6 +1838,7 @@
                 amount,
                 trx,
                 screenshot: currentScreenshotBase64,
+                screenshotMeta: currentScreenshotMeta,
                 status: 'pending',
                 date: dateStr
             });
@@ -1733,7 +1855,7 @@
                 screenshot: currentScreenshotBase64 || '',
                 status: 'pending',
                 createdAt: dateStr,
-                screenshotText: `${method} • ৳${amount} • TrxID: ${trx}${currentScreenshotBase64 ? ' (স্ক্রিনশট যুক্ত)' : ''}`
+                screenshotText: `${method} • ৳${amount} • TrxID: ${trx} (স্ক্রিনশট যুক্ত)`
             });
 
             document.getElementById('depAmount').value = '';
@@ -1741,16 +1863,19 @@
             document.getElementById('depScreenshot').value = '';
             document.getElementById('ssPreview').style.display = 'none';
             currentScreenshotBase64 = '';
+            currentScreenshotMeta = '';
 
-            alert('আবেদন জমা হয়েছে অপেক্ষা করেন');
-            showPage('depositHistoryPage');
+            openCleanModal('আবেদন জমা হয়েছে অপেক্ষা করেন', () => {
+                showPage('depositHistoryPage');
+            });
         }
 
         function submitWithdraw() {
             const hasBoughtProduct = Array.isArray(userState.products) && userState.products.length > 0;
             if (!hasBoughtProduct) {
-                alert('টাকা উত্তোলন করার জন্য আগে যেকোনো একটি পণ্য কিনতে হবে!');
-                showPage('homePage');
+                openCleanModal('টাকা উত্তোলন করার জন্য আগে যেকোনো একটি পণ্য কিনতে হবে!', () => {
+                    showPage('homePage');
+                });
                 return;
             }
 
@@ -1759,15 +1884,15 @@
             const amount = parseFloat(document.getElementById('withAmount').value);
 
             if (!number || number.length < 6) {
-                alert('সঠিক একাউন্ট নম্বর লিখুন!');
+                openCleanModal('সঠিক একাউন্ট নম্বর লিখুন!');
                 return;
             }
             if (!amount || amount < 300) {
-                alert('সর্বনিম্ন ৩০০ টাকা উত্তোলন করা যাবে!');
+                openCleanModal('সর্বনিম্ন ৩০০ টাকা উত্তোলন করা যাবে!');
                 return;
             }
             if (amount > userState.balance) {
-                alert('আপনার পর্যাপ্ত ব্যালেন্স নেই!');
+                openCleanModal('আপনার পর্যাপ্ত ব্যালেন্স নেই!');
                 return;
             }
 
@@ -1803,14 +1928,16 @@
             document.getElementById('withNumber').value = '';
             document.getElementById('withAmount').value = '';
 
-            alert('আবেদন জমা হয়েছে অপেক্ষা করেন');
-            showPage('withdrawHistoryPage');
+            openCleanModal('আবেদন জমা হয়েছে অপেক্ষা করেন', () => {
+                showPage('withdrawHistoryPage');
+            });
         }
 
         function buyPlan(planName, price, dailyIncome, days, icon = '🎁') {
             if (userState.balance < price) {
-                alert('আপনার ব্যালেন্সে পর্যাপ্ত টাকা নেই! অনুগ্রহ করে ডিপোজিট করুন।');
-                showPage('depositPage');
+                openCleanModal('আপনার ব্যালেন্সে পর্যাপ্ত টাকা নেই! অনুগ্রহ করে ডিপোজিট করুন।', () => {
+                    showPage('depositPage');
+                });
                 return;
             }
 
@@ -1842,8 +1969,9 @@
 
             updateUI();
             const bonusText = earnedRefBonus > 0 ? `\n১ম বার কেনায় রেফার কমিশন জমা হয়েছে: ৳${earnedRefBonus}` : '';
-            alert(`অভিনন্দন! আপনি "${planName}" সফলভাবে কিনেছেন। প্রতিদিন রাত ১২টায় ৳${dailyIncome} করে ইনকাম যুক্ত হবে।${bonusText}`);
-            showPage('myProductsPage');
+            openCleanModal(`অভিনন্দন! আপনি "${planName}" সফলভাবে কিনেছেন। প্রতিদিন রাত ১২টায় ৳${dailyIncome} করে ইনকাম যুক্ত হবে।${bonusText}`, () => {
+                showPage('myProductsPage');
+            });
         }
 
         function renderHistories() {
