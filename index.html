@@ -44,17 +44,6 @@
             align-items: center;
         }
 
-        .sync-btn {
-            background: rgba(255, 255, 255, 0.16);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.35);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
         .logout-btn {
             background: rgba(255, 255, 255, 0.22);
             color: white;
@@ -601,7 +590,6 @@
     <div class="header">
         <h1 onclick="handleHeaderBrandClick()" style="cursor:pointer;">EarnBD</h1>
         <div class="header-actions">
-            <button id="headerSyncBtn" class="sync-btn" onclick="syncWithAdminPanel(true)">↻ সিংক</button>
             <button id="headerLogoutBtn" class="logout-btn" onclick="logoutUser()">লগআউট</button>
         </div>
     </div>
@@ -1235,7 +1223,6 @@
             }
         }
 
-        // রেজিস্ট্রেশন করার সাথে সাথেই ৩০০ টাকা বোনাস যুক্ত হবে
         function handleUserRegister(event) {
             event.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -1369,7 +1356,7 @@
             }
         }
 
-        function syncWithAdminPanel(showNotice = false) {
+        function syncWithAdminPanel() {
             const adminState = getAdminState();
 
             if (Array.isArray(adminState.products) && adminState.products.length > 0) {
@@ -1454,10 +1441,6 @@
             updateUI();
             renderHistories();
             updatePayNumber();
-
-            if (showNotice) {
-                alert('অ্যাডমিন প্যানেলের সর্বশেষ পণ্য, নম্বর ও সাপোর্ট তথ্য সিংক করা হয়েছে!');
-            }
         }
 
         function applySupportUI() {
@@ -1611,7 +1594,6 @@
             const loggedIn = isUserLoggedIn();
             const bottomNav = document.getElementById('bottomNavBar');
             const logoutBtn = document.getElementById('headerLogoutBtn');
-            const syncBtn = document.getElementById('headerSyncBtn');
 
             if (!loggedIn && pageId !== 'authPage') {
                 pageId = 'authPage';
@@ -1620,11 +1602,9 @@
             if (pageId === 'authPage') {
                 bottomNav.style.display = 'none';
                 logoutBtn.style.display = 'none';
-                syncBtn.style.display = 'none';
             } else {
                 bottomNav.style.display = 'flex';
                 logoutBtn.style.display = 'inline-block';
-                syncBtn.style.display = 'inline-block';
                 applyMidnightDailyProductIncome();
                 syncWithAdminPanel();
             }
@@ -1762,7 +1742,7 @@
             document.getElementById('ssPreview').style.display = 'none';
             currentScreenshotBase64 = '';
 
-            alert('ডিপোজিট রিকোয়েস্ট ও স্ক্রিনশট অ্যাডমিন প্যানেলে পাঠানো হয়েছে!');
+            alert('আবেদন জমা হয়েছে অপেক্ষা করেন');
             showPage('depositHistoryPage');
         }
 
@@ -1823,7 +1803,7 @@
             document.getElementById('withNumber').value = '';
             document.getElementById('withAmount').value = '';
 
-            alert('উত্তোলন রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!');
+            alert('আবেদন জমা হয়েছে অপেক্ষা করেন');
             showPage('withdrawHistoryPage');
         }
 
