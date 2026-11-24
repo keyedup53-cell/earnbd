@@ -82,7 +82,7 @@
 <body class="min-h-screen bg-[#f2f5f7] pb-12">
   <div class="mx-auto max-w-md px-3.5 pt-2.5 sm:max-w-lg sm:px-4">
 
-    <!-- 1. Top Green Rounded Header Bar -->
+    <!-- ১. টপ গ্রিন হেডার -->
     <header class="relative overflow-hidden rounded-b-[28px] rounded-t-2xl bg-[#0b7a4b] px-5 py-6 text-white shadow-md">
       <div class="pointer-events-none -right-8 -top-8 absolute h-28 w-28 rounded-full bg-white/10"></div>
       <div class="pointer-events-none -bottom-10 left-8 h-24 w-24 rounded-full bg-black/10"></div>
@@ -114,7 +114,7 @@
       </div>
     </header>
 
-    <!-- Logged-Out Lock View -->
+    <!-- লগআউট ভিউ -->
     <section id="loggedOutCard" class="card-shadow mt-4 hidden rounded-2xl bg-white p-6 text-center">
       <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-[#0b7a4b]">
         <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -145,10 +145,10 @@
       </form>
     </section>
 
-    <!-- Main Authenticated Admin Workspace -->
+    <!-- মূল অ্যাডমিন ওয়ার্কস্পেস -->
     <main id="adminWorkspace" class="space-y-4 mt-4">
 
-      <!-- 2. Admin Account Card -->
+      <!-- ২. অ্যাডমিন অ্যাকাউন্ট কার্ড -->
       <section class="card-shadow rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-gray-900">অ্যাডমিন অ্যাকাউন্ট</h2>
@@ -171,7 +171,7 @@
         </button>
       </section>
 
-      <!-- 3. Action Grid -->
+      <!-- ৩. অ্যাকশন বাটন গ্রিড -->
       <section class="card-shadow rounded-2xl bg-white p-4">
         <div class="grid grid-cols-2 gap-3">
           <button
@@ -226,7 +226,7 @@
         </div>
       </section>
 
-      <!-- TAB 1: ডিপোজিট ও উইথড্র রিকোয়েস্ট -->
+      <!-- ট্যাব ১: ডিপোজিট ও উইথড্র রিকোয়েস্ট -->
       <section id="tab-requests" class="tab-panel card-shadow rounded-2xl bg-white p-5">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">ডিপোজিট ও উইথড্র রিকোয়েস্ট</h2>
@@ -263,7 +263,7 @@
         <div id="requestsList" class="mt-4 space-y-3.5"></div>
       </section>
 
-      <!-- TAB 2: ইউজার ম্যানেজ -->
+      <!-- ট্যাব ২: ইউজার ম্যানেজ -->
       <section id="tab-users" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">ইউজার ম্যানেজ</h2>
@@ -288,7 +288,7 @@
         <div id="usersList" class="mt-4 space-y-3"></div>
       </section>
 
-      <!-- TAB 3: প্যাকেজ ম্যানেজ -->
+      <!-- ট্যাব ৩: প্যাকেজ ম্যানেজ -->
       <section id="tab-packages" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">প্যাকেজ ম্যানেজ</h2>
@@ -361,7 +361,7 @@
         <div id="packagesList" class="mt-4 space-y-3"></div>
       </section>
 
-      <!-- TAB 4: পেমেন্ট নম্বর -->
+      <!-- ট্যাব ৪: পেমেন্ট নম্বর -->
       <section id="tab-payments" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">পেমেন্ট নম্বর</h2>
@@ -423,7 +423,7 @@
         </form>
       </section>
 
-      <!-- TAB 5: ওয়েবসাইট সেটিংস -->
+      <!-- ট্যাব ৫: ওয়েবসাইট সেটিংস -->
       <section id="tab-settings" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">ওয়েবসাইট সেটিংস</h2>
@@ -504,7 +504,7 @@
     </main>
   </div>
 
-  <!-- Toast Notification -->
+  <!-- নোটিফিকেশন টোস্ট -->
   <div
     id="toastBox"
     class="pointer-events-none fixed bottom-4 left-1/2 z-50 hidden w-[90%] max-w-sm -translate-x-1/2 rounded-xl bg-gray-900 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg"
@@ -809,14 +809,32 @@
       renderRequests();
     }
 
+    // রিকোয়েস্ট অ্যাপ্রুভ বা রিজেক্ট করলে ইউজারের ব্যালেন্স স্বয়ংক্রিয়ভাবে আপডেট হবে
     function handleRequestAction(reqId, newStatus) {
       const target = state.requests.find((r) => r.id === reqId);
       if (!target) return;
 
+      const previousStatus = target.status;
       target.status = newStatus;
+
+      if (newStatus === 'approved' && previousStatus !== 'approved') {
+        const matchedUser = state.users.find(
+          (u) => u.phone === target.phone || u.name.toLowerCase() === String(target.userName || '').toLowerCase()
+        );
+        const amountNum = Number(target.amount || 0);
+        if (matchedUser && amountNum > 0) {
+          if (target.type === 'ডিপোজিট') {
+            matchedUser.balance = Number(matchedUser.balance || 0) + amountNum;
+          } else if (target.type === 'উইথড্র') {
+            matchedUser.balance = Math.max(0, Number(matchedUser.balance || 0) - amountNum);
+          }
+        }
+      }
+
       saveState();
       updatePendingBadge();
       renderRequests();
+      renderUsers();
 
       const label = newStatus === 'approved' ? 'অনুমোদিত (Approved)' : 'বাতিল (Rejected)';
       showToast(`${target.userName}-এর রিকোয়েস্ট ${label} করা হয়েছে`);
