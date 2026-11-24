@@ -42,16 +42,61 @@
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 1px solid rgba(255,255,255,0.3);
-            padding: 5px 14px;
+            padding: 6px 14px;
             border-radius: 8px;
             font-size: 14px;
             cursor: pointer;
+            font-weight: 600;
         }
 
         .container {
             padding: 15px;
             max-width: 480px;
             margin: 0 auto;
+        }
+
+        /* Page Switching System */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sub-page Top Bar */
+        .page-top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .back-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
         }
 
         /* Balance Card */
@@ -77,22 +122,9 @@
             border-radius: 50%;
         }
 
-        .welcome-text {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 5px;
-        }
-
-        .balance-amount {
-            font-size: 34px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .refer-income {
-            font-size: 13px;
-            opacity: 0.9;
-        }
+        .welcome-text { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
+        .balance-amount { font-size: 34px; font-weight: 700; margin-bottom: 8px; }
+        .refer-income { font-size: 13px; opacity: 0.95; font-weight: 600; }
 
         /* Telegram Support */
         .support-card {
@@ -106,17 +138,8 @@
             margin-bottom: 16px;
         }
 
-        .support-info h4 {
-            font-size: 16px;
-            color: #0284c7;
-            font-weight: 700;
-        }
-
-        .support-info p {
-            font-size: 12px;
-            color: #64748b;
-        }
-
+        .support-info h4 { font-size: 16px; color: #0284c7; font-weight: 700; }
+        .support-info p { font-size: 12px; color: #64748b; }
         .telegram-btn {
             background: #0ea5e9;
             color: white;
@@ -149,36 +172,19 @@
             justify-content: center;
         }
 
-        .action-btn:active {
-            transform: scale(0.96);
-        }
+        .action-btn:active { transform: scale(0.96); }
+        .action-btn .icon { font-size: 26px; margin-bottom: 6px; }
+        .action-btn span { font-size: 13px; font-weight: 700; line-height: 1.2; }
 
-        .action-btn .icon {
-            font-size: 26px;
-            margin-bottom: 6px;
-        }
-
-        .action-btn span {
-            font-size: 13px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        /* Row 1 Colors */
         .btn-deposit { background: #10a37f; color: white; }
         .btn-withdraw { background: #3b66f5; color: white; }
         .btn-refer { background: #f97316; color: white; }
-
-        /* Row 2 Colors (New 3 Options matching your image) */
         .btn-dep-hist { background: #d6eaf8; color: #1e293b; }
         .btn-with-hist { background: #fadbd8; color: #1e293b; }
         .btn-my-prod { background: #e8daef; color: #1e293b; }
 
         /* Plans Section */
-        .plans-container {
-            margin-top: 18px;
-        }
-
+        .plans-container { margin-top: 18px; }
         .plan-card {
             border-radius: 18px;
             padding: 18px;
@@ -205,30 +211,11 @@
             transform: rotate(-45deg);
         }
 
-        .plan-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .plan-icon {
-            font-size: 48px;
-        }
-
-        .plan-details {
-            flex: 1;
-        }
-
-        .plan-details h3 {
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
-
-        .plan-details p {
-            font-size: 14px;
-            margin-bottom: 4px;
-            opacity: 0.95;
-        }
+        .plan-content { display: flex; align-items: center; gap: 15px; }
+        .plan-icon { font-size: 48px; }
+        .plan-details { flex: 1; }
+        .plan-details h3 { font-size: 18px; margin-bottom: 6px; }
+        .plan-details p { font-size: 14px; margin-bottom: 4px; opacity: 0.95; }
 
         .buy-btn {
             background: #facc15;
@@ -244,12 +231,145 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
+        /* Form Card inside Full Pages */
+        .card-box {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .payment-number-box {
+            background: #eff6ff;
+            border: 1px dashed #2563eb;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .payment-number-box p { font-size: 13px; color: #475569; }
+        .payment-number-box h4 { font-size: 18px; color: #1d4ed8; margin: 4px 0; }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #f8fafc;
+        }
+
+        .ref-info-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            color: #166534;
+        }
+
+        .level-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .level-card h5 { font-size: 15px; color: #0f172a; }
+        .level-card p { font-size: 12px; color: #64748b; }
+        .level-rate {
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+            border: 1px solid #cbd5e1;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        /* List Items */
+        .list-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .list-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .list-item h4 { font-size: 16px; color: #0f172a; margin-bottom: 3px; }
+        .list-item p { font-size: 13px; color: #64748b; }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-pending { background: #fef3c7; color: #b45309; }
+        .status-success { background: #dcfce7; color: #15803d; }
+        .status-rejected { background: #fee2e2; color: #b91c1c; }
+
+        .ss-thumb {
+            width: 100%;
+            max-height: 220px;
+            object-fit: contain;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #64748b;
+            padding: 30px 15px;
+            background: white;
+            border-radius: 14px;
+            font-size: 15px;
+        }
+
         /* Bottom Nav */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background: white;
             display: flex;
             justify-content: space-around;
@@ -267,408 +387,434 @@
             flex: 1;
         }
 
-        .nav-item.active {
-            color: #1d4ed8;
-        }
-
-        .nav-item .nav-icon {
-            font-size: 20px;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-        }
-
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 420px;
-            border-radius: 18px;
-            padding: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: popIn 0.2s ease;
-        }
-
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .modal-header h3 {
-            font-size: 18px;
-            color: #1e293b;
-        }
-
-        .close-btn {
-            background: #f1f5f9;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 15px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: #1d4ed8;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-
-        /* History & Product List Items */
-        .list-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .list-item h4 {
-            font-size: 15px;
-            color: #0f172a;
-        }
-
-        .list-item p {
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-pending { background: #fef3c7; color: #b45309; }
-        .status-success { background: #dcfce7; color: #15803d; }
-        .empty-msg { text-align: center; color: #64748b; padding: 20px 0; font-size: 14px; }
+        .nav-item.active { color: #1d4ed8; }
+        .nav-item .nav-icon { font-size: 20px; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
     <!-- Top Header -->
     <div class="header">
-        <h1>EarnBD</h1>
+        <h1 onclick="showPage('homePage')" style="cursor:pointer;">EarnBD</h1>
         <button class="logout-btn" onclick="alert('লগআউট সফল হয়েছে!')">লগআউট</button>
     </div>
 
     <div class="container">
-        <!-- Balance Card -->
-        <div class="balance-card">
-            <div class="welcome-text">স্বাগতম, Sp</div>
-            <div class="balance-amount">৳ <span id="userBalance">2600.00</span></div>
-            <div class="refer-income">মোট রেফার কমিশন আয়: ৳ <span id="referBalance">0.00</span></div>
-        </div>
 
-        <!-- Telegram Support -->
-        <div class="support-card">
-            <div class="support-info">
-                <h4>টেলিগ্রাম সাপোর্ট</h4>
-                <p>যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
+        <!-- ==================== 1. HOME PAGE ==================== -->
+        <div id="homePage" class="page-section active">
+            <!-- Balance Card -->
+            <div class="balance-card">
+                <div class="welcome-text">স্বাগতম, Sp</div>
+                <div class="balance-amount">৳ <span id="userBalance">2600.00</span></div>
+                <div class="refer-income">মোট রেফার কমিশন আয়: ৳ <span id="referBalance">0.00</span></div>
             </div>
-            <a href="https://t.me/" target="_blank" class="telegram-btn">Telegram</a>
-        </div>
 
-        <!-- Row 1: Main Actions -->
-        <div class="action-grid">
-            <button class="action-btn btn-deposit" onclick="openModal('depositModal')">
-                <div class="icon">👛</div>
-                <span>ডিপোজিট</span>
-            </button>
-            <button class="action-btn btn-withdraw" onclick="openModal('withdrawModal')">
-                <div class="icon">💸</div>
-                <span>উত্তোলন</span>
-            </button>
-            <button class="action-btn btn-refer" onclick="openModal('referModal')">
-                <div class="icon">👥</div>
-                <span>রেফার</span>
-            </button>
-        </div>
+            <!-- Telegram Support -->
+            <div class="support-card">
+                <div class="support-info">
+                    <h4>টেলিগ্রাম সাপোর্ট</h4>
+                    <p>যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
+                </div>
+                <a href="https://t.me/" target="_blank" class="telegram-btn">Telegram</a>
+            </div>
 
-        <!-- Row 2: New 3 Options (Deposit History, Withdraw History, My Purchased Products) -->
-        <div class="action-grid">
-            <button class="action-btn btn-dep-hist" onclick="openHistoryModal('deposit')">
-                <div class="icon">💳</div>
-                <span>ডিপোজিট<br>হিস্ট্রি</span>
-            </button>
-            <button class="action-btn btn-with-hist" onclick="openHistoryModal('withdraw')">
-                <div class="icon">🧾</div>
-                <span>উত্তোলন<br>হিস্ট্রি</span>
-            </button>
-            <button class="action-btn btn-my-prod" onclick="openMyProductsModal()">
-                <div class="icon">🛒</div>
-                <span>আমার কেনা<br>পণ্য</span>
-            </button>
-        </div>
+            <!-- Row 1: Main Actions -->
+            <div class="action-grid">
+                <button class="action-btn btn-deposit" onclick="showPage('depositPage')">
+                    <div class="icon">👛</div>
+                    <span>ডিপোজিট</span>
+                </button>
+                <button class="action-btn btn-withdraw" onclick="showPage('withdrawPage')">
+                    <div class="icon">💸</div>
+                    <span>উত্তোলন</span>
+                </button>
+                <button class="action-btn btn-refer" onclick="showPage('referPage')">
+                    <div class="icon">👥</div>
+                    <span>রেফার</span>
+                </button>
+            </div>
 
-        <!-- Investment Plans -->
-        <div class="plans-container">
-            <!-- Starter Plan -->
-            <div class="plan-card plan-starter">
-                <div class="badge">POPULAR</div>
-                <div class="plan-content">
-                    <div class="plan-icon">🎁</div>
-                    <div class="plan-details">
-                        <h3>Starter Plan (45 দিন)</h3>
-                        <p>💰 দাম: ৳ 670</p>
-                        <p>📅 দৈনিক ইনকাম: ৳ 85</p>
-                        <button class="buy-btn" onclick="buyPlan('Starter Plan', 670, 85, 45)">🛒 কিনুন →</button>
+            <!-- Row 2: New 3 Options -->
+            <div class="action-grid">
+                <button class="action-btn btn-dep-hist" onclick="showPage('depositHistoryPage')">
+                    <div class="icon">💳</div>
+                    <span>ডিপোজিট<br>হিস্ট্রি</span>
+                </button>
+                <button class="action-btn btn-with-hist" onclick="showPage('withdrawHistoryPage')">
+                    <div class="icon">🧾</div>
+                    <span>উত্তোলন<br>হিস্ট্রি</span>
+                </button>
+                <button class="action-btn btn-my-prod" onclick="showPage('myProductsPage')">
+                    <div class="icon">🛒</div>
+                    <span>আমার কেনা<br>পণ্য</span>
+                </button>
+            </div>
+
+            <!-- Investment Plans -->
+            <div class="plans-container">
+                <div class="plan-card plan-starter">
+                    <div class="badge">POPULAR</div>
+                    <div class="plan-content">
+                        <div class="plan-icon">🎁</div>
+                        <div class="plan-details">
+                            <h3>Starter Plan (45 দিন)</h3>
+                            <p>💰 দাম: ৳ 670</p>
+                            <p>📅 দৈনিক ইনকাম: ৳ 85</p>
+                            <button class="buy-btn" onclick="buyPlan('Starter Plan', 670, 85, 45)">🛒 কিনুন →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-card plan-silver">
+                    <div class="plan-content">
+                        <div class="plan-icon">💎</div>
+                        <div class="plan-details">
+                            <h3>Silver Plan (45 দিন)</h3>
+                            <p>💰 দাম: ৳ 1,200</p>
+                            <p>📅 দৈনিক ইনকাম: ৳ 160</p>
+                            <button class="buy-btn" onclick="buyPlan('Silver Plan', 1200, 160, 45)">🛒 কিনুন →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plan-card plan-gold">
+                    <div class="plan-content">
+                        <div class="plan-icon">👑</div>
+                        <div class="plan-details">
+                            <h3>Gold Plan (45 দিন)</h3>
+                            <p>💰 দাম: ৳ 2,500</p>
+                            <p>📅 দৈনিক ইনকাম: ৳ 350</p>
+                            <button class="buy-btn" onclick="buyPlan('Gold Plan', 2500, 350, 45)">🛒 কিনুন →</button>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Silver Plan -->
-            <div class="plan-card plan-silver">
-                <div class="plan-content">
-                    <div class="plan-icon">💎</div>
-                    <div class="plan-details">
-                        <h3>Silver Plan (45 দিন)</h3>
-                        <p>💰 দাম: ৳ 1,200</p>
-                        <p>📅 দৈনিক ইনকাম: ৳ 160</p>
-                        <button class="buy-btn" onclick="buyPlan('Silver Plan', 1200, 160, 45)">🛒 কিনুন →</button>
-                    </div>
-                </div>
+        <!-- ==================== 2. DEPOSIT PAGE (WITH SCREENSHOT) ==================== -->
+        <div id="depositPage" class="page-section">
+            <div class="page-top-bar">
+                <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
+                <div class="page-title">ডিপোজিট করুন</div>
             </div>
 
-            <!-- Gold Plan -->
-            <div class="plan-card plan-gold">
-                <div class="plan-content">
-                    <div class="plan-icon">👑</div>
-                    <div class="plan-details">
-                        <h3>Gold Plan (45 দিন)</h3>
-                        <p>💰 দাম: ৳ 2,500</p>
-                        <p>📅 দৈনিক ইনকাম: ৳ 350</p>
-                        <button class="buy-btn" onclick="buyPlan('Gold Plan', 2500, 350, 45)">🛒 কিনুন →</button>
-                    </div>
+            <div class="card-box">
+                <div class="payment-number-box">
+                    <p>নিচের নম্বরে Send Money / পেমেন্ট করুন:</p>
+                    <h4 id="adminPayNumber">01700-000000 (বিকাশ/নগদ পার্সোনাল)</h4>
+                    <p style="font-size:12px; color:#dc2626;">পেমেন্ট করার পর স্ক্রিনশট ও TrxID নিচে জমা দিন</p>
                 </div>
+
+                <div class="form-group">
+                    <label>পেমেন্ট মেথড নির্বাচন করুন</label>
+                    <select id="depMethod" onchange="updatePayNumber()">
+                        <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
+                        <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                        <option value="TRX (TRC20)">TRX (TRC20)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>টাকার পরিমাণ (৳)</label>
+                    <input type="number" id="depAmount" placeholder="যেমন: 670">
+                </div>
+
+                <div class="form-group">
+                    <label>Transaction ID (TrxID)</label>
+                    <input type="text" id="depTrx" placeholder="ট্রানজেকশন আইডি লিখুন">
+                </div>
+
+                <div class="form-group">
+                    <label>📸 পেমেন্টের স্ক্রিনশট আপলোড করুন</label>
+                    <input type="file" id="depScreenshot" accept="image/*" onchange="previewScreenshot(event)">
+                    <img id="ssPreview" class="preview-img" alt="Screenshot Preview">
+                </div>
+
+                <button class="submit-btn" onclick="submitDeposit()">ডিপোজিট সাবমিট করুন</button>
             </div>
         </div>
+
+        <!-- ==================== 3. WITHDRAW PAGE ==================== -->
+        <div id="withdrawPage" class="page-section">
+            <div class="page-top-bar">
+                <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
+                <div class="page-title">টাকা উত্তোলন করুন</div>
+            </div>
+
+            <div class="card-box">
+                <div class="form-group">
+                    <label>উত্তোলন মেথড</label>
+                    <select id="withMethod">
+                        <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
+                        <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>আপনার একাউন্ট নম্বর</label>
+                    <input type="text" id="withNumber" placeholder="017XXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>টাকার পরিমাণ (৳)</label>
+                    <input type="number" id="withAmount" placeholder="সর্বনিম্ন ৩০০ টাকা">
+                </div>
+                <button class="submit-btn" onclick="submitWithdraw()">উত্তোলন রিকোয়েস্ট পাঠান</button>
+            </div>
+        </div>
+
+        <!-- ==================== 4. REFER PAGE ==================== -->
+        <div id="referPage" class="page-section">
+            <div class="page-top-bar">
+                <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
+                <div class="page-title">রেফার করে আয় করুন</div>
+            </div>
+
+            <div class="card-box">
+                <div class="ref-info-box">
+                    <strong>ব্যবহৃত / অটো রেফার কোড:</strong> <span id="activeRefCodeDisplay">নেই</span><br>
+                    <small>* কেউ আপনার লিংক দিয়ে ঢুকলে তার রেফার কোড অটোমেটিক বসে যাবে।</small>
+                </div>
+
+                <div class="form-group">
+                    <label>রেফার কোড (লিংক থেকে আসলে অটো বসবে):</label>
+                    <input type="text" id="appliedRefCodeInput" placeholder="রেফার কোড থাকলে এখানে বসবে" oninput="manualSetRefCode(this.value)">
+                </div>
+
+                <div class="form-group">
+                    <label>আপনার রেফার লিংক:</label>
+                    <input type="text" id="referLink" value="https://earnbds.netlify.app/?ref=SP2600" readonly>
+                </div>
+                <button class="submit-btn" onclick="copyReferLink()">📋 রেফার লিংক কপি করুন</button>
+
+                <div class="level-card">
+                    <div>
+                        <h5>১ম স্তর (Level 1)</h5>
+                        <p>সরাসরি রেফার সদস্য ১ম বার পণ্য কিনলে</p>
+                    </div>
+                    <span class="level-rate">২০% কমিশন</span>
+                </div>
+
+                <div class="level-card">
+                    <div>
+                        <h5>২য় স্তর (Level 2)</h5>
+                        <p>২য় স্তরের সদস্য ১ম বার পণ্য কিনলে</p>
+                    </div>
+                    <span class="level-rate">১% কমিশন</span>
+                </div>
+
+                <div class="level-card">
+                    <div>
+                        <h5>৩য় স্তর (Level 3)</h5>
+                        <p>৩য় স্তরের সদস্য ১ম বার পণ্য কিনলে</p>
+                    </div>
+                    <span class="level-rate">১% কমিশন</span>
+                </div>
+
+                <p style="font-size:12px; color:#dc2626; margin-top:12px; font-weight:600;">
+                    * শর্ত: সদস্যরা পণ্য কেনার সাথে সাথে কমিশন জমা হবে। শুধুমাত্র ১ম বার পণ্য কেনার সময় কমিশন পাওয়া যাবে, ২য় বার কিনলে কমিশন জমা হবে না।
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== 5. DEPOSIT HISTORY PAGE ==================== -->
+        <div id="depositHistoryPage" class="page-section">
+            <div class="page-top-bar">
+                <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
+                <div class="page-title">💳 ডিপোজিট হিস্ট্রি</div>
+            </div>
+            <div id="depositHistoryList"></div>
+        </div>
+
+        <!-- ==================== 6. WITHDRAW HISTORY PAGE ==================== -->
+        <div id="withdrawHistoryPage" class="page-section">
+            <div class="page-top-bar">
+                <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
+                <div class="page-title">🧾 উত্তোলন হিস্ট্রি</div>
+            </div>
+            <div id="withdrawHistoryList"></div>
+        </div>
+
+        <!-- ==================== 7. MY PURCHASED PRODUCTS PAGE ==================== -->
+        <div id="myProductsPage" class="page-section">
+            <div class="page-top-bar">
+                <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
+                <div class="page-title">🛒 আমার কেনা পণ্য</div>
+            </div>
+            <div id="myProductsList"></div>
+        </div>
+
     </div>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="closeAllModals()">
+        <div class="nav-item active" id="nav-home" onclick="showPage('homePage')">
             <span class="nav-icon">🏠</span>
             হোম
         </div>
-        <div class="nav-item" onclick="openModal('depositModal')">
+        <div class="nav-item" id="nav-deposit" onclick="showPage('depositPage')">
             <span class="nav-icon">🎁</span>
             ডিপোজিট
         </div>
-        <div class="nav-item" onclick="openModal('withdrawModal')">
+        <div class="nav-item" id="nav-withdraw" onclick="showPage('withdrawPage')">
             <span class="nav-icon">⬆️</span>
             উত্তোলন
         </div>
-        <div class="nav-item" onclick="openModal('referModal')">
+        <div class="nav-item" id="nav-refer" onclick="showPage('referPage')">
             <span class="nav-icon">👥</span>
             রেফার
         </div>
-        <div class="nav-item" onclick="openMyProductsModal()">
+        <div class="nav-item" id="nav-products" onclick="showPage('myProductsPage')">
             <span class="nav-icon">🛍️</span>
             আমার পণ্য
         </div>
     </div>
 
-    <!-- 1. Deposit Modal -->
-    <div id="depositModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>ডিপোজিট করুন</h3>
-                <button class="close-btn" onclick="closeModal('depositModal')">×</button>
-            </div>
-            <div class="form-group">
-                <label>পেমেন্ট মেথড</label>
-                <select id="depMethod">
-                    <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
-                    <option value="নগদ (Nagad)">নগদ (Nagad)</option>
-                    <option value="TRX (TRC20)">TRX (TRC20)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>টাকার পরিমাণ (৳)</label>
-                <input type="number" id="depAmount" placeholder="যেমন: 670">
-            </div>
-            <div class="form-group">
-                <label>Transaction ID (TrxID)</label>
-                <input type="text" id="depTrx" placeholder="ট্রানজেকশন আইডি লিখুন">
-            </div>
-            <button class="submit-btn" onclick="submitDeposit()">ডিপোজিট সাবমিট করুন</button>
-        </div>
-    </div>
-
-    <!-- 2. Withdraw Modal -->
-    <div id="withdrawModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>টাকা উত্তোলন করুন</h3>
-                <button class="close-btn" onclick="closeModal('withdrawModal')">×</button>
-            </div>
-            <div class="form-group">
-                <label>উত্তোলন মেথড</label>
-                <select id="withMethod">
-                    <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
-                    <option value="নগদ (Nagad)">নগদ (Nagad)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>আপনার একাউন্ট নম্বর</label>
-                <input type="text" id="withNumber" placeholder="017XXXXXXXX">
-            </div>
-            <div class="form-group">
-                <label>টাকার পরিমাণ (৳)</label>
-                <input type="number" id="withAmount" placeholder="সর্বনিম্ন ৩০০ টাকা">
-            </div>
-            <button class="submit-btn" onclick="submitWithdraw()">উত্তোলন রিকোয়েস্ট পাঠান</button>
-        </div>
-    </div>
-
-    <!-- 3. Refer Modal -->
-    <div id="referModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>রেফার করে আয় করুন</h3>
-                <button class="close-btn" onclick="closeModal('referModal')">×</button>
-            </div>
-            <p style="font-size:14px; margin-bottom:10px;">আপনার বন্ধুদের রেফার করে প্রতিটি ডিপোজিটে ১০% বোনাস পান!</p>
-            <div class="form-group">
-                <input type="text" id="referLink" value="https://earnbds.netlify.app/?ref=SP2600" readonly>
-            </div>
-            <button class="submit-btn" onclick="copyReferLink()">রেফার লিংক কপি করুন</button>
-        </div>
-    </div>
-
-    <!-- 4. Deposit & Withdraw History Modal -->
-    <div id="historyModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="historyModalTitle">হিস্ট্রি</h3>
-                <button class="close-btn" onclick="closeModal('historyModal')">×</button>
-            </div>
-            <div id="historyListContainer"></div>
-        </div>
-    </div>
-
-    <!-- 5. My Purchased Products Modal -->
-    <div id="myProductsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>🛒 আমার কেনা পণ্যসমূহ</h3>
-                <button class="close-btn" onclick="closeModal('myProductsModal')">×</button>
-            </div>
-            <div id="myProductsListContainer"></div>
-        </div>
-    </div>
-
     <script>
-        // Initial Data (Saved in LocalStorage so it persists on reload)
+        // Load Saved Data
         let balance = parseFloat(localStorage.getItem('earnbd_balance')) || 2600.00;
-        let depositHistory = JSON.parse(localStorage.getItem('earnbd_dep_hist')) || [
-            { method: 'বিকাশ (bKash)', amount: 2600, trx: '8N7A6D5F4G', date: '২৪ নভে ২০২৬', status: 'সফল' }
-        ];
+        let referCommissionBalance = parseFloat(localStorage.getItem('earnbd_ref_commission')) || 0.00;
+        let hasBoughtFirstProduct = localStorage.getItem('earnbd_first_buy_done') === 'true';
+        let appliedRefCode = localStorage.getItem('earnbd_applied_ref') || '';
+
+        let depositHistory = JSON.parse(localStorage.getItem('earnbd_dep_hist')) || [];
         let withdrawHistory = JSON.parse(localStorage.getItem('earnbd_with_hist')) || [];
         let myProducts = JSON.parse(localStorage.getItem('earnbd_products')) || [];
+        let currentScreenshotBase64 = "";
 
-        function updateUI() {
+        // Auto-detect ?ref=CODE from URL when user enters via referral link
+        function detectReferralFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refParam = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('code');
+            if (refParam && refParam.trim() !== '') {
+                appliedRefCode = refParam.trim();
+                localStorage.setItem('earnbd_applied_ref', appliedRefCode);
+            }
+            syncReferralUI();
+        }
+
+        function syncReferralUI() {
+            document.getElementById('activeRefCodeDisplay').innerText = appliedRefCode || 'নেই';
+            document.getElementById('appliedRefCodeInput').value = appliedRefCode;
+        }
+
+        function manualSetRefCode(val) {
+            appliedRefCode = val.trim();
+            localStorage.setItem('earnbd_applied_ref', appliedRefCode);
+            document.getElementById('activeRefCodeDisplay').innerText = appliedRefCode || 'নেই';
+        }
+
+        function saveData() {
             document.getElementById('userBalance').innerText = balance.toFixed(2);
+            document.getElementById('referBalance').innerText = referCommissionBalance.toFixed(2);
             localStorage.setItem('earnbd_balance', balance);
+            localStorage.setItem('earnbd_ref_commission', referCommissionBalance);
+            localStorage.setItem('earnbd_first_buy_done', hasBoughtFirstProduct ? 'true' : 'false');
             localStorage.setItem('earnbd_dep_hist', JSON.stringify(depositHistory));
             localStorage.setItem('earnbd_with_hist', JSON.stringify(withdrawHistory));
             localStorage.setItem('earnbd_products', JSON.stringify(myProducts));
         }
 
-        // Modal Controls
-        function openModal(id) {
-            closeAllModals();
-            document.getElementById(id).style.display = 'flex';
+        // Full Page Navigation System
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+
+            if (pageId === 'depositHistoryPage') renderDepositHistory();
+            if (pageId === 'withdrawHistoryPage') renderWithdrawHistory();
+            if (pageId === 'myProductsPage') renderMyProducts();
+            if (pageId === 'referPage') syncReferralUI();
+
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if (pageId === 'homePage') document.getElementById('nav-home').classList.add('active');
+            if (pageId === 'depositPage') document.getElementById('nav-deposit').classList.add('active');
+            if (pageId === 'withdrawPage') document.getElementById('nav-withdraw').classList.add('active');
+            if (pageId === 'referPage') document.getElementById('nav-refer').classList.add('active');
+            if (pageId === 'myProductsPage') document.getElementById('nav-products').classList.add('active');
         }
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
+        // Change Payment Number based on Method
+        function updatePayNumber() {
+            const method = document.getElementById('depMethod').value;
+            const numBox = document.getElementById('adminPayNumber');
+            if (method.includes('TRX')) {
+                numBox.innerText = 'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE (TRC20)';
+            } else {
+                numBox.innerText = '01700-000000 (' + method + ' পার্সোনাল)';
+            }
         }
 
-        function closeAllModals() {
-            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        // Preview & Compress Screenshot Image
+        function previewScreenshot(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 500;
+                    const scale = maxWidth / img.width;
+                    canvas.width = maxWidth;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    currentScreenshotBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    const previewEl = document.getElementById('ssPreview');
+                    previewEl.src = currentScreenshotBase64;
+                    previewEl.style.display = 'block';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
-        // Deposit Logic
+        // Submit Deposit with Screenshot
         function submitDeposit() {
             const method = document.getElementById('depMethod').value;
             const amount = parseFloat(document.getElementById('depAmount').value);
             const trx = document.getElementById('depTrx').value.trim();
 
-            if (!amount || amount <= 0 || !trx) {
-                alert('দয়া করে সঠিক পরিমাণ এবং TrxID দিন!');
+            if (!amount || amount <= 0) {
+                alert('দয়া করে সঠিক টাকার পরিমাণ লিখুন!');
+                return;
+            }
+            if (!trx) {
+                alert('দয়া করে Transaction ID (TrxID) লিখুন!');
+                return;
+            }
+            if (!currentScreenshotBase64) {
+                alert('দয়া করে পেমেন্টের স্ক্রিনশট আপলোড করুন!');
                 return;
             }
 
             const today = new Date().toLocaleDateString('bn-BD');
             depositHistory.unshift({
+                id: Date.now(),
+                user: 'Sp',
                 method: method,
                 amount: amount,
                 trx: trx,
+                screenshot: currentScreenshotBase64,
                 date: today,
                 status: 'পেন্ডিং'
             });
 
-            updateUI();
+            saveData();
+
             document.getElementById('depAmount').value = '';
             document.getElementById('depTrx').value = '';
-            closeModal('depositModal');
-            alert('ডিপোজিট রিকোয়েস্ট সফলভাবে জমা হয়েছে! ডিপোজিট হিস্ট্রিতে দেখুন।');
+            document.getElementById('depScreenshot').value = '';
+            document.getElementById('ssPreview').style.display = 'none';
+            currentScreenshotBase64 = "";
+
+            alert('ডিপোজিট ও স্ক্রিনশট সফলভাবে জমা হয়েছে!');
+            showPage('depositHistoryPage');
         }
 
-        // Withdraw Logic
+        // Submit Withdraw
         function submitWithdraw() {
             const method = document.getElementById('withMethod').value;
             const number = document.getElementById('withNumber').value.trim();
@@ -678,7 +824,6 @@
                 alert('সঠিক নম্বর এবং সর্বনিম্ন ৩০০ টাকা লিখুন!');
                 return;
             }
-
             if (amount > balance) {
                 alert('আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই!');
                 return;
@@ -687,6 +832,8 @@
             balance -= amount;
             const today = new Date().toLocaleDateString('bn-BD');
             withdrawHistory.unshift({
+                id: Date.now(),
+                user: 'Sp',
                 method: method,
                 number: number,
                 amount: amount,
@@ -694,22 +841,43 @@
                 status: 'পেন্ডিং'
             });
 
-            updateUI();
+            saveData();
             document.getElementById('withNumber').value = '';
             document.getElementById('withAmount').value = '';
-            closeModal('withdrawModal');
-            alert('উত্তোলন রিকোয়েস্ট সফল হয়েছে! উত্তোলন হিস্ট্রিতে দেখুন।');
+            alert('উত্তোলন রিকোয়েস্ট পাঠানো হয়েছে!');
+            showPage('withdrawHistoryPage');
         }
 
-        // Buy Plan (Product) Logic
+        // Buy Product / Plan with 3-Level Referral Commission (Only 1st Purchase)
         function buyPlan(name, price, dailyIncome, validity) {
             if (balance < price) {
-                alert('পণ্যটি কেনার জন্য পর্যাপ্ত ব্যালেন্স নেই! অনুগ্রহ করে ডিপোজিট করুন।');
+                alert('পর্যাপ্ত ব্যালেন্স নেই! অনুগ্রহ করে ডিপোজিট করুন।');
+                showPage('depositPage');
                 return;
             }
 
             if (confirm(`আপনি কি ৳${price} দিয়ে "${name}" কিনতে চান?`)) {
                 balance -= price;
+
+                let commissionMsg = "";
+
+                // Commission applies ONLY on 1st product purchase
+                if (!hasBoughtFirstProduct) {
+                    const level1Comm = price * 0.20; // ২০%
+                    const level2Comm = price * 0.01; // ১%
+                    const level3Comm = price * 0.01; // ১%
+
+                    // Credit 1st-time purchase commission immediately to commission & main balance
+                    const totalComm = level1Comm + level2Comm + level3Comm;
+                    referCommissionBalance += totalComm;
+                    balance += totalComm;
+
+                    hasBoughtFirstProduct = true;
+                    commissionMsg = `\n\n🎉 ১ম বার পণ্য কেনায় রেফার কমিশন জমা হয়েছে:\n• ১ম স্তর (২০%): ৳${level1Comm.toFixed(2)}\n• ২য় স্তর (১%): ৳${level2Comm.toFixed(2)}\n• ৩য় স্তর (১%): ৳${level3Comm.toFixed(2)}\nমোট কমিশন: ৳${totalComm.toFixed(2)}`;
+                } else {
+                    commissionMsg = `\n\nℹ️ এটি আপনার ২য় বা পরবর্তী পণ্য কেনা—তাই নতুন কোনো রেফার কমিশন যুক্ত হয়নি।`;
+                }
+
                 const today = new Date().toLocaleDateString('bn-BD');
                 myProducts.unshift({
                     name: name,
@@ -720,81 +888,78 @@
                     status: 'চলমান (Active)'
                 });
 
-                updateUI();
-                alert(`অভিনন্দন! "${name}" কেনা সফল হয়েছে। "আমার কেনা পণ্য" অপশনে গিয়ে বিস্তারিত দেখুন।`);
+                saveData();
+                alert(`অভিনন্দন! "${name}" কেনা সফল হয়েছে।${commissionMsg}`);
+                showPage('myProductsPage');
             }
         }
 
-        // Open Deposit or Withdraw History Modal
-        function openHistoryModal(type) {
-            const titleEl = document.getElementById('historyModalTitle');
-            const container = document.getElementById('historyListContainer');
-            container.innerHTML = '';
-
-            if (type === 'deposit') {
-                titleEl.innerText = '💳 ডিপোজিট হিস্ট্রি';
-                if (depositHistory.length === 0) {
-                    container.innerHTML = '<div class="empty-msg">কোনো ডিপোজিট হিস্ট্রি পাওয়া যায়নি।</div>';
-                } else {
-                    depositHistory.forEach(item => {
-                        const badgeClass = item.status === 'সফল' ? 'status-success' : 'status-pending';
-                        container.innerHTML += `
-                            <div class="list-item">
-                                <div>
-                                    <h4>৳ ${item.amount} - ${item.method}</h4>
-                                    <p>TrxID: ${item.trx} | তারিখ: ${item.date}</p>
-                                </div>
-                                <span class="status-badge ${badgeClass}">${item.status}</span>
-                            </div>
-                        `;
-                    });
-                }
-            } else if (type === 'withdraw') {
-                titleEl.innerText = '🧾 উত্তোলন হিস্ট্রি';
-                if (withdrawHistory.length === 0) {
-                    container.innerHTML = '<div class="empty-msg">এখনো কোনো টাকা উত্তোলন করা হয়নি।</div>';
-                } else {
-                    withdrawHistory.forEach(item => {
-                        const badgeClass = item.status === 'সফল' ? 'status-success' : 'status-pending';
-                        container.innerHTML += `
-                            <div class="list-item">
-                                <div>
-                                    <h4>৳ ${item.amount} - ${item.method}</h4>
-                                    <p>নম্বর: ${item.number} | তারিখ: ${item.date}</p>
-                                </div>
-                                <span class="status-badge ${badgeClass}">${item.status}</span>
-                            </div>
-                        `;
-                    });
-                }
+        // Render Deposit History
+        function renderDepositHistory() {
+            const container = document.getElementById('depositHistoryList');
+            if (depositHistory.length === 0) {
+                container.innerHTML = '<div class="empty-msg">কোনো ডিপোজিট হিস্ট্রি পাওয়া যায়নি।</div>';
+                return;
             }
-
-            openModal('historyModal');
-        }
-
-        // Open My Purchased Products Modal
-        function openMyProductsModal() {
-            const container = document.getElementById('myProductsListContainer');
-            container.innerHTML = '';
-
-            if (myProducts.length === 0) {
-                container.innerHTML = '<div class="empty-msg">আপনি এখনো কোনো পণ্য বা প্ল্যান কিনেননি।</div>';
-            } else {
-                myProducts.forEach(prod => {
-                    container.innerHTML += `
-                        <div class="list-item">
+            container.innerHTML = depositHistory.map(item => {
+                let badgeClass = item.status === 'সফল' ? 'status-success' : (item.status === 'বাতিল' ? 'status-rejected' : 'status-pending');
+                return `
+                    <div class="list-item">
+                        <div class="list-top">
                             <div>
-                                <h4>🎁 ${prod.name}</h4>
-                                <p>দাম: ৳${prod.price} | দৈনিক আয়: ৳${prod.dailyIncome}</p>
-                                <p>মেয়াদ: ${prod.validity} দিন | কেনার তারিখ: ${prod.buyDate}</p>
+                                <h4>৳ ${item.amount} - ${item.method}</h4>
+                                <p>TrxID: ${item.trx} | তারিখ: ${item.date}</p>
                             </div>
-                            <span class="status-badge status-success">${prod.status}</span>
+                            <span class="status-badge ${badgeClass}">${item.status}</span>
                         </div>
-                    `;
-                });
-            }
+                        ${item.screenshot ? `<img src="${item.screenshot}" class="ss-thumb" alt="Deposit Screenshot">` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
 
-            openModal('myProductsModal');
+        // Render Withdraw History
+        function renderWithdrawHistory() {
+            const container = document.getElementById('withdrawHistoryList');
+            if (withdrawHistory.length === 0) {
+                container.innerHTML = '<div class="empty-msg">এখনো কোনো টাকা উত্তোলন করা হয়নি।</div>';
+                return;
+            }
+            container.innerHTML = withdrawHistory.map(item => {
+                let badgeClass = item.status === 'সফল' ? 'status-success' : (item.status === 'বাতিল' ? 'status-rejected' : 'status-pending');
+                return `
+                    <div class="list-item">
+                        <div class="list-top">
+                            <div>
+                                <h4>৳ ${item.amount} - ${item.method}</h4>
+                                <p>নম্বর: ${item.number} | তারিখ: ${item.date}</p>
+                            </div>
+                            <span class="status-badge ${badgeClass}">${item.status}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render My Purchased Products
+        function renderMyProducts() {
+            const container = document.getElementById('myProductsList');
+            if (myProducts.length === 0) {
+                container.innerHTML = '<div class="empty-msg">আপনি এখনো কোনো পণ্য কিনেননি।</div>';
+                return;
+            }
+            container.innerHTML = myProducts.map(prod => `
+                <div class="list-item">
+                    <div class="list-top">
+                        <div>
+                            <h4>🎁 ${prod.name}</h4>
+                            <p>দাম: ৳${prod.price} | দৈনিক ইনকাম: ৳${prod.dailyIncome}</p>
+                            <p>মেয়াদ: ${prod.validity} দিন | কেনার তারিখ: ${prod.buyDate}</p>
+                        </div>
+                        <span class="status-badge status-success">${prod.status}</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // Copy Refer Link
@@ -802,11 +967,12 @@
             const linkInput = document.getElementById('referLink');
             linkInput.select();
             navigator.clipboard.writeText(linkInput.value);
-            alert('রেফার লিংক কপি হয়েছে: ' + linkInput.value);
+            alert('রেফার লিংক কপি হয়েছে!');
         }
 
-        // Load initial state
-        updateUI();
+        // Initialize
+        detectReferralFromURL();
+        saveData();
     </script>
 </body>
 </html>
