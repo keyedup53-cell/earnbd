@@ -63,7 +63,6 @@
       transform: scale(0.98);
     }
 
-    /* Smooth toast animation */
     @keyframes slideUp {
       from {
         opacity: 0;
@@ -81,12 +80,10 @@
   </style>
 </head>
 <body class="min-h-screen bg-[#f2f5f7] pb-12">
-  <!-- Main Mobile-First Container -->
   <div class="mx-auto max-w-md px-3.5 pt-2.5 sm:max-w-lg sm:px-4">
 
     <!-- 1. Top Green Rounded Header Bar -->
     <header class="relative overflow-hidden rounded-b-[28px] rounded-t-2xl bg-[#0b7a4b] px-5 py-6 text-white shadow-md">
-      <!-- Subtle decorative background circles -->
       <div class="pointer-events-none -right-8 -top-8 absolute h-28 w-28 rounded-full bg-white/10"></div>
       <div class="pointer-events-none -bottom-10 left-8 h-24 w-24 rounded-full bg-black/10"></div>
 
@@ -103,7 +100,6 @@
           </p>
         </div>
 
-        <!-- Clean Reset / Home badge button -->
         <button
           id="resetDemoBtn"
           type="button"
@@ -118,14 +114,14 @@
       </div>
     </header>
 
-    <!-- Logged-Out Lock View (shown when user clicks লগআউট) -->
+    <!-- Logged-Out Lock View -->
     <section id="loggedOutCard" class="card-shadow mt-4 hidden rounded-2xl bg-white p-6 text-center">
       <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-[#0b7a4b]">
         <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>
       </div>
-      <h2 class="mt-3 text-xl font-bold text-gray-900">আপনি লগআউট হয়েছেন</h2>
+      <h2 class="mt-3 text-xl font-bold text-gray-900">আপনি লগআউট হয়েছেন</h2>
       <p class="mt-1 text-sm text-gray-500">
         অ্যাডমিন প্যানেল ব্যবহার করতে আবার লগইন করুন।
       </p>
@@ -175,10 +171,9 @@
         </button>
       </section>
 
-      <!-- 3. Action Grid (2-column matching screenshot style) -->
+      <!-- 3. Action Grid -->
       <section class="card-shadow rounded-2xl bg-white p-4">
         <div class="grid grid-cols-2 gap-3">
-          <!-- Button 1: ডিপোজিট / উইথড্র -->
           <button
             type="button"
             data-tab="requests"
@@ -188,7 +183,6 @@
             <span>ডিপোজিট / উইথড্র</span>
           </button>
 
-          <!-- Button 2: ইউজার ম্যানেজ -->
           <button
             type="button"
             data-tab="users"
@@ -198,7 +192,6 @@
             <span>ইউজার ম্যানেজ</span>
           </button>
 
-          <!-- Button 3: প্যাকেজ ম্যানেজ -->
           <button
             type="button"
             data-tab="packages"
@@ -208,7 +201,6 @@
             <span>প্যাকেজ ম্যানেজ</span>
           </button>
 
-          <!-- Button 4: পেমেন্ট নম্বর -->
           <button
             type="button"
             data-tab="payments"
@@ -218,30 +210,26 @@
             <span>পেমেন্ট নম্বর</span>
           </button>
 
-          <!-- Button 5: ওয়েবসাইট সেটিংস -->
           <button
             type="button"
             data-tab="settings"
             class="nav-btn btn-green flex items-center justify-center gap-2 rounded-xl px-3 py-3.5 text-sm font-bold text-white shadow-sm sm:text-base"
           >
             <span class="text-base leading-none">⚙️</span>
-            <span>ওয়েবসাইট সেটিংস</span>
+            <span>ওয়েবসাইট সেটিংস</span>
           </button>
 
-          <!-- Quick Summary Pill Card beside 5th button -->
           <div class="flex flex-col justify-center rounded-xl border border-emerald-100 bg-[#e8f5ef]/70 px-3 py-2 text-center">
-            <span class="text-xs font-semibold text-gray-600">পেন্ডিং রিকোয়েস্ট</span>
+            <span class="text-xs font-semibold text-gray-600">পেন্ডিং রিকোয়েস্ট</span>
             <span id="pendingCountBadge" class="text-lg font-bold text-[#0b7a4b]">০ টি</span>
           </div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- TAB 1: ডিপোজিট ও উইথড্র রিকোয়েস্ট (Default Main View)        -->
-      <!-- ========================================================= -->
+      <!-- TAB 1: ডিপোজিট ও উইথড্র রিকোয়েস্ট -->
       <section id="tab-requests" class="tab-panel card-shadow rounded-2xl bg-white p-5">
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <h2 class="text-lg font-bold text-[#0b7a4b]">ডিপোজিট ও উইথড্র রিকোয়েস্ট</h2>
+          <h2 class="text-lg font-bold text-[#0b7a4b]">ডিপোজিট ও উইথড্র রিকোয়েস্ট</h2>
           <span id="totalRequestsLabel" class="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-600">
             মোট: ০
           </span>
@@ -259,7 +247,6 @@
             <span>রিফ্রেশ করুন</span>
           </button>
 
-          <!-- Filter pills -->
           <div class="flex items-center gap-1 rounded-xl bg-gray-100 p-1 text-xs font-semibold">
             <button type="button" data-filter="all" class="filter-btn rounded-lg bg-white px-2.5 py-1 text-gray-900 shadow-sm">
               সব
@@ -273,13 +260,10 @@
           </div>
         </div>
 
-        <!-- Requests List Container -->
         <div id="requestsList" class="mt-4 space-y-3.5"></div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- TAB 2: ইউজার ম্যানেজ (User Management)                    -->
-      <!-- ========================================================= -->
+      <!-- TAB 2: ইউজার ম্যানেজ -->
       <section id="tab-users" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">ইউজার ম্যানেজ</h2>
@@ -296,7 +280,7 @@
           <input
             id="userSearchInput"
             type="text"
-            placeholder="নাম, ফোন বা ইমেইল দিয়ে খুঁজুন..."
+            placeholder="নাম, ফোন বা ইমেইল দিয়ে খুঁজুন..."
             class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-gray-800 focus:border-[#0b7a4b] focus:bg-white focus:outline-none"
           />
         </div>
@@ -304,9 +288,7 @@
         <div id="usersList" class="mt-4 space-y-3"></div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- TAB 3: প্যাকেজ ম্যানেজ (Package Management)                -->
-      <!-- ========================================================= -->
+      <!-- TAB 3: প্যাকেজ ম্যানেজ -->
       <section id="tab-packages" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">প্যাকেজ ম্যানেজ</h2>
@@ -319,7 +301,6 @@
           </button>
         </div>
 
-        <!-- Add New Package Form -->
         <form id="addPackageForm" class="mt-4 space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-3.5">
           <h3 class="text-sm font-bold text-gray-800">নতুন প্যাকেজ যোগ করুন</h3>
           <div class="grid grid-cols-2 gap-2.5">
@@ -347,7 +328,7 @@
           </div>
           <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="mb-1 block text-xs font-semibold text-gray-600">দৈনিক আয় (৳)</label>
+              <label class="mb-1 block text-xs font-semibold text-gray-600">দৈনিক আয় (৳)</label>
               <input
                 id="pkgDailyInput"
                 type="number"
@@ -358,7 +339,7 @@
               />
             </div>
             <div>
-              <label class="mb-1 block text-xs font-semibold text-gray-600">মেয়াদ (দিন)</label>
+              <label class="mb-1 block text-xs font-semibold text-gray-600">মেয়াদ (দিন)</label>
               <input
                 id="pkgDaysInput"
                 type="number"
@@ -380,9 +361,7 @@
         <div id="packagesList" class="mt-4 space-y-3"></div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- TAB 4: পেমেন্ট নম্বর (Payment Numbers: bKash / Nagad / TRX) -->
-      <!-- ========================================================= -->
+      <!-- TAB 4: পেমেন্ট নম্বর -->
       <section id="tab-payments" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
           <h2 class="text-lg font-bold text-[#0b7a4b]">পেমেন্ট নম্বর</h2>
@@ -396,7 +375,6 @@
         </div>
 
         <form id="paymentNumbersForm" class="mt-4 space-y-3.5">
-          <!-- bKash -->
           <div class="rounded-xl border border-pink-100 bg-pink-50/40 p-3.5">
             <div class="flex items-center justify-between">
               <label class="text-sm font-bold text-pink-700">বিকাশ (bKash Personal/Agent)</label>
@@ -410,7 +388,6 @@
             />
           </div>
 
-          <!-- Nagad -->
           <div class="rounded-xl border border-orange-100 bg-orange-50/40 p-3.5">
             <div class="flex items-center justify-between">
               <label class="text-sm font-bold text-orange-700">নগদ (Nagad Personal/Agent)</label>
@@ -424,7 +401,6 @@
             />
           </div>
 
-          <!-- TRX Wallet -->
           <div class="rounded-xl border border-emerald-100 bg-emerald-50/40 p-3.5">
             <div class="flex items-center justify-between">
               <label class="text-sm font-bold text-[#0b7a4b]">TRX Wallet (TRC20 / Tron Address)</label>
@@ -447,12 +423,10 @@
         </form>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- TAB 5: ওয়েবসাইট সেটিংস (Website Settings)                 -->
-      <!-- ========================================================= -->
+      <!-- TAB 5: ওয়েবসাইট সেটিংস -->
       <section id="tab-settings" class="tab-panel card-shadow hidden rounded-2xl bg-white p-5">
         <div class="flex items-center justify-between gap-2">
-          <h2 class="text-lg font-bold text-[#0b7a4b]">ওয়েবসাইট সেটিংস</h2>
+          <h2 class="text-lg font-bold text-[#0b7a4b]">ওয়েবসাইট সেটিংস</h2>
           <button
             type="button"
             data-tab="requests"
@@ -509,7 +483,7 @@
           <div class="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-3">
             <div>
               <p class="text-sm font-bold text-gray-800">মেইনটেন্যান্স মোড</p>
-              <p class="text-xs text-gray-500">চালু করলে ইউজার প্যানেল সাময়িক বন্ধ থাকবে</p>
+              <p class="text-xs text-gray-500">চালু করলে ইউজার প্যানেল সাময়িক বন্ধ থাকবে</p>
             </div>
             <input
               id="maintenanceToggle"
@@ -530,16 +504,13 @@
     </main>
   </div>
 
-  <!-- Non-blocking Toast Notification -->
+  <!-- Toast Notification -->
   <div
     id="toastBox"
     class="pointer-events-none fixed bottom-4 left-1/2 z-50 hidden w-[90%] max-w-sm -translate-x-1/2 rounded-xl bg-gray-900 px-4 py-3 text-center text-sm font-semibold text-white shadow-lg"
   ></div>
 
   <script>
-    // =========================================================================
-    // EarnBD Admin Panel State & LocalStorage Management
-    // =========================================================================
     const STORAGE_KEY = 'earnbd_admin_panel_state_v1';
 
     const DEFAULT_STATE = {
@@ -613,26 +584,31 @@
     let state = loadState();
     let expandedScreenshots = {};
 
+    function cloneDefault() {
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredClone(DEFAULT_STATE);
+        if (!raw) return cloneDefault();
         const parsed = JSON.parse(raw);
+        const base = cloneDefault();
         return {
-          ...structuredClone(DEFAULT_STATE),
+          ...base,
           ...parsed,
           paymentNumbers: {
-            ...DEFAULT_STATE.paymentNumbers,
+            ...base.paymentNumbers,
             ...(parsed.paymentNumbers || {}),
           },
           siteSettings: {
-            ...DEFAULT_STATE.siteSettings,
+            ...base.siteSettings,
             ...(parsed.siteSettings || {}),
           },
         };
       } catch (err) {
         console.error('Error loading state:', err);
-        return structuredClone(DEFAULT_STATE);
+        return cloneDefault();
       }
     }
 
@@ -644,14 +620,13 @@
       }
     }
 
-    // Toast helper (replaces alert())
     let toastTimeout = null;
     function showToast(message) {
       const box = document.getElementById('toastBox');
       box.textContent = message;
       box.classList.remove('hidden');
       box.classList.remove('toast-enter');
-      void box.offsetWidth; // trigger reflow
+      void box.offsetWidth;
       box.classList.add('toast-enter');
 
       clearTimeout(toastTimeout);
@@ -660,15 +635,23 @@
       }, 2600);
     }
 
-    // Convert English digits to Bangla digits for display
     function toBanglaDigits(input) {
       const map = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
       return String(input).replace(/\d/g, (d) => map[Number(d)]);
     }
 
-    // =========================================================================
-    // Rendering Functions
-    // =========================================================================
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escapeAttr(str) {
+      return String(str ?? '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
     function renderAll() {
       const workspace = document.getElementById('adminWorkspace');
       const loggedOutCard = document.getElementById('loggedOutCard');
@@ -714,7 +697,6 @@
         targetPanel.classList.remove('hidden');
       }
 
-      // Highlight active top nav button subtly
       document.querySelectorAll('.nav-btn[data-tab]').forEach((btn) => {
         if (btn.dataset.tab === tabName) {
           btn.classList.add('ring-2', 'ring-emerald-300', 'ring-offset-1');
@@ -731,7 +713,6 @@
         return req.status === state.requestFilter;
       });
 
-      // Update filter button styles
       document.querySelectorAll('.filter-btn').forEach((btn) => {
         if (btn.dataset.filter === state.requestFilter) {
           btn.className = 'filter-btn rounded-lg bg-white px-2.5 py-1 text-gray-900 shadow-sm';
@@ -743,7 +724,7 @@
       if (filtered.length === 0) {
         container.innerHTML = `
           <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-center text-sm font-medium text-gray-500">
-            এই ক্যাটাগরিতে কোনো রিকোয়েস্ট পাওয়া যায়নি।
+            এই ক্যাটাগরিতে কোনো রিকোয়েস্ট পাওয়া যায়নি।
           </div>
         `;
         return;
@@ -781,7 +762,6 @@
                 </p>
               </div>
 
-              <!-- Screenshot Preview Toggle -->
               <div class="mt-3">
                 <button
                   type="button"
@@ -794,34 +774,28 @@
 
                 ${
                   isScreenshotOpen
-                    ? `<div class="mt-2 rounded-xl border border-emerald-200 bg-white p-3 text-xs text-gray-700">
-                        <div class="mb-1.5 flex items-center justify-between font-bold text-[#0b7a4b]">
-                          <span>পেমেন্ট প্রুফ প্রিভিউ</span>
-                          <span>#${escapeHtml(req.id)}</span>
-                        </div>
-                        <div class="rounded-lg bg-emerald-50/70 p-2.5 font-medium text-gray-800">
-                          ${escapeHtml(req.screenshotText)}
-                        </div>
+                    ? `<div class="mt-2 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3 text-xs font-semibold text-gray-800">
+                        <p class="text-[11px] uppercase tracking-wide text-[#0b7a4b]">পেমেন্ট প্রুফ / স্ক্রিনশট নোট</p>
+                        <p class="mt-1 break-all text-sm text-gray-900">${escapeHtml(req.screenshotText)}</p>
                       </div>`
                     : ''
                 }
               </div>
 
-              <!-- Approve / Reject Buttons -->
-              <div class="mt-3.5 flex items-center gap-2.5">
+              <div class="mt-3.5 grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
-                  onclick="updateRequestStatus('${escapeAttr(req.id)}', 'approved')"
-                  class="flex-1 rounded-xl bg-[#0b7a4b] py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#085d39] active:scale-[0.98] sm:text-sm"
+                  onclick="handleRequestAction('${escapeAttr(req.id)}', 'approved')"
+                  class="btn-green rounded-xl py-2.5 text-sm font-bold text-white shadow-sm"
                 >
-                  ✓ অ্যাপ্রুভ করুন
+                  ✓ অ্যাপ্রুভ
                 </button>
                 <button
                   type="button"
-                  onclick="updateRequestStatus('${escapeAttr(req.id)}', 'rejected')"
-                  class="flex-1 rounded-xl bg-[#dc3545] py-2 text-xs font-bold text-white shadow-sm transition hover:bg-[#bb2736] active:scale-[0.98] sm:text-sm"
+                  onclick="handleRequestAction('${escapeAttr(req.id)}', 'rejected')"
+                  class="btn-red rounded-xl py-2.5 text-sm font-bold text-white shadow-sm"
                 >
-                  ✕ রিজেক্ট করুন
+                  ✕ রিজেক্ট
                 </button>
               </div>
             </article>
@@ -830,9 +804,27 @@
         .join('');
     }
 
+    function toggleScreenshot(reqId) {
+      expandedScreenshots[reqId] = !expandedScreenshots[reqId];
+      renderRequests();
+    }
+
+    function handleRequestAction(reqId, newStatus) {
+      const target = state.requests.find((r) => r.id === reqId);
+      if (!target) return;
+
+      target.status = newStatus;
+      saveState();
+      updatePendingBadge();
+      renderRequests();
+
+      const label = newStatus === 'approved' ? 'অনুমোদিত (Approved)' : 'বাতিল (Rejected)';
+      showToast(`${target.userName}-এর রিকোয়েস্ট ${label} করা হয়েছে`);
+    }
+
     function renderUsers() {
       const container = document.getElementById('usersList');
-      const query = (document.getElementById('userSearchInput')?.value || '').trim().toLowerCase();
+      const query = (document.getElementById('userSearchInput').value || '').trim().toLowerCase();
 
       const filtered = state.users.filter((u) => {
         if (!query) return true;
@@ -845,8 +837,8 @@
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="rounded-xl bg-gray-50 p-5 text-center text-sm text-gray-500">
-            কোনো ইউজার পাওয়া যায়নি।
+          <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-5 text-center text-sm text-gray-500">
+            কোনো ইউজার পাওয়া যায়নি।
           </div>
         `;
         return;
@@ -856,19 +848,18 @@
         .map(
           (u) => `
           <div class="rounded-xl border border-gray-200 bg-[#f9fbfc] p-3.5">
-            <div class="flex items-center justify-between gap-2">
+            <div class="flex items-start justify-between gap-2">
               <div>
-                <h3 class="text-sm font-bold text-gray-900">${escapeHtml(u.name)} <span class="text-xs font-normal text-gray-500">(${escapeHtml(u.id)})</span></h3>
+                <h3 class="text-sm font-bold text-gray-900">${escapeHtml(u.name)}</h3>
                 <p class="text-xs text-gray-600">${escapeHtml(u.phone)} • ${escapeHtml(u.email)}</p>
               </div>
               <span class="rounded-full px-2.5 py-0.5 text-xs font-bold ${
                 u.active ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
               }">
-                ${u.active ? 'সক্রিয়' : 'ব্লকড'}
+                ${u.active ? 'সক্রিয়' : 'ব্লক'}
               </span>
             </div>
-
-            <div class="mt-2.5 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-2.5">
+            <div class="mt-2.5 flex items-center justify-between gap-2">
               <span class="text-sm font-bold text-[#0b7a4b]">ব্যালেন্স: ৳${toBanglaDigits(u.balance)}</span>
               <div class="flex items-center gap-1.5">
                 <button
@@ -880,14 +871,10 @@
                 </button>
                 <button
                   type="button"
-                  onclick="toggleUserActive('${escapeAttr(u.id)}')"
-                  class="rounded-lg px-2.5 py-1 text-xs font-bold ${
-                    u.active
-                      ? 'bg-rose-50 text-rose-700 hover:bg-rose-100'
-                      : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
-                  }"
+                  onclick="toggleUserStatus('${escapeAttr(u.id)}')"
+                  class="rounded-lg bg-gray-200 px-2.5 py-1 text-xs font-bold text-gray-800 hover:bg-gray-300"
                 >
-                  ${u.active ? 'ব্লক' : 'আনব্লক'}
+                  ${u.active ? 'ব্লক করুন' : 'আনব্লক'}
                 </button>
               </div>
             </div>
@@ -897,48 +884,68 @@
         .join('');
     }
 
+    function adjustUserBalance(userId, delta) {
+      const user = state.users.find((u) => u.id === userId);
+      if (!user) return;
+      user.balance = Math.max(0, Number(user.balance || 0) + delta);
+      saveState();
+      renderUsers();
+      showToast(`${user.name}-এর ব্যালেন্সে ৳${toBanglaDigits(delta)} যোগ হয়েছে`);
+    }
+
+    function toggleUserStatus(userId) {
+      const user = state.users.find((u) => u.id === userId);
+      if (!user) return;
+      user.active = !user.active;
+      saveState();
+      renderUsers();
+      showToast(`${user.name} এখন ${user.active ? 'সক্রিয়' : 'ব্লক'} অবস্থায় আছেন`);
+    }
+
     function renderPackages() {
       const container = document.getElementById('packagesList');
+      if (state.packages.length === 0) {
+        container.innerHTML = `
+          <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-5 text-center text-sm text-gray-500">
+            কোনো প্যাকেজ যুক্ত করা হয়নি।
+          </div>
+        `;
+        return;
+      }
+
       container.innerHTML = state.packages
         .map(
           (pkg) => `
-          <div class="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-[#f9fbfc] p-3.5">
-            <div>
-              <div class="flex items-center gap-2">
-                <h3 class="text-sm font-bold text-gray-900">${escapeHtml(pkg.name)}</h3>
-                <span class="rounded-full px-2 py-0.5 text-[11px] font-bold ${
-                  pkg.active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-600'
-                }">
-                  ${pkg.active ? 'চালু' : 'বন্ধ'}
-                </span>
-              </div>
-              <p class="mt-1 text-xs font-medium text-gray-700">
-                মূল্য: <strong class="text-[#0b7a4b]">৳${toBanglaDigits(pkg.price)}</strong> •
-                দৈনিক আয়: <strong>৳${toBanglaDigits(pkg.dailyIncome)}</strong> •
-                মেয়াদ: <strong>${toBanglaDigits(pkg.validityDays)} দিন</strong>
-              </p>
+          <div class="rounded-xl border border-gray-200 bg-[#f9fbfc] p-3.5">
+            <div class="flex items-center justify-between gap-2">
+              <h3 class="text-base font-bold text-gray-900">${escapeHtml(pkg.name)}</h3>
+              <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-[#0b7a4b]">
+                ৳${toBanglaDigits(pkg.price)}
+              </span>
             </div>
-
-            <div class="flex flex-col gap-1.5">
-              <button
-                type="button"
-                onclick="togglePackage('${escapeAttr(pkg.id)}')"
-                class="rounded-lg bg-gray-200 px-2.5 py-1 text-xs font-bold text-gray-800 hover:bg-gray-300"
-              >
-                ${pkg.active ? 'বন্ধ করুন' : 'চালু করুন'}
-              </button>
+            <p class="mt-1 text-xs font-medium text-gray-600">
+              দৈনিক আয়: <strong class="text-gray-800">৳${toBanglaDigits(pkg.dailyIncome)}</strong> • মেয়াদ: <strong class="text-gray-800">${toBanglaDigits(pkg.validityDays)} দিন</strong>
+            </p>
+            <div class="mt-2.5 flex justify-end">
               <button
                 type="button"
                 onclick="deletePackage('${escapeAttr(pkg.id)}')"
-                class="rounded-lg bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-700 hover:bg-rose-100"
+                class="rounded-lg bg-rose-50 px-3 py-1 text-xs font-bold text-rose-700 hover:bg-rose-100"
               >
-                মুছুন
+                মুছে ফেলুন
               </button>
             </div>
           </div>
         `
         )
         .join('');
+    }
+
+    function deletePackage(pkgId) {
+      state.packages = state.packages.filter((p) => p.id !== pkgId);
+      saveState();
+      renderPackages();
+      showToast('প্যাকেজটি মুছে ফেলা হয়েছে');
     }
 
     function populatePaymentForm() {
@@ -955,184 +962,103 @@
       document.getElementById('maintenanceToggle').checked = Boolean(state.siteSettings.maintenanceMode);
     }
 
-    // =========================================================================
-    // Action Handlers
-    // =========================================================================
-    window.toggleScreenshot = function (requestId) {
-      expandedScreenshots[requestId] = !expandedScreenshots[requestId];
-      renderRequests();
-    };
-
-    window.updateRequestStatus = function (requestId, newStatus) {
-      const target = state.requests.find((r) => r.id === requestId);
-      if (!target) return;
-      target.status = newStatus;
-      saveState();
-      updatePendingBadge();
-      renderRequests();
-
-      const label = newStatus === 'approved' ? 'অ্যাপ্রুভ করা হয়েছে' : 'রিজেক্ট করা হয়েছে';
-      showToast(`${target.userName}-এর ${target.type} রিকোয়েস্ট ${label}।`);
-    };
-
-    window.adjustUserBalance = function (userId, delta) {
-      const user = state.users.find((u) => u.id === userId);
-      if (!user) return;
-      user.balance = Math.max(0, Number(user.balance) + delta);
-      saveState();
-      renderUsers();
-      showToast(`${user.name}-এর ব্যালেন্সে ৳${toBanglaDigits(delta)} যোগ হয়েছে।`);
-    };
-
-    window.toggleUserActive = function (userId) {
-      const user = state.users.find((u) => u.id === userId);
-      if (!user) return;
-      user.active = !user.active;
-      saveState();
-      renderUsers();
-      showToast(`${user.name}-এর অ্যাকাউন্ট ${user.active ? 'সক্রিয়' : 'ব্লক'} করা হয়েছে।`);
-    };
-
-    window.togglePackage = function (pkgId) {
-      const pkg = state.packages.find((p) => p.id === pkgId);
-      if (!pkg) return;
-      pkg.active = !pkg.active;
-      saveState();
-      renderPackages();
-      showToast(`${pkg.name} স্ট্যাটাস আপডেট হয়েছে।`);
-    };
-
-    window.deletePackage = function (pkgId) {
-      state.packages = state.packages.filter((p) => p.id !== pkgId);
-      saveState();
-      renderPackages();
-      showToast('প্যাকেজটি মুছে ফেলা হয়েছে।');
-    };
-
-    // Escaping helpers for safe HTML rendering
-    function escapeHtml(str) {
-      return String(str ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    function escapeAttr(str) {
-      return String(str ?? '').replace(/'/g, "\\'");
-    }
-
-    // =========================================================================
-    // Event Listeners
-    // =========================================================================
-    document.addEventListener('DOMContentLoaded', () => {
-      renderAll();
-
-      // Navigation menu buttons
-      document.querySelectorAll('.nav-btn[data-tab]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          switchTab(btn.dataset.tab);
-          window.scrollTo({ top: 140, behavior: 'smooth' });
-        });
-      });
-
-      // Refresh requests button
-      document.getElementById('refreshRequestsBtn').addEventListener('click', () => {
-        renderRequests();
-        updatePendingBadge();
-        showToast('রিকোয়েস্ট লিস্ট রিফ্রেশ করা হয়েছে।');
-      });
-
-      // Request filter tabs
-      document.querySelectorAll('.filter-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          state.requestFilter = btn.dataset.filter;
-          saveState();
-          renderRequests();
-        });
-      });
-
-      // Logout & Login handlers
-      document.getElementById('logoutBtn').addEventListener('click', () => {
-        state.isLoggedIn = false;
-        saveState();
-        renderAll();
-        showToast('সফলভাবে লগআউট হয়েছেন।');
-      });
-
-      document.getElementById('loginForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const emailVal = document.getElementById('loginEmailInput').value.trim();
-        state.adminEmail = emailVal || 'ovis8696@gmail.com';
-        state.isLoggedIn = true;
-        saveState();
-        renderAll();
-        showToast('অ্যাডমিন প্যানেলে স্বাগতম!');
-      });
-
-      // Reset demo data button
-      document.getElementById('resetDemoBtn').addEventListener('click', () => {
-        state = structuredClone(DEFAULT_STATE);
-        expandedScreenshots = {};
-        saveState();
-        renderAll();
-        showToast('ডিফল্ট ডেমো ডাটা রিসেট করা হয়েছে।');
-      });
-
-      // User search filter
-      document.getElementById('userSearchInput').addEventListener('input', renderUsers);
-
-      // Add package form submit
-      document.getElementById('addPackageForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('pkgNameInput').value.trim();
-        const price = Number(document.getElementById('pkgPriceInput').value);
-        const dailyIncome = Number(document.getElementById('pkgDailyInput').value);
-        const validityDays = Number(document.getElementById('pkgDaysInput').value);
-
-        if (!name || price <= 0 || dailyIncome <= 0 || validityDays <= 0) return;
-
-        state.packages.unshift({
-          id: `PKG-${Date.now().toString().slice(-4)}`,
-          name,
-          price,
-          dailyIncome,
-          validityDays,
-          active: true,
-        });
-        saveState();
-        renderPackages();
-        e.target.reset();
-        showToast(`"${name}" প্যাকেজ যুক্ত হয়েছে।`);
-      });
-
-      // Payment numbers form submit
-      document.getElementById('paymentNumbersForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        state.paymentNumbers = {
-          bkash: document.getElementById('bkashNumberInput').value.trim(),
-          nagad: document.getElementById('nagadNumberInput').value.trim(),
-          trxWallet: document.getElementById('trxWalletInput').value.trim(),
-        };
-        saveState();
-        showToast('বিকাশ, নগদ ও TRX নম্বর সেভ হয়েছে।');
-      });
-
-      // Website settings form submit
-      document.getElementById('siteSettingsForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        state.siteSettings = {
-          siteName: document.getElementById('siteNameInput').value.trim() || 'EarnBD',
-          minDeposit: Number(document.getElementById('minDepositInput').value) || 100,
-          minWithdraw: Number(document.getElementById('minWithdrawInput').value) || 200,
-          supportLink: document.getElementById('supportLinkInput').value.trim(),
-          maintenanceMode: document.getElementById('maintenanceToggle').checked,
-        };
-        saveState();
-        renderAll();
-        showToast('ওয়েবসাইট সেটিংস সংরক্ষণ করা হয়েছে।');
+    document.querySelectorAll('.nav-btn[data-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        switchTab(btn.dataset.tab);
       });
     });
+
+    document.querySelectorAll('.filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.requestFilter = btn.dataset.filter;
+        saveState();
+        renderRequests();
+      });
+    });
+
+    document.getElementById('refreshRequestsBtn').addEventListener('click', () => {
+      state = loadState();
+      renderAll();
+      showToast('রিকোয়েস্ট তালিকা রিফ্রেশ করা হয়েছে');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      state.isLoggedIn = false;
+      saveState();
+      renderAll();
+      showToast('সফলভাবে লগআউট হয়েছেন');
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const emailVal = document.getElementById('loginEmailInput').value.trim();
+      if (emailVal) state.adminEmail = emailVal;
+      state.isLoggedIn = true;
+      saveState();
+      renderAll();
+      showToast('অ্যাডমিন প্যানেলে স্বাগতম');
+    });
+
+    document.getElementById('resetDemoBtn').addEventListener('click', () => {
+      state = cloneDefault();
+      expandedScreenshots = {};
+      saveState();
+      renderAll();
+      showToast('ডিফল্ট ডেমো ডাটা রিসেট করা হয়েছে');
+    });
+
+    document.getElementById('userSearchInput').addEventListener('input', renderUsers);
+
+    document.getElementById('addPackageForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('pkgNameInput').value.trim();
+      const price = Number(document.getElementById('pkgPriceInput').value);
+      const dailyIncome = Number(document.getElementById('pkgDailyInput').value);
+      const validityDays = Number(document.getElementById('pkgDaysInput').value);
+
+      if (!name || !price || !dailyIncome || !validityDays) return;
+
+      state.packages.unshift({
+        id: `PKG-${Date.now()}`,
+        name,
+        price,
+        dailyIncome,
+        validityDays,
+        active: true,
+      });
+
+      saveState();
+      renderPackages();
+      e.target.reset();
+      showToast(`"${name}" প্যাকেজ যুক্ত করা হয়েছে`);
+    });
+
+    document.getElementById('paymentNumbersForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      state.paymentNumbers = {
+        bkash: document.getElementById('bkashNumberInput').value.trim(),
+        nagad: document.getElementById('nagadNumberInput').value.trim(),
+        trxWallet: document.getElementById('trxWalletInput').value.trim(),
+      };
+      saveState();
+      showToast('পেমেন্ট নম্বর আপডেট হয়েছে');
+    });
+
+    document.getElementById('siteSettingsForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      state.siteSettings = {
+        siteName: document.getElementById('siteNameInput').value.trim() || 'EarnBD',
+        minDeposit: Number(document.getElementById('minDepositInput').value) || 300,
+        minWithdraw: Number(document.getElementById('minWithdrawInput').value) || 500,
+        supportLink: document.getElementById('supportLinkInput').value.trim(),
+        maintenanceMode: document.getElementById('maintenanceToggle').checked,
+      };
+      saveState();
+      renderAll();
+      showToast('ওয়েবসাইট সেটিংস সংরক্ষণ করা হয়েছে');
+    });
+
+    renderAll();
   </script>
 </body>
 </html>
