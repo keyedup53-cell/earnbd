@@ -263,6 +263,65 @@
             background: #f8fafc;
         }
 
+        /* Referral Team Count Grid (Level 1, 2, 3) */
+        .team-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .team-stat-box {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 12px 6px;
+            text-align: center;
+        }
+
+        .team-stat-box h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1d4ed8;
+            line-height: 1.1;
+        }
+
+        .team-stat-box span {
+            font-size: 12px;
+            font-weight: 700;
+            color: #334155;
+            display: block;
+            margin-top: 3px;
+        }
+
+        .team-stat-box small {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .my-code-badge {
+            background: #fef3c7;
+            border: 1px dashed #d97706;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .my-code-badge span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .my-code-badge strong {
+            font-size: 17px;
+            color: #b45309;
+            letter-spacing: 0.5px;
+        }
+
         .ref-info-box {
             background: #f0fdf4;
             border: 1px solid #86efac;
@@ -292,7 +351,8 @@
             font-weight: 700;
             padding: 5px 12px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
+            white-space: nowrap;
         }
 
         .preview-img {
@@ -405,7 +465,7 @@
         <div id="homePage" class="page-section active">
             <!-- Balance Card -->
             <div class="balance-card">
-                <div class="welcome-text">স্বাগতম, Sp</div>
+                <div class="welcome-text">স্বাগতম, <span id="userNameDisplay">Sp</span></div>
                 <div class="balance-amount">৳ <span id="userBalance">2600.00</span></div>
                 <div class="refer-income">মোট রেফার কমিশন আয়: ৳ <span id="referBalance">0.00</span></div>
             </div>
@@ -570,25 +630,52 @@
             </div>
 
             <div class="card-box">
-                <div class="ref-info-box">
-                    <strong>ব্যবহৃত / অটো রেফার কোড:</strong> <span id="activeRefCodeDisplay">নেই</span><br>
-                    <small>* কেউ আপনার লিংক দিয়ে ঢুকলে তার রেফার কোড অটোমেটিক বসে যাবে।</small>
+                <!-- Level 1, 2, 3 Member Counts -->
+                <div class="team-stats-grid">
+                    <div class="team-stat-box">
+                        <h3 id="level1Count">0</h3>
+                        <span>১ম স্তর রেফার</span>
+                        <small>মোট সদস্য (২০%)</small>
+                    </div>
+                    <div class="team-stat-box">
+                        <h3 id="level2Count">0</h3>
+                        <span>২য় স্তর রেফার</span>
+                        <small>মোট সদস্য (১%)</small>
+                    </div>
+                    <div class="team-stat-box">
+                        <h3 id="level3Count">0</h3>
+                        <span>৩য় স্তর রেফার</span>
+                        <small>মোট সদস্য (১%)</small>
+                    </div>
+                </div>
+
+                <!-- Member's Own Unique Referral Code -->
+                <div class="my-code-badge">
+                    <span>আপনার নিজস্ব রেফার কোড:</span>
+                    <strong id="myUniqueRefCode">SP-00000</strong>
                 </div>
 
                 <div class="form-group">
-                    <label>রেফার কোড (লিংক থেকে আসলে অটো বসবে):</label>
-                    <input type="text" id="appliedRefCodeInput" placeholder="রেফার কোড থাকলে এখানে বসবে" oninput="manualSetRefCode(this.value)">
-                </div>
-
-                <div class="form-group">
-                    <label>আপনার রেফার লিংক:</label>
-                    <input type="text" id="referLink" value="https://earnbds.netlify.app/?ref=SP2600" readonly>
+                    <label>আপনার ইউনিক রেফার লিংক:</label>
+                    <input type="text" id="referLink" value="" readonly>
                 </div>
                 <button class="submit-btn" onclick="copyReferLink()">📋 রেফার লিংক কপি করুন</button>
 
+                <hr style="border:none; border-top:1px solid #e2e8f0; margin:16px 0;">
+
+                <div class="ref-info-box">
+                    <strong>ব্যবহৃত / অটো রেফার কোড:</strong> <span id="activeRefCodeDisplay">নেই</span><br>
+                    <small>* কেউ কারো রেফার লিংক দিয়ে ঢুকলে তার রেফার কোড অটোমেটিক বসে যাবে।</small>
+                </div>
+
+                <div class="form-group">
+                    <label>যার রেফারে জয়েন করেছেন তার কোড:</label>
+                    <input type="text" id="appliedRefCodeInput" placeholder="রেফার কোড থাকলে এখানে অটো বসবে" oninput="manualSetRefCode(this.value)">
+                </div>
+
                 <div class="level-card">
                     <div>
-                        <h5>১ম স্তর (Level 1)</h5>
+                        <h5>১ম স্তর (Level 1) — <strong id="lvl1Inline">0 জন</strong></h5>
                         <p>সরাসরি রেফার সদস্য ১ম বার পণ্য কিনলে</p>
                     </div>
                     <span class="level-rate">২০% কমিশন</span>
@@ -596,7 +683,7 @@
 
                 <div class="level-card">
                     <div>
-                        <h5>২য় স্তর (Level 2)</h5>
+                        <h5>২য় স্তর (Level 2) — <strong id="lvl2Inline">0 জন</strong></h5>
                         <p>২য় স্তরের সদস্য ১ম বার পণ্য কিনলে</p>
                     </div>
                     <span class="level-rate">১% কমিশন</span>
@@ -604,7 +691,7 @@
 
                 <div class="level-card">
                     <div>
-                        <h5>৩য় স্তর (Level 3)</h5>
+                        <h5>৩য় স্তর (Level 3) — <strong id="lvl3Inline">0 জন</strong></h5>
                         <p>৩য় স্তরের সদস্য ১ম বার পণ্য কিনলে</p>
                     </div>
                     <span class="level-rate">১% কমিশন</span>
@@ -670,11 +757,32 @@
     </div>
 
     <script>
+        // Generate or Load Unique Referral Code for Each Individual Member
+        function getOrCreateMemberRefCode() {
+            let code = localStorage.getItem('earnbd_my_unique_code');
+            if (!code) {
+                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+                let randomPart = '';
+                for (let i = 0; i < 6; i++) {
+                    randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                code = 'EBD-' + randomPart;
+                localStorage.setItem('earnbd_my_unique_code', code);
+            }
+            return code;
+        }
+
         // Load Saved Data
+        let myOwnRefCode = getOrCreateMemberRefCode();
         let balance = parseFloat(localStorage.getItem('earnbd_balance')) || 2600.00;
         let referCommissionBalance = parseFloat(localStorage.getItem('earnbd_ref_commission')) || 0.00;
         let hasBoughtFirstProduct = localStorage.getItem('earnbd_first_buy_done') === 'true';
         let appliedRefCode = localStorage.getItem('earnbd_applied_ref') || '';
+
+        // Level 1, 2, 3 Referral Counts
+        let level1Referrals = parseInt(localStorage.getItem('earnbd_lvl1_count')) || 0;
+        let level2Referrals = parseInt(localStorage.getItem('earnbd_lvl2_count')) || 0;
+        let level3Referrals = parseInt(localStorage.getItem('earnbd_lvl3_count')) || 0;
 
         let depositHistory = JSON.parse(localStorage.getItem('earnbd_dep_hist')) || [];
         let withdrawHistory = JSON.parse(localStorage.getItem('earnbd_with_hist')) || [];
@@ -685,7 +793,7 @@
         function detectReferralFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
             const refParam = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('code');
-            if (refParam && refParam.trim() !== '') {
+            if (refParam && refParam.trim() !== '' && refParam.trim() !== myOwnRefCode) {
                 appliedRefCode = refParam.trim();
                 localStorage.setItem('earnbd_applied_ref', appliedRefCode);
             }
@@ -693,6 +801,20 @@
         }
 
         function syncReferralUI() {
+            // Set member's unique code & unique referral URL
+            document.getElementById('myUniqueRefCode').innerText = myOwnRefCode;
+            const baseUrl = window.location.origin + window.location.pathname;
+            document.getElementById('referLink').value = baseUrl + '?ref=' + myOwnRefCode;
+
+            // Update Level 1, 2, 3 member counts
+            document.getElementById('level1Count').innerText = level1Referrals;
+            document.getElementById('level2Count').innerText = level2Referrals;
+            document.getElementById('level3Count').innerText = level3Referrals;
+            document.getElementById('lvl1Inline').innerText = level1Referrals + ' জন';
+            document.getElementById('lvl2Inline').innerText = level2Referrals + ' জন';
+            document.getElementById('lvl3Inline').innerText = level3Referrals + ' জন';
+
+            // Applied referrer code
             document.getElementById('activeRefCodeDisplay').innerText = appliedRefCode || 'নেই';
             document.getElementById('appliedRefCodeInput').value = appliedRefCode;
         }
@@ -709,6 +831,9 @@
             localStorage.setItem('earnbd_balance', balance);
             localStorage.setItem('earnbd_ref_commission', referCommissionBalance);
             localStorage.setItem('earnbd_first_buy_done', hasBoughtFirstProduct ? 'true' : 'false');
+            localStorage.setItem('earnbd_lvl1_count', level1Referrals);
+            localStorage.setItem('earnbd_lvl2_count', level2Referrals);
+            localStorage.setItem('earnbd_lvl3_count', level3Referrals);
             localStorage.setItem('earnbd_dep_hist', JSON.stringify(depositHistory));
             localStorage.setItem('earnbd_with_hist', JSON.stringify(withdrawHistory));
             localStorage.setItem('earnbd_products', JSON.stringify(myProducts));
@@ -867,7 +992,6 @@
                     const level2Comm = price * 0.01; // ১%
                     const level3Comm = price * 0.01; // ১%
 
-                    // Credit 1st-time purchase commission immediately to commission & main balance
                     const totalComm = level1Comm + level2Comm + level3Comm;
                     referCommissionBalance += totalComm;
                     balance += totalComm;
@@ -967,7 +1091,7 @@
             const linkInput = document.getElementById('referLink');
             linkInput.select();
             navigator.clipboard.writeText(linkInput.value);
-            alert('রেফার লিংক কপি হয়েছে!');
+            alert('আপনার ইউনিক রেফার লিংক কপি হয়েছে:\n' + linkInput.value);
         }
 
         // Initialize
