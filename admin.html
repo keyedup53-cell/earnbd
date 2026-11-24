@@ -3,799 +3,687 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এডমিন প্যানেল - ড্যাশবোর্ড</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Hind Siliguri for crisp Bengali typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>EarnBD - Admin Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for clean icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Hind Siliguri"', 'sans-serif'],
-                    }
-                }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background: #eef2f7;
+            color: #0f172a;
+            padding-bottom: 65px;
+        }
+
+        .admin-header {
+            background: linear-gradient(90deg, #0f172a, #1d4ed8);
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+            gap: 10px;
+        }
+
+        .admin-header h1 {
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .header-link-btn {
+            background: #facc15;
+            color: #0f172a;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 18px 15px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 18px 12px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-card h3 {
+            font-size: 28px;
+            color: #1d4ed8;
+            line-height: 1.15;
+        }
+
+        .stat-card p {
+            font-size: 14px;
+            color: #475569;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .panel-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 560px) {
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
-    </script>
-    <style>
-        body {
-            font-family: 'Hind Siliguri', sans-serif;
-            background-color: #f1f5f9;
-            -webkit-tap-highlight-color: transparent;
+
+        .form-group {
+            margin-bottom: 14px;
         }
-        /* Smooth view transitions */
-        .fade-in {
-            animation: fadeIn 0.25s ease-out forwards;
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1e293b;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 16px;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 15px 18px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.22);
+        }
+
+        .success-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .danger-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-toast {
+            display: none;
+            background: #dcfce7;
+            color: #15803d;
+            border: 1.5px solid #86efac;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 12px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .item-box {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+        }
+
+        .item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .item-box h4 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .status-pill {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .pill-pending { background: #fef3c7; color: #b45309; }
+        .pill-approved { background: #dcfce7; color: #15803d; }
+        .pill-rejected { background: #fee2e2; color: #b91c1c; }
+
+        .deposit-ss-view {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            background: white;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+
+        .empty-note {
+            text-align: center;
+            color: #64748b;
+            padding: 22px;
+            font-size: 15px;
         }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col">
+<body>
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-md">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-xl bg-emerald-500 flex items-center justify-center text-white text-xl font-bold shadow-inner">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl sm:text-2xl font-bold leading-tight">এডমিন প্যানেল</h1>
-                    <p class="text-xs sm:text-sm text-slate-300">সিস্টেম কন্ট্রোল ও ম্যানেজমেন্ট</p>
-                </div>
+    <div class="admin-header">
+        <h1>⚙️ EarnBD অ্যাডমিন প্যানেল</h1>
+        <a href="index.html" target="_blank" class="header-link-btn">ড্যাশবোর্ড ↗</a>
+    </div>
+
+    <div class="container">
+        <!-- Summary Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <h3 id="statProductsCount">0</h3>
+                <p>মোট পণ্য</p>
             </div>
-            <div class="flex items-center gap-3">
-                <span class="hidden sm:inline-flex items-center gap-1.5 bg-slate-800 px-3 py-1.5 rounded-full text-sm text-emerald-400 border border-slate-700">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    সিস্টেম সচল
-                </span>
-                <button onclick="showMainMenu()" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-xl text-sm sm:text-base font-semibold transition flex items-center gap-2 border border-slate-700">
-                    <i class="fa-solid fa-house"></i>
-                    <span>হোম</span>
-                </button>
+            <div class="stat-card">
+                <h3 id="statPendingReqCount">0</h3>
+                <p>পেন্ডিং রিকোয়েস্ট</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statUsersCount">0</h3>
+                <p>নিবন্ধিত সদস্য</p>
             </div>
         </div>
-    </header>
 
-    <!-- Main Container -->
-    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 sm:py-8">
+        <!-- 1. Product Upload & Management -->
+        <div class="panel-card">
+            <div class="section-title">
+                <span>📦 নতুন পণ্য আপলোড করুন</span>
+            </div>
 
-        <!-- Toast Notification Box (Replaces alert) -->
-        <div id="toast-container" class="fixed bottom-5 right-5 left-5 sm:left-auto z-50 flex flex-col gap-2 pointer-events-none"></div>
-
-        <!-- ========================================== -->
-        <!-- 1. MAIN DASHBOARD GRID (LARGE OPTION CARDS) -->
-        <!-- ========================================== -->
-        <section id="main-menu-view" class="fade-in">
-            <!-- Quick Summary Banner -->
-            <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900">স্বাগতম, সুপার এডমিন!</h2>
-                    <p class="text-slate-600 text-base sm:text-lg mt-0.5">নিচের যেকোনো বড় অপশনে ক্লিক করে বিস্তারিত দেখুন ও নিয়ন্ত্রণ করুন।</p>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>পণ্যের নাম</label>
+                    <input type="text" id="prodName" placeholder="যেমন: VIP Diamond Plan">
                 </div>
-                <div class="flex gap-3">
-                    <div class="bg-emerald-50 border border-emerald-200 px-4 py-2.5 rounded-xl text-center">
-                        <span class="block text-xs text-emerald-700 font-semibold">আজকের ডিপোজিট</span>
-                        <span class="text-lg sm:text-xl font-bold text-emerald-800" id="summary-deposit">৳ ২৫,৪০০</span>
-                    </div>
-                    <div class="bg-amber-50 border border-amber-200 px-4 py-2.5 rounded-xl text-center">
-                        <span class="block text-xs text-amber-700 font-semibold">পেন্ডিং রিকোয়েস্ট</span>
-                        <span class="text-lg sm:text-xl font-bold text-amber-800" id="summary-pending">৫ টি</span>
-                    </div>
+                <div class="form-group">
+                    <label>পণ্যের দাম (৳)</label>
+                    <input type="number" id="prodPrice" placeholder="যেমন: 1500">
                 </div>
-            </div>
-
-            <!-- Large Clickable Option Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-                
-                <!-- Option 1: ডিপোজিট নাম্বার (Highlighted Primary Card) -->
-                <button onclick="openSection('deposit-numbers')" class="group text-left bg-white hover:bg-emerald-50/40 active:scale-[0.99] rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md border-2 border-emerald-500/40 hover:border-emerald-500 transition-all flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl sm:text-4xl shrink-0 group-hover:scale-105 transition-transform">
-                            <i class="fa-solid fa-sim-card"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full">গুরুত্বপূর্ণ</span>
-                            </div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 group-hover:text-emerald-700">ডিপোজিট নাম্বার</h3>
-                            <p class="text-slate-600 text-base sm:text-lg mt-1">বিকাশ এজেন্ট ও নগদ পারসোনাল নাম্বার পরিবর্তন</p>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-emerald-600 group-hover:text-white flex items-center justify-center text-xl text-slate-500 transition-colors shrink-0">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </div>
-                </button>
-
-                <!-- Option 2: ডিপোজিট রিকোয়েস্ট -->
-                <button onclick="openSection('deposit-requests')" class="group text-left bg-white hover:bg-blue-50/40 active:scale-[0.99] rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md border-2 border-slate-200 hover:border-blue-500 transition-all flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-3xl sm:text-4xl shrink-0 group-hover:scale-105 transition-transform">
-                            <i class="fa-solid fa-money-bill-transfer"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span id="badge-dep-req" class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded-full">৩ টি নতুন</span>
-                            </div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 group-hover:text-blue-700">ডিপোজিট রিকোয়েস্ট</h3>
-                            <p class="text-slate-600 text-base sm:text-lg mt-1">ইউজারদের পাঠানো টাকা অ্যাপ্রুভ বা বাতিল করুন</p>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-xl text-slate-500 transition-colors shrink-0">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </div>
-                </button>
-
-                <!-- Option 3: উইথড্র রিকোয়েস্ট -->
-                <button onclick="openSection('withdraw-requests')" class="group text-left bg-white hover:bg-amber-50/40 active:scale-[0.99] rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md border-2 border-slate-200 hover:border-amber-500 transition-all flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl sm:text-4xl shrink-0 group-hover:scale-105 transition-transform">
-                            <i class="fa-solid fa-hand-holding-dollar"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span id="badge-with-req" class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">২ টি পেন্ডিং</span>
-                            </div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 group-hover:text-amber-700">উইথড্র রিকোয়েস্ট</h3>
-                            <p class="text-slate-600 text-base sm:text-lg mt-1">টাকা উত্তোলনের আবেদন চেক ও পেমেন্ট করুন</p>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-amber-600 group-hover:text-white flex items-center justify-center text-xl text-slate-500 transition-colors shrink-0">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </div>
-                </button>
-
-                <!-- Option 4: ইউজার ম্যানেজমেন্ট -->
-                <button onclick="openSection('user-management')" class="group text-left bg-white hover:bg-purple-50/40 active:scale-[0.99] rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md border-2 border-slate-200 hover:border-purple-500 transition-all flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-3xl sm:text-4xl shrink-0 group-hover:scale-105 transition-transform">
-                            <i class="fa-solid fa-users-gear"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-0.5 rounded-full">মোট ১,২৪০ জন</span>
-                            </div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 group-hover:text-purple-700">ইউজার ম্যানেজমেন্ট</h3>
-                            <p class="text-slate-600 text-base sm:text-lg mt-1">সকল ইউজারের তালিকা, ব্যালেন্স ও একাউন্ট নিয়ন্ত্রণ</p>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-purple-600 group-hover:text-white flex items-center justify-center text-xl text-slate-500 transition-colors shrink-0">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </div>
-                </button>
-
-                <!-- Option 5: নোটিশ ও সেটিংস (Full width on md) -->
-                <button onclick="openSection('notice-settings')" class="md:col-span-2 group text-left bg-white hover:bg-slate-50 active:scale-[0.99] rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md border-2 border-slate-200 hover:border-slate-700 transition-all flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-200 text-slate-700 flex items-center justify-center text-3xl sm:text-4xl shrink-0 group-hover:scale-105 transition-transform">
-                            <i class="fa-solid fa-bullhorn"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-slate-900">নোটিশ ও অ্যাপ সেটিংস</h3>
-                            <p class="text-slate-600 text-base sm:text-lg mt-1">অ্যাপের হোমপেজ নোটিশ, হেল্পলাইন লিংক এবং মেইনটেন্যান্স মোড পরিবর্তন করুন</p>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-slate-800 group-hover:text-white flex items-center justify-center text-xl text-slate-500 transition-colors shrink-0">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </div>
-                </button>
-
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- 2. DETAIL VIEW: ডিপোজিট নাম্বার             -->
-        <!-- ========================================== -->
-        <section id="section-deposit-numbers" class="hidden fade-in">
-            <!-- Top Back Bar -->
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <button onclick="showMainMenu()" class="bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 px-5 py-3 rounded-2xl text-lg font-bold shadow-sm flex items-center gap-3 transition">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>ফিরে যান</span>
-                </button>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">ডিপোজিট নাম্বার সেটিংস</h2>
-            </div>
-
-            <!-- Payment Methods Grid (bKash Agent & Nagad Personal) -->
-            <div id="payment-numbers-list" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <!-- Rendered dynamically via JS so admin can edit, toggle, copy, and add new -->
-            </div>
-
-            <!-- Add New Number Box -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
-                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-plus text-emerald-600"></i>
-                    <span>নতুন ডিপোজিট নাম্বার যোগ করুন</span>
-                </h3>
-                <form onsubmit="addNewNumber(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-base font-semibold text-slate-700 mb-1.5">পেমেন্ট মেথড ও ধরন</label>
-                        <select id="new-method-type" class="w-full px-4 py-3.5 text-lg rounded-xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none bg-white">
-                            <option value="bkash-agent">বিকাশ এজেন্ট (bKash Agent)</option>
-                            <option value="nagad-personal">নগদ পারসোনাল (Nagad Personal)</option>
-                            <option value="rocket-personal">রকেট পারসোনাল (Rocket Personal)</option>
-                            <option value="upay-agent">উপায় এজেন্ট (Upay Agent)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-base font-semibold text-slate-700 mb-1.5">মোবাইল নাম্বার</label>
-                        <input type="tel" id="new-method-number" required placeholder="017XXXXXXXX" maxlength="11" class="w-full px-4 py-3.5 text-lg font-bold tracking-wider rounded-xl border-2 border-slate-300 focus:border-emerald-500 focus:outline-none">
-                    </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 px-6 rounded-xl text-lg font-bold transition shadow-sm flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>নাম্বার যুক্ত করুন</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- 3. DETAIL VIEW: ডিপোজিট রিকোয়েস্ট           -->
-        <!-- ========================================== -->
-        <section id="section-deposit-requests" class="hidden fade-in">
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <button onclick="showMainMenu()" class="bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 px-5 py-3 rounded-2xl text-lg font-bold shadow-sm flex items-center gap-3 transition">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>ফিরে যান</span>
-                </button>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">ডিপোজিট রিকোয়েস্ট তালিকা</h2>
-            </div>
-
-            <div id="deposit-requests-container" class="space-y-4">
-                <!-- Populated by JS -->
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- 4. DETAIL VIEW: উইথড্র রিকোয়েস্ট            -->
-        <!-- ========================================== -->
-        <section id="section-withdraw-requests" class="hidden fade-in">
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <button onclick="showMainMenu()" class="bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 px-5 py-3 rounded-2xl text-lg font-bold shadow-sm flex items-center gap-3 transition">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>ফিরে যান</span>
-                </button>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">উইথড্র রিকোয়েস্ট তালিকা</h2>
-            </div>
-
-            <div id="withdraw-requests-container" class="space-y-4">
-                <!-- Populated by JS -->
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- 5. DETAIL VIEW: ইউজার ম্যানেজমেন্ট          -->
-        <!-- ========================================== -->
-        <section id="section-user-management" class="hidden fade-in">
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <button onclick="showMainMenu()" class="bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 px-5 py-3 rounded-2xl text-lg font-bold shadow-sm flex items-center gap-3 transition">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>ফিরে যান</span>
-                </button>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">ইউজার ম্যানেজমেন্ট</h2>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-5">
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
-                    <input type="text" id="user-search" onkeyup="filterUsers()" placeholder="ইউজারের নাম বা মোবাইল নাম্বার লিখে খুঁজুন..." class="w-full pl-12 pr-4 py-3.5 text-lg rounded-xl border-2 border-slate-200 focus:border-purple-500 focus:outline-none">
+                <div class="form-group">
+                    <label>দৈনিক ইনকাম (৳ — রাত ১২টায় যুক্ত হবে)</label>
+                    <input type="number" id="prodDailyIncome" placeholder="যেমন: 210">
+                </div>
+                <div class="form-group">
+                    <label>মেয়াদ (দিন)</label>
+                    <input type="number" id="prodDays" value="45" min="1">
+                </div>
+                <div class="form-group">
+                    <label>আইকন (Emoji)</label>
+                    <input type="text" id="prodIcon" value="🚀" placeholder="যেমন: 🚀, 💎, 👑">
+                </div>
+                <div class="form-group">
+                    <label>ব্যাজ (ঐচ্ছিক)</label>
+                    <input type="text" id="prodBadge" placeholder="যেমন: NEW / HOT">
                 </div>
             </div>
 
-            <div id="users-list-container" class="space-y-4">
-                <!-- Populated by JS -->
-            </div>
-        </section>
+            <button class="primary-btn" onclick="addProductToDashboard()">➕ পণ্য আপলোড ও ড্যাশবোর্ডে প্রকাশ করুন</button>
+            <div id="prodToast" class="save-toast">পণ্য সফলভাবে আপলোড হয়েছে এবং ড্যাশবোর্ডে যুক্ত হয়েছে!</div>
 
-        <!-- ========================================== -->
-        <!-- 6. DETAIL VIEW: নোটিশ ও সেটিংস              -->
-        <!-- ========================================== -->
-        <section id="section-notice-settings" class="hidden fade-in">
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <button onclick="showMainMenu()" class="bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 px-5 py-3 rounded-2xl text-lg font-bold shadow-sm flex items-center gap-3 transition">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    <span>ফিরে যান</span>
-                </button>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">নোটিশ ও অ্যাপ সেটিংস</h2>
+            <div style="margin-top:18px;">
+                <div class="section-title"><span>বর্তমান সক্রিয় পণ্যসমূহ</span></div>
+                <div id="adminProductsList"></div>
+            </div>
+        </div>
+
+        <!-- 2. Payment Numbers (বিকাশ এজেন্ট & নগদ পারসোনাল) -->
+        <div class="panel-card">
+            <div class="section-title">
+                <span>💳 ডিপোজিট নম্বর সেটআপ</span>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
-                <div>
-                    <label class="block text-xl font-bold text-slate-800 mb-2">হোমপেজ স্ক্রলিং নোটিশ</label>
-                    <textarea id="app-notice-text" rows="3" class="w-full p-4 text-lg rounded-2xl border-2 border-slate-300 focus:border-slate-800 focus:outline-none">আসসালামু আলাইকুম! আমাদের অ্যাপে ডিপোজিট করার আগে অবশ্যই এডমিন প্যানেল থেকে বর্তমান বিকাশ এজেন্ট ও নগদ পারসোনাল নাম্বার চেক করে নিবেন। ধন্যবাদ।</textarea>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-lg font-bold text-slate-800 mb-2">সর্বনিম্ন ডিপোজিট (টাকা)</label>
-                        <input type="number" id="min-deposit" value="200" class="w-full px-4 py-3.5 text-xl font-bold rounded-xl border-2 border-slate-300 focus:border-slate-800 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-lg font-bold text-slate-800 mb-2">সর্বনিম্ন উইথড্র (টাকা)</label>
-                        <input type="number" id="min-withdraw" value="500" class="w-full px-4 py-3.5 text-xl font-bold rounded-xl border-2 border-slate-300 focus:border-slate-800 focus:outline-none">
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-200">
-                    <div>
-                        <h4 class="text-lg font-bold text-slate-900">অটো ডিপোজিট সিস্টেম</h4>
-                        <p class="text-slate-600">ইউজারদের ডিপোজিট অপশন চালু বা বন্ধ রাখুন</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" checked class="sr-only peer" onchange="showToast('ডিপোজিট সিস্টেম স্ট্যাটাস পরিবর্তন হয়েছে!')">
-                        <div class="w-16 h-9 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-emerald-600"></div>
-                    </label>
-                </div>
-
-                <button onclick="showToast('সকল সেটিংস সফলভাবে সেভ করা হয়েছে!')" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl text-xl font-bold shadow-md transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    <span>সেটিংস আপডেট করুন</span>
-                </button>
+            <div class="form-group">
+                <label>বিকাশ এজেন্ট নম্বর</label>
+                <input type="text" id="bkashAgentInput" placeholder="যেমন: 01711-000001">
             </div>
-        </section>
 
-    </main>
+            <div class="form-group">
+                <label>নগদ পারসোনাল নম্বর</label>
+                <input type="text" id="nagadPersonalInput" placeholder="যেমন: 01819-442098">
+            </div>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 text-center text-slate-500 text-sm mt-auto">
-        <p>© ২০২৬ এডমিন কন্ট্রোল প্যানেল • সর্বস্বত্ব সংরক্ষিত</p>
-    </footer>
+            <button class="primary-btn" onclick="savePaymentNumbers()">💾 ডিপোজিট নম্বর সেভ করুন</button>
+            <div id="payToast" class="save-toast">বিকাশ এজেন্ট ও নগদ পারসোনাল নম্বর সেভ হয়েছে!</div>
+        </div>
 
-    <!-- Application Logic -->
+        <!-- 3. Customer Support Setup -->
+        <div class="panel-card">
+            <div class="section-title">
+                <span>🎧 কাস্টমার সাপোর্ট সেটআপ</span>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>সাপোর্ট টাইটেল</label>
+                    <input type="text" id="supportTitleInput" placeholder="যেমন: কাস্টমার সাপোর্ট">
+                </div>
+                <div class="form-group">
+                    <label>সাপোর্ট বাটনের লেখা</label>
+                    <input type="text" id="supportBtnTextInput" placeholder="যেমন: সাপোর্ট বা লাইভ চ্যাট">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>সাপোর্ট লিংক বা নম্বর (Telegram / WhatsApp / মোবাইল নম্বর)</label>
+                <input type="text" id="supportLinkInput" placeholder="যেমন: https://t.me/earnbd_support বা 017XXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label>সাপোর্ট সাবটাইটেল</label>
+                <input type="text" id="supportSubInput" placeholder="যেমন: যেকোনো প্রয়োজনে যোগাযোগ করুন">
+            </div>
+            <button class="primary-btn" onclick="saveSupportSettings()">💾 কাস্টমার সাপোর্ট সেভ করুন</button>
+            <div id="supportToast" class="save-toast">কাস্টমার সাপোর্ট তথ্য ড্যাশবোর্ডে আপডেট হয়েছে!</div>
+        </div>
+
+        <!-- 4. Deposit & Withdraw Requests (Including Screenshots) -->
+        <div class="panel-card">
+            <div class="section-title">
+                <span>📥 ডিপোজিট ও উত্তোলন রিকোয়েস্ট</span>
+                <button class="success-btn" onclick="renderAdminAll()">↻ রিফ্রেশ</button>
+            </div>
+            <div id="adminRequestsList"></div>
+        </div>
+
+        <!-- 5. Registered Users & Balance Control -->
+        <div class="panel-card">
+            <div class="section-title">
+                <span>👥 নিবন্ধিত সদস্য ও ব্যালেন্স নিয়ন্ত্রণ</span>
+            </div>
+            <div id="adminUsersList"></div>
+        </div>
+    </div>
+
     <script>
-        // ==========================================
-        // INITIAL DATA STATE
-        // ==========================================
-        let paymentNumbers = [
+        const ADMIN_STORAGE_KEY = 'earnbd_admin_panel_state_v1';
+        const USERS_ACCOUNTS_KEY = 'earnbd_registered_users_v1';
+
+        const defaultAdminProducts = [
             {
-                id: 1,
-                title: 'বিকাশ এজেন্ট',
-                subtitle: 'bKash Agent (Cash Out Only)',
-                type: 'bkash',
-                number: '01712345678',
-                active: true,
-                themeColor: 'pink'
+                id: 'PROD-STARTER',
+                name: 'Starter Plan',
+                price: 670,
+                dailyIncome: 85,
+                days: 45,
+                icon: '🎁',
+                theme: 'plan-starter',
+                badge: 'POPULAR'
             },
             {
-                id: 2,
-                title: 'নগদ পারসোনাল',
-                subtitle: 'Nagad Personal (Send Money)',
-                type: 'nagad',
-                number: '01898765432',
-                active: true,
-                themeColor: 'orange'
+                id: 'PROD-SILVER',
+                name: 'Silver Plan',
+                price: 1200,
+                dailyIncome: 160,
+                days: 45,
+                icon: '💎',
+                theme: 'plan-silver',
+                badge: ''
+            },
+            {
+                id: 'PROD-GOLD',
+                name: 'Gold Plan',
+                price: 2500,
+                dailyIncome: 350,
+                days: 45,
+                icon: '👑',
+                theme: 'plan-gold',
+                badge: ''
             }
         ];
 
-        let depositRequests = [
-            { id: 'DEP-101', user: 'রাকিব হাসান', phone: '01711223344', method: 'বিকাশ এজেন্ট', amount: 1500, trxId: 'BKH98A76D5', time: '৫ মিনিট আগে', status: 'pending' },
-            { id: 'DEP-102', user: 'সুমাইয়া আক্তার', phone: '01822334455', method: 'নগদ পারসোনাল', amount: 3000, trxId: 'NGD44K21M9', time: '১৮ মিনিট আগে', status: 'pending' },
-            { id: 'DEP-103', user: 'তানভীর আহমেদ', phone: '01933445566', method: 'বিকাশ এজেন্ট', amount: 500, trxId: 'BKH11Z88P2', time: '৪০ মিনিট আগে', status: 'pending' }
-        ];
-
-        let withdrawRequests = [
-            { id: 'WTH-501', user: 'মেহেদী হাসান', phone: '01644556677', method: 'বিকাশ পারসোনাল', amount: 2200, time: '১০ মিনিট আগে', status: 'pending' },
-            { id: 'WTH-502', user: 'নুসরাত জাহান', phone: '01555667788', method: 'নগদ পারসোনাল', amount: 1000, time: '৩৫ মিনিট আগে', status: 'pending' }
-        ];
-
-        let usersList = [
-            { id: 1, name: 'রাকিব হাসান', phone: '01711223344', balance: 4500, status: 'active' },
-            { id: 2, name: 'সুমাইয়া আক্তার', phone: '01822334455', balance: 1200, status: 'active' },
-            { id: 3, name: 'তানভীর আহমেদ', phone: '01933445566', balance: 850, status: 'blocked' },
-            { id: 4, name: 'মেহেদী হাসান', phone: '01644556677', balance: 6300, status: 'active' }
-        ];
-
-        // ==========================================
-        // NAVIGATION CONTROLLER
-        // ==========================================
-        function hideAllSections() {
-            document.getElementById('main-menu-view').classList.add('hidden');
-            document.getElementById('section-deposit-numbers').classList.add('hidden');
-            document.getElementById('section-deposit-requests').classList.add('hidden');
-            document.getElementById('section-withdraw-requests').classList.add('hidden');
-            document.getElementById('section-user-management').classList.add('hidden');
-            document.getElementById('section-notice-settings').classList.add('hidden');
+        function normalizePhone(phone) {
+            return String(phone || '').replace(/\s+/g, '').trim();
         }
 
-        function showMainMenu() {
-            hideAllSections();
-            document.getElementById('main-menu-view').classList.remove('hidden');
-            updateDashboardBadges();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openSection(sectionName) {
-            hideAllSections();
-            const target = document.getElementById(`section-${sectionName}`);
-            if (target) {
-                target.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            if (sectionName === 'deposit-numbers') renderPaymentNumbers();
-            if (sectionName === 'deposit-requests') renderDepositRequests();
-            if (sectionName === 'withdraw-requests') renderWithdrawRequests();
-            if (sectionName === 'user-management') renderUsers(usersList);
-        }
-
-        // ==========================================
-        // TOAST NOTIFICATION (NO ALERT())
-        // ==========================================
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            
-            const bgColor = type === 'success' ? 'bg-slate-900 border-emerald-500' : 'bg-rose-900 border-rose-500';
-            const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>' : '<i class="fa-solid fa-circle-exclamation text-rose-400 text-xl"></i>';
-
-            toast.className = `${bgColor} text-white px-5 py-4 rounded-2xl shadow-xl border-l-4 flex items-center gap-3 text-base sm:text-lg font-semibold pointer-events-auto fade-in`;
-            toast.innerHTML = `${icon} <span>${message}</span>`;
-
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // ==========================================
-        // 1. DEPOSIT NUMBERS LOGIC (বিকাশ এজেন্ট & নগদ পারসোনাল)
-        // ==========================================
-        function renderPaymentNumbers() {
-            const container = document.getElementById('payment-numbers-list');
-            container.innerHTML = '';
-
-            paymentNumbers.forEach(item => {
-                const isBkash = item.type === 'bkash';
-                const isNagad = item.type === 'nagad';
-                
-                let badgeClass = 'bg-slate-100 text-slate-800 border-slate-300';
-                let headerBg = 'bg-slate-800';
-                let iconHtml = '<i class="fa-solid fa-mobile-screen-button"></i>';
-
-                if (isBkash) {
-                    badgeClass = 'bg-pink-50 text-pink-700 border-pink-200';
-                    headerBg = 'bg-pink-600';
-                    iconHtml = '<span class="font-extrabold text-xl">bKash</span>';
-                } else if (isNagad) {
-                    badgeClass = 'bg-orange-50 text-orange-700 border-orange-200';
-                    headerBg = 'bg-orange-600';
-                    iconHtml = '<span class="font-extrabold text-xl">নগদ</span>';
-                }
-
-                const card = document.createElement('div');
-                card.className = `bg-white rounded-3xl shadow-sm border-2 ${item.active ? 'border-slate-200' : 'border-rose-200 opacity-85'} overflow-hidden transition-all`;
-
-                card.innerHTML = `
-                    <!-- Card Top Header -->
-                    <div class="${headerBg} text-white px-6 py-4 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                                ${iconHtml}
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold leading-tight">${item.title}</h3>
-                                <p class="text-white/85 text-sm">${item.subtitle}</p>
-                            </div>
-                        </div>
-                        <span class="px-3 py-1 rounded-full text-sm font-bold ${item.active ? 'bg-emerald-400 text-slate-950' : 'bg-rose-500 text-white'}">
-                            ${item.active ? 'চালু আছে' : 'বন্ধ আছে'}
-                        </span>
-                    </div>
-
-                    <!-- Card Body -->
-                    <div class="p-6 space-y-5">
-                        <div>
-                            <label class="block text-base font-bold text-slate-700 mb-2">বর্তমান নাম্বার (পরিবর্তন করতে নিচে লিখুন):</label>
-                            <div class="flex items-center gap-2">
-                                <input type="tel" id="input-num-${item.id}" value="${item.number}" maxlength="11"
-                                    class="w-full px-4 py-4 text-2xl sm:text-3xl font-bold tracking-wider text-slate-900 bg-slate-50 rounded-2xl border-2 border-slate-300 focus:border-emerald-600 focus:bg-white focus:outline-none">
-                                <button onclick="copyNumber(${item.id})" title="নাম্বার কপি করুন"
-                                    class="shrink-0 bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-800 px-4 py-4 rounded-2xl font-bold text-lg transition flex items-center gap-2">
-                                    <i class="fa-regular fa-copy text-xl"></i>
-                                    <span class="hidden sm:inline">কপি</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
-                            <!-- Active/Inactive Toggle -->
-                            <label class="inline-flex items-center gap-3 cursor-pointer bg-slate-100 px-4 py-3 rounded-xl">
-                                <input type="checkbox" ${item.active ? 'checked' : ''} onchange="toggleNumberStatus(${item.id})" class="w-5 h-5 accent-emerald-600 rounded cursor-pointer">
-                                <span class="text-base font-bold text-slate-800">${item.active ? 'নাম্বার চালু' : 'নাম্বার বন্ধ'}</span>
-                            </label>
-
-                            <!-- Save / Update Button -->
-                            <button onclick="savePaymentNumber(${item.id})"
-                                class="flex-grow sm:flex-grow-0 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-6 py-3.5 rounded-xl text-lg font-bold shadow-sm transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-check-circle"></i>
-                                <span>নাম্বার আপডেট করুন</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function savePaymentNumber(id) {
-            const input = document.getElementById(`input-num-${id}`);
-            const newVal = input.value.trim();
-            if (newVal.length < 11 || !/^\d+$/.test(newVal)) {
-                showToast('সঠিক ১১ ডিজিটের মোবাইল নাম্বার দিন!', 'error');
-                return;
-            }
-            const item = paymentNumbers.find(p => p.id === id);
-            if (item) {
-                item.number = newVal;
-                showToast(`${item.title} নাম্বার সফলভাবে আপডেট হয়েছে!`);
-            }
-        }
-
-        function toggleNumberStatus(id) {
-            const item = paymentNumbers.find(p => p.id === id);
-            if (item) {
-                item.active = !item.active;
-                renderPaymentNumbers();
-                showToast(`${item.title} এখন ${item.active ? 'চালু করা হয়েছে' : 'বন্ধ করা হয়েছে'}!`);
-            }
-        }
-
-        function copyNumber(id) {
-            const input = document.getElementById(`input-num-${id}`);
-            input.select();
-            input.setSelectionRange(0, 99999);
+        function getAdminState() {
             try {
-                document.execCommand('copy');
-                showToast(`নাম্বার কপি হয়েছে: ${input.value}`);
-            } catch (err) {
-                showToast('কপি করতে সমস্যা হয়েছে!', 'error');
+                const raw = JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEY)) || {};
+                if (!Array.isArray(raw.products) && !raw.productsSynced) {
+                    raw.products = [...defaultAdminProducts];
+                    raw.productsSynced = true;
+                } else if (!Array.isArray(raw.products)) {
+                    raw.products = [];
+                }
+                raw.requests = Array.isArray(raw.requests) ? raw.requests : [];
+                raw.users = Array.isArray(raw.users) ? raw.users : [];
+                raw.paymentNumbers = raw.paymentNumbers || {};
+                raw.supportConfig = raw.supportConfig || {
+                    title: 'কাস্টমার সাপোর্ট',
+                    subtitle: 'যেকোনো প্রয়োজনে যোগাযোগ করুন',
+                    link: 'https://t.me/earnbd_support',
+                    buttonText: 'সাপোর্ট'
+                };
+                return raw;
+            } catch (e) {
+                return {
+                    products: [...defaultAdminProducts],
+                    productsSynced: true,
+                    requests: [],
+                    users: [],
+                    paymentNumbers: {},
+                    supportConfig: {
+                        title: 'কাস্টমার সাপোর্ট',
+                        subtitle: 'যেকোনো প্রয়োজনে যোগাযোগ করুন',
+                        link: 'https://t.me/earnbd_support',
+                        buttonText: 'সাপোর্ট'
+                    }
+                };
             }
         }
 
-        function addNewNumber(e) {
-            e.preventDefault();
-            const typeSelect = document.getElementById('new-method-type');
-            const numInput = document.getElementById('new-method-number');
-            const number = numInput.value.trim();
+        function saveAdminState(state) {
+            state.productsSynced = true;
+            localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(state));
+        }
 
-            if (number.length < 11 || !/^\d+$/.test(number)) {
-                showToast('সঠিক ১১ ডিজিটের মোবাইল নাম্বার লিখুন!', 'error');
+        function showToast(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = 'block';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 2500);
+        }
+
+        function addProductToDashboard() {
+            const name = document.getElementById('prodName').value.trim();
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const dailyIncome = parseFloat(document.getElementById('prodDailyIncome').value);
+            const days = parseInt(document.getElementById('prodDays').value, 10) || 45;
+            const icon = document.getElementById('prodIcon').value.trim() || '🎁';
+            const badge = document.getElementById('prodBadge').value.trim();
+
+            if (!name || isNaN(price) || price <= 0 || isNaN(dailyIncome) || dailyIncome <= 0) {
+                alert('পণ্যের নাম, সঠিক দাম এবং দৈনিক ইনকাম লিখুন!');
                 return;
             }
 
-            const map = {
-                'bkash-agent': { title: 'বিকাশ এজেন্ট', subtitle: 'bKash Agent (Cash Out)', type: 'bkash' },
-                'nagad-personal': { title: 'নগদ পারসোনাল', subtitle: 'Nagad Personal (Send Money)', type: 'nagad' },
-                'rocket-personal': { title: 'রকেট পারসোনাল', subtitle: 'Rocket Personal (Send Money)', type: 'rocket' },
-                'upay-agent': { title: 'উপায় এজেন্ট', subtitle: 'Upay Agent (Cash Out)', type: 'upay' }
+            const state = getAdminState();
+            state.products.unshift({
+                id: 'PROD-' + Date.now(),
+                name,
+                price,
+                dailyIncome,
+                days,
+                icon,
+                theme: 'plan-custom',
+                badge
+            });
+            saveAdminState(state);
+
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodDailyIncome').value = '';
+            document.getElementById('prodBadge').value = '';
+
+            showToast('prodToast');
+            renderAdminAll();
+        }
+
+        function deleteProduct(prodId) {
+            if (!confirm('এই পণ্যটি ড্যাশবোর্ড থেকে মুছে ফেলতে চান?')) return;
+            const state = getAdminState();
+            state.products = state.products.filter((p) => p.id !== prodId);
+            saveAdminState(state);
+            renderAdminAll();
+        }
+
+        function loadPaymentAndSupportInputs() {
+            const state = getAdminState();
+            const pn = state.paymentNumbers || {};
+
+            const ba = Array.isArray(pn.bkashAgentList) && pn.bkashAgentList.length
+                ? pn.bkashAgentList[0]
+                : (pn.bkashAgent || '01700-000001');
+
+            const np = Array.isArray(pn.nagadPersonalList) && pn.nagadPersonalList.length
+                ? pn.nagadPersonalList[0]
+                : (pn.nagadPersonal || pn.nagad || '01819442098');
+
+            document.getElementById('bkashAgentInput').value = ba;
+            document.getElementById('nagadPersonalInput').value = np;
+
+            const sc = state.supportConfig || {};
+            document.getElementById('supportTitleInput').value = sc.title || 'কাস্টমার সাপোর্ট';
+            document.getElementById('supportBtnTextInput').value = sc.buttonText || 'সাপোর্ট';
+            document.getElementById('supportLinkInput').value = sc.link || 'https://t.me/earnbd_support';
+            document.getElementById('supportSubInput').value = sc.subtitle || 'যেকোনো প্রয়োজনে যোগাযোগ করুন';
+        }
+
+        function savePaymentNumbers() {
+            const state = getAdminState();
+            const bkashAgentVal = document.getElementById('bkashAgentInput').value.trim();
+            const nagadPersonalVal = document.getElementById('nagadPersonalInput').value.trim();
+
+            state.paymentNumbers = {
+                bkashAgentList: bkashAgentVal ? [bkashAgentVal] : [],
+                nagadPersonalList: nagadPersonalVal ? [nagadPersonalVal] : [],
+                bkashAgent: bkashAgentVal,
+                nagadPersonal: nagadPersonalVal
             };
 
-            const selected = map[typeSelect.value];
-            paymentNumbers.push({
-                id: Date.now(),
-                title: selected.title,
-                subtitle: selected.subtitle,
-                type: selected.type,
-                number: number,
-                active: true
-            });
-
-            numInput.value = '';
-            renderPaymentNumbers();
-            showToast(`নতুন ${selected.title} নাম্বার যুক্ত হয়েছে!`);
+            saveAdminState(state);
+            showToast('payToast');
         }
 
-        // ==========================================
-        // 2. DEPOSIT REQUESTS LOGIC
-        // ==========================================
-        function renderDepositRequests() {
-            const container = document.getElementById('deposit-requests-container');
-            container.innerHTML = '';
+        function saveSupportSettings() {
+            const state = getAdminState();
+            state.supportConfig = {
+                title: document.getElementById('supportTitleInput').value.trim() || 'কাস্টমার সাপোর্ট',
+                buttonText: document.getElementById('supportBtnTextInput').value.trim() || 'সাপোর্ট',
+                link: document.getElementById('supportLinkInput').value.trim() || 'https://t.me/earnbd_support',
+                subtitle: document.getElementById('supportSubInput').value.trim() || 'যেকোনো প্রয়োজনে যোগাযোগ করুন'
+            };
+            saveAdminState(state);
+            showToast('supportToast');
+        }
 
-            if (depositRequests.length === 0) {
-                container.innerHTML = `<div class="bg-white p-8 rounded-3xl text-center text-slate-500 text-xl font-semibold">কোনো ডিপোজিট রিকোয়েস্ট নেই।</div>`;
-                return;
+        function updateRequestStatus(reqId, newStatus) {
+            const state = getAdminState();
+            const req = state.requests.find((r) => r.id === reqId);
+            if (!req) return;
+
+            const prevStatus = req.status;
+            req.status = newStatus;
+
+            if (newStatus === 'approved' && prevStatus !== 'approved' && req.type === 'ডিপোজিট') {
+                const targetUser = state.users.find((u) => normalizePhone(u.phone) === normalizePhone(req.phone));
+                if (targetUser) {
+                    targetUser.balance = Number(targetUser.balance || 0) + Number(req.amount || 0);
+                }
+
+                try {
+                    const accs = JSON.parse(localStorage.getItem(USERS_ACCOUNTS_KEY)) || [];
+                    const acc = accs.find((a) => normalizePhone(a.phone) === normalizePhone(req.phone));
+                    if (acc) {
+                        acc.balance = Number(acc.balance || 0) + Number(req.amount || 0);
+                        localStorage.setItem(USERS_ACCOUNTS_KEY, JSON.stringify(accs));
+                    }
+                } catch (e) {}
             }
 
-            depositRequests.forEach(req => {
-                const isPending = req.status === 'pending';
-                const card = document.createElement('div');
-                card.className = 'bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4';
-
-                card.innerHTML = `
-                    <div class="space-y-1.5">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="text-xl font-bold text-slate-900">${req.user}</span>
-                            <span class="text-sm font-semibold bg-slate-100 text-slate-700 px-3 py-1 rounded-full">${req.phone}</span>
-                            <span class="text-xs text-slate-500">• ${req.time}</span>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-3 text-base">
-                            <span class="font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">পরিমাণ: ৳ ${req.amount}</span>
-                            <span class="font-semibold text-slate-700">মাধ্যম: ${req.method}</span>
-                            <span class="font-mono text-sm bg-slate-100 px-2.5 py-1 rounded border border-slate-300">TrxID: <strong>${req.trxId}</strong></span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-3 shrink-0">
-                        ${isPending ? `
-                            <button onclick="handleDepositAction('${req.id}', 'approved')" class="flex-1 sm:flex-initial bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl text-base font-bold transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-check"></i> অ্যাপ্রুভ
-                            </button>
-                            <button onclick="handleDepositAction('${req.id}', 'rejected')" class="flex-1 sm:flex-initial bg-rose-100 hover:bg-rose-200 text-rose-700 px-5 py-3 rounded-xl text-base font-bold transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-xmark"></i> বাতিল
-                            </button>
-                        ` : `
-                            <span class="px-4 py-2 rounded-xl text-base font-bold ${req.status === 'approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
-                                ${req.status === 'approved' ? '✓ অ্যাপ্রুভ করা হয়েছে' : '✕ বাতিল করা হয়েছে'}
-                            </span>
-                        `}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+            saveAdminState(state);
+            renderAdminAll();
         }
 
-        function handleDepositAction(id, newStatus) {
-            const req = depositRequests.find(r => r.id === id);
-            if (req) {
-                req.status = newStatus;
-                renderDepositRequests();
-                updateDashboardBadges();
-                showToast(newStatus === 'approved' ? `৳${req.amount} ডিপোজিট অ্যাপ্রুভ হয়েছে!` : 'ডিপোজিট রিকোয়েস্ট বাতিল হয়েছে।', newStatus === 'approved' ? 'success' : 'error');
-            }
+        function adjustUserBalance(phone, amountToAdd) {
+            const state = getAdminState();
+            const user = state.users.find((u) => normalizePhone(u.phone) === normalizePhone(phone));
+            if (!user) return;
+            user.balance = Number(user.balance || 0) + Number(amountToAdd || 0);
+            saveAdminState(state);
+            renderAdminAll();
         }
 
-        // ==========================================
-        // 3. WITHDRAW REQUESTS LOGIC
-        // ==========================================
-        function renderWithdrawRequests() {
-            const container = document.getElementById('withdraw-requests-container');
-            container.innerHTML = '';
+        function renderAdminAll() {
+            const state = getAdminState();
+            const pendingCount = state.requests.filter((r) => r.status === 'pending').length;
 
-            withdrawRequests.forEach(req => {
-                const isPending = req.status === 'pending';
-                const card = document.createElement('div');
-                card.className = 'bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4';
+            document.getElementById('statProductsCount').textContent = state.products.length;
+            document.getElementById('statPendingReqCount').textContent = pendingCount;
+            document.getElementById('statUsersCount').textContent = state.users.length;
 
-                card.innerHTML = `
-                    <div class="space-y-1.5">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="text-xl font-bold text-slate-900">${req.user}</span>
-                            <span class="text-sm font-semibold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full">${req.method}</span>
-                            <span class="text-xs text-slate-500">• ${req.time}</span>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-3 text-base">
-                            <span class="font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-lg border border-amber-200">উইথড্র: ৳ ${req.amount}</span>
-                            <span class="font-bold text-slate-800 text-lg">নাম্বার: ${req.phone}</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-3 shrink-0">
-                        ${isPending ? `
-                            <button onclick="handleWithdrawAction('${req.id}', 'paid')" class="flex-1 sm:flex-initial bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl text-base font-bold transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-paper-plane"></i> পেমেন্ট সম্পন্ন
-                            </button>
-                            <button onclick="handleWithdrawAction('${req.id}', 'rejected')" class="flex-1 sm:flex-initial bg-rose-100 hover:bg-rose-200 text-rose-700 px-5 py-3 rounded-xl text-base font-bold transition">
-                                বাতিল
-                            </button>
-                        ` : `
-                            <span class="px-4 py-2 rounded-xl text-base font-bold ${req.status === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
-                                ${req.status === 'paid' ? '✓ পেমেন্ট সম্পন্ন' : '✕ বাতিলকৃত'}
-                            </span>
-                        `}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function handleWithdrawAction(id, newStatus) {
-            const req = withdrawRequests.find(r => r.id === id);
-            if (req) {
-                req.status = newStatus;
-                renderWithdrawRequests();
-                updateDashboardBadges();
-                showToast(newStatus === 'paid' ? `৳${req.amount} পেমেন্ট সম্পন্ন হিসেবে চিহ্নিত হয়েছে!` : 'উইথড্র রিকোয়েস্ট বাতিল হয়েছে।', newStatus === 'paid' ? 'success' : 'error');
-            }
-        }
-
-        // ==========================================
-        // 4. USER MANAGEMENT LOGIC
-        // ==========================================
-        function renderUsers(list) {
-            const container = document.getElementById('users-list-container');
-            container.innerHTML = '';
-
-            list.forEach(user => {
-                const isActive = user.status === 'active';
-                const card = document.createElement('div');
-                card.className = 'bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4';
-
-                card.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl font-bold shrink-0">
-                            ${user.name.charAt(0)}
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h4 class="text-xl font-bold text-slate-900">${user.name}</h4>
-                                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
-                                    ${isActive ? 'সক্রিয়' : 'ব্লকড'}
-                                </span>
+            const prodListEl = document.getElementById('adminProductsList');
+            if (!state.products.length) {
+                prodListEl.innerHTML = `<div class="empty-note">কোনো পণ্য যুক্ত করা নেই।</div>`;
+            } else {
+                prodListEl.innerHTML = state.products.map((p) => `
+                    <div class="item-box">
+                        <div class="item-top">
+                            <div>
+                                <h4>${p.icon || '🎁'} ${p.name} (${p.days} দিন)</h4>
+                                <p style="font-size:14px; color:#475569;">দাম: ৳${p.price} | দৈনিক ইনকাম: ৳${p.dailyIncome} ${p.badge ? `| ব্যাজ: ${p.badge}` : ''}</p>
                             </div>
-                            <p class="text-slate-600 text-base">${user.phone} • ব্যালেন্স: <strong class="text-slate-900">৳ ${user.balance}</strong></p>
+                            <button class="danger-btn" onclick="deleteProduct('${p.id}')">মুছুন</button>
                         </div>
                     </div>
+                `).join('');
+            }
 
-                    <div class="flex items-center gap-2">
-                        <button onclick="addUserBonus(${user.id})" class="bg-purple-100 hover:bg-purple-200 text-purple-800 px-4 py-2.5 rounded-xl text-base font-bold transition">
-                            + ৳১০০ বোনাস
-                        </button>
-                        <button onclick="toggleUserBlock(${user.id})" class="${isActive ? 'bg-rose-100 hover:bg-rose-200 text-rose-700' : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-700'} px-4 py-2.5 rounded-xl text-base font-bold transition">
-                            ${isActive ? 'ব্লক করুন' : 'আনব্লক করুন'}
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+            const reqListEl = document.getElementById('adminRequestsList');
+            if (!state.requests.length) {
+                reqListEl.innerHTML = `<div class="empty-note">কোনো ডিপোজিট বা উত্তোলন রিকোয়েস্ট আসেনি।</div>`;
+            } else {
+                reqListEl.innerHTML = state.requests.map((r) => {
+                    const pillClass = r.status === 'approved' ? 'pill-approved' : r.status === 'rejected' ? 'pill-rejected' : 'pill-pending';
+                    const pillText = r.status === 'approved' ? 'অ্যাপ্রুভড' : r.status === 'rejected' ? 'বাতিল' : 'পেন্ডিং';
+                    return `
+                        <div class="item-box">
+                            <div class="item-top">
+                                <div>
+                                    <h4>${r.type} — ৳${r.amount} (${r.method || ''})</h4>
+                                    <p style="font-size:14px; color:#334155;">সদস্য: <strong>${r.userName || 'Member'}</strong> (${r.phone || ''})</p>
+                                    <p style="font-size:14px; color:#475569;">TrxID / বিবরণ: <strong>${r.trxId || ''}</strong></p>
+                                    <p style="font-size:13px; color:#64748b;">${r.createdAt || ''}</p>
+                                </div>
+                                <span class="status-pill ${pillClass}">${pillText}</span>
+                            </div>
+                            ${r.screenshot ? `<img src="${r.screenshot}" class="deposit-ss-view" alt="Deposit Screenshot" onclick="window.open(this.src, '_blank')">` : ''}
+                            <div class="item-actions">
+                                <button class="success-btn" onclick="updateRequestStatus('${r.id}', 'approved')">✓ অ্যাপ্রুভ করুন</button>
+                                <button class="danger-btn" onclick="updateRequestStatus('${r.id}', 'rejected')">✕ বাতিল করুন</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
 
-        function filterUsers() {
-            const query = document.getElementById('user-search').value.toLowerCase();
-            const filtered = usersList.filter(u => u.name.toLowerCase().includes(query) || u.phone.includes(query));
-            renderUsers(filtered);
-        }
-
-        function addUserBonus(id) {
-            const user = usersList.find(u => u.id === id);
-            if (user) {
-                user.balance += 100;
-                filterUsers();
-                showToast(`${user.name}-এর একাউন্টে ৳১০০ যোগ করা হয়েছে!`);
+            const usersListEl = document.getElementById('adminUsersList');
+            if (!state.users.length) {
+                usersListEl.innerHTML = `<div class="empty-note">এখনো কোনো সদস্যের তথ্য আসেনি।</div>`;
+            } else {
+                usersListEl.innerHTML = state.users.map((u) => {
+                    const safePhone = String(u.phone || '').replace(/'/g, "\\'");
+                    return `
+                        <div class="item-box">
+                            <div class="item-top">
+                                <div>
+                                    <h4>${u.name || 'Member'} — ৳${Number(u.balance || 0).toFixed(2)}</h4>
+                                    <p style="font-size:14px; color:#475569;">ফোন: ${u.phone || 'নেই'} | নিজস্ব রেফার কোড: <strong>${u.myRefCode || 'নেই'}</strong></p>
+                                    <p style="font-size:13px; color:#64748b;">ব্যবহৃত রেফার কোড: ${u.refCode || 'নেই'}</p>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="success-btn" onclick="adjustUserBalance('${safePhone}', 100)">+৳100 যোগ</button>
+                                <button class="success-btn" onclick="adjustUserBalance('${safePhone}', 500)">+৳500 যোগ</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
         }
 
-        function toggleUserBlock(id) {
-            const user = usersList.find(u => u.id === id);
-            if (user) {
-                user.status = user.status === 'active' ? 'blocked' : 'active';
-                filterUsers();
-                showToast(`${user.name}-কে ${user.status === 'active' ? 'আনব্লক' : 'ব্লক'} করা হয়েছে!`);
+        window.addEventListener('storage', function (event) {
+            if (event.key === ADMIN_STORAGE_KEY) {
+                renderAdminAll();
             }
-        }
+        });
 
-        // ==========================================
-        // DASHBOARD BADGE UPDATER
-        // ==========================================
-        function updateDashboardBadges() {
-            const pendingDep = depositRequests.filter(r => r.status === 'pending').length;
-            const pendingWith = withdrawRequests.filter(r => r.status === 'pending').length;
-            
-            document.getElementById('badge-dep-req').textContent = `${pendingDep} টি নতুন`;
-            document.getElementById('badge-with-req').textContent = `${pendingWith} টি পেন্ডিং`;
-            document.getElementById('summary-pending').textContent = `${pendingDep + pendingWith} টি`;
-        }
-
-        // Initialize on load
-        window.onload = function() {
-            updateDashboardBadges();
-        };
+        loadPaymentAndSupportInputs();
+        renderAdminAll();
     </script>
 </body>
 </html>
