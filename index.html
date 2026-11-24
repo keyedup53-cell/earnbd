@@ -603,7 +603,7 @@
                         <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" required>
                     </div>
                     <button type="submit" class="submit-btn">লগইন করুন</button>
-                    <p class="auth-helper-note">অ্যাকাউন্ট নেই? উপরে <strong>রেজিস্ট্রেশন</strong> ট্যাবে চাপুন।</p>
+                    <p class="auth-helper-note">শুধুমাত্র রেজিস্ট্রেশন করা নম্বর দিয়ে লগইন করা যাবে। অ্যাকাউন্ট না থাকলে উপরে <strong>রেজিস্ট্রেশন</strong> ট্যাবে চাপুন।</p>
                 </form>
 
                 <!-- Registration Form -->
@@ -634,7 +634,7 @@
             <!-- Balance Card -->
             <div class="balance-card">
                 <div class="welcome-text">স্বাগতম, <span id="userNameDisplay">Sp</span></div>
-                <div class="balance-amount">৳ <span id="userBalance">2600.00</span></div>
+                <div class="balance-amount">৳ <span id="userBalance">0.00</span></div>
                 <div class="refer-income">মোট রেফার কমিশন আয়: ৳ <span id="referBalance">0.00</span></div>
             </div>
 
@@ -818,7 +818,7 @@
 
                 <div class="my-code-badge">
                     <span>আপনার নিজস্ব রেফার কোড:</span>
-                    <strong id="myUniqueRefCode">SP-00000</strong>
+                    <strong id="myUniqueRefCode">EBD-000000</strong>
                 </div>
 
                 <div class="form-group">
@@ -995,6 +995,10 @@
             ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {})
         };
 
+        function normalizePhone(phone) {
+            return String(phone || '').replace(/\s+/g, '').trim();
+        }
+
         function getOrCreateMemberRefCode() {
             let code = localStorage.getItem('earnbd_my_unique_code');
             if (!code) {
@@ -1027,9 +1031,9 @@
 
         function getDefaultUserState() {
             return {
-                userName: 'Sp',
-                phone: '01732311711',
-                balance: 2600,
+                userName: 'Member',
+                phone: '',
+                balance: 0,
                 referBalance: 0,
                 hasPurchasedBefore: false,
                 deposits: [],
@@ -1070,7 +1074,10 @@
         }
 
         function isUserLoggedIn() {
-            return localStorage.getItem(SESSION_KEY) === 'true';
+            const activePhone = normalizePhone(userState.phone);
+            const accounts = getRegisteredAccounts();
+            const isRegistered = accounts.some((acc) => normalizePhone(acc.phone) === activePhone);
+            return localStorage.getItem(SESSION_KEY) === 'true' && Boolean(activePhone) && isRegistered;
         }
 
         function switchAuthTab(mode) {
@@ -1095,7 +1102,7 @@
         function handleUserRegister(event) {
             event.preventDefault();
             const name = document.getElementById('regName').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
+            const phone = normalizePhone(document.getElementById('regPhone').value);
             const password = document.getElementById('regPassword').value;
             const refCode = document.getElementById('regRefCode').value.trim();
 
@@ -1104,12 +1111,18 @@
                 return;
             }
 
+            if (phone.length < 10) {
+                alert('সঠিক মোবাইল নম্বর লিখুন!');
+                return;
+            }
+
             const accounts = getRegisteredAccounts();
-            const exists = accounts.find((acc) => acc.phone === phone);
+            const exists = accounts.find((acc) => normalizePhone(acc.phone) === phone);
             if (exists) {
-                alert('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে। অনুগ্রহ করে লগইন করুন।');
+                alert('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট রেজিস্ট্রেশন করা আছে। অনুগ্রহ করে লগইন করুন।');
                 switchAuthTab('login');
                 document.getElementById('loginPhone').value = phone;
+                document.getElementById('loginPassword').value = '';
                 return;
             }
 
@@ -1148,33 +1161,45 @@
             saveAdminState(adminState);
 
             localStorage.setItem(SESSION_KEY, 'true');
+            document.getElementById('registerForm').reset();
             updateUI();
             showPage('homePage');
             alert('রেজিস্ট্রেশন সফল হয়েছে!');
         }
 
+        // শুধুমাত্র রেজিস্ট্রেশন করা নম্বর ও সঠিক পাসওয়ার্ড দিয়েই লগইন হবে
         function handleUserLogin(event) {
             event.preventDefault();
-            const phone = document.getElementById('loginPhone').value.trim();
+            const phone = normalizePhone(document.getElementById('loginPhone').value);
             const password = document.getElementById('loginPassword').value;
 
-            const accounts = getRegisteredAccounts();
-            const matched = accounts.find((acc) => acc.phone === phone && acc.password === password);
+            if (!phone || !password) {
+                alert('মোবাইল নম্বর এবং পাসওয়ার্ড লিখুন!');
+                return;
+            }
 
-            if (matched) {
-                userState.userName = matched.name || userState.userName;
-                userState.phone = matched.phone;
-                if (matched.refCode) {
-                    userState.appliedRefCode = matched.refCode;
-                }
-            } else {
-                // প্রথমবার বা ডেমো লগইনের ক্ষেত্রে নম্বর অনুযায়ী প্রোফাইল সেট করা
-                userState.phone = phone;
-                if (!userState.userName) userState.userName = 'Sp';
+            const accounts = getRegisteredAccounts();
+            const matchedPhoneAccount = accounts.find((acc) => normalizePhone(acc.phone) === phone);
+
+            if (!matchedPhoneAccount) {
+                alert('এই মোবাইল নম্বরে কোনো অ্যাকাউন্ট রেজিস্ট্রেশন করা নেই! লগইন করতে আগে রেজিস্ট্রেশন করুন।');
+                return;
+            }
+
+            if (matchedPhoneAccount.password !== password) {
+                alert('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড লিখুন।');
+                return;
+            }
+
+            userState.userName = matchedPhoneAccount.name || 'Member';
+            userState.phone = matchedPhoneAccount.phone;
+            if (matchedPhoneAccount.refCode) {
+                userState.appliedRefCode = matchedPhoneAccount.refCode;
             }
 
             saveUserState();
             localStorage.setItem(SESSION_KEY, 'true');
+            document.getElementById('loginForm').reset();
             syncWithAdminPanel();
             updateUI();
             showPage('homePage');
@@ -1213,18 +1238,18 @@
                 if (tgBtn) tgBtn.href = adminState.siteSettings.supportLink;
             }
 
-            if (Array.isArray(adminState.users)) {
+            if (Array.isArray(adminState.users) && userState.phone) {
                 const matchedUser = adminState.users.find(
-                    (u) => u.phone === userState.phone || u.name === userState.userName
+                    (u) => normalizePhone(u.phone) === normalizePhone(userState.phone)
                 );
                 if (matchedUser && typeof matchedUser.balance === 'number') {
                     userState.balance = matchedUser.balance;
                 }
             }
 
-            if (Array.isArray(adminState.requests)) {
+            if (Array.isArray(adminState.requests) && userState.phone) {
                 const userReqs = adminState.requests.filter(
-                    (r) => r.phone === userState.phone || r.userName === userState.userName
+                    (r) => normalizePhone(r.phone) === normalizePhone(userState.phone) || r.userName === userState.userName
                 );
 
                 userReqs.forEach((r) => {
@@ -1256,16 +1281,16 @@
             adminState.users = Array.isArray(adminState.users) ? adminState.users : [];
 
             const existingUser = adminState.users.find(
-                (u) => u.phone === userState.phone || u.name === userState.userName
+                (u) => normalizePhone(u.phone) === normalizePhone(userState.phone)
             );
             if (existingUser) {
                 existingUser.balance = Number(userState.balance || 0);
             } else {
                 adminState.users.unshift({
                     id: 'U-' + Date.now(),
-                    name: userState.userName || 'Sp',
-                    phone: userState.phone || '01732311711',
-                    email: 'user@earnbd.com',
+                    name: userState.userName || 'Member',
+                    phone: userState.phone || '',
+                    email: `${userState.phone || 'user'}@earnbd.local`,
                     balance: Number(userState.balance || 0),
                     active: true
                 });
@@ -1278,9 +1303,9 @@
         let currentScreenshotBase64 = '';
 
         function updateUI() {
-            document.getElementById('userNameDisplay').textContent = userState.userName;
-            document.getElementById('userBalance').textContent = Number(userState.balance).toFixed(2);
-            document.getElementById('referBalance').textContent = Number(userState.referBalance).toFixed(2);
+            document.getElementById('userNameDisplay').textContent = userState.userName || 'Member';
+            document.getElementById('userBalance').textContent = Number(userState.balance || 0).toFixed(2);
+            document.getElementById('referBalance').textContent = Number(userState.referBalance || 0).toFixed(2);
 
             const myCode = getOrCreateMemberRefCode();
             document.getElementById('myUniqueRefCode').textContent = myCode;
@@ -1501,7 +1526,7 @@
 
         function submitWithdraw() {
             const method = document.getElementById('withMethod').value;
-            const number = document.getElementById('withNumber').value.trim();
+            const number = normalizePhone(document.getElementById('withNumber').value);
             const amount = parseFloat(document.getElementById('withAmount').value);
 
             if (!number || number.length < 6) {
@@ -1535,10 +1560,10 @@
                 id: reqId,
                 type: 'উইথড্র',
                 userName: userState.userName,
-                phone: number,
+                phone: userState.phone || number,
                 method,
                 amount,
-                trxId: `WITHDRAW-${method}`,
+                trxId: `WITHDRAW-${method} (${number})`,
                 status: 'pending',
                 createdAt: dateStr,
                 screenshotText: `Withdraw to ${number} via ${method} — ৳${amount}`
@@ -1577,7 +1602,7 @@
             saveUserState();
             const adminState = getAdminState();
             if (Array.isArray(adminState.users)) {
-                const u = adminState.users.find((item) => item.phone === userState.phone || item.name === userState.userName);
+                const u = adminState.users.find((item) => normalizePhone(item.phone) === normalizePhone(userState.phone));
                 if (u) {
                     u.balance = Number(userState.balance || 0);
                     saveAdminState(adminState);
