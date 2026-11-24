@@ -55,6 +55,53 @@
             margin: 0 auto;
         }
 
+        /* Auth Box (Login & Registration) */
+        .auth-wrapper {
+            margin-top: 10px;
+        }
+
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+            background: #e2e8f0;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .auth-tab-btn {
+            border: none;
+            background: transparent;
+            padding: 10px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .auth-tab-btn.active {
+            background: white;
+            color: #1d4ed8;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-helper-note {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 10px;
+            text-align: center;
+        }
+
         /* Page Switching System */
         .page-section {
             display: none;
@@ -527,14 +574,63 @@
 
     <!-- Top Header -->
     <div class="header">
-        <h1 onclick="showPage('homePage')" style="cursor:pointer;">EarnBD</h1>
-        <button class="logout-btn" onclick="alert('লগআউট সফল হয়েছে!')">লগআউট</button>
+        <h1 onclick="handleHeaderBrandClick()" style="cursor:pointer;">EarnBD</h1>
+        <button id="headerLogoutBtn" class="logout-btn" onclick="logoutUser()">লগআউট</button>
     </div>
 
     <div class="container">
 
+        <!-- ==================== 0. LOGIN & REGISTRATION SCREEN ==================== -->
+        <div id="authPage" class="page-section active">
+            <div class="auth-wrapper card-box">
+                <div class="auth-tabs">
+                    <button type="button" id="tabLoginBtn" class="auth-tab-btn active" onclick="switchAuthTab('login')">
+                        লগইন
+                    </button>
+                    <button type="button" id="tabRegisterBtn" class="auth-tab-btn" onclick="switchAuthTab('register')">
+                        রেজিস্ট্রেশন
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active" onsubmit="handleUserLogin(event)">
+                    <div class="form-group">
+                        <label>মোবাইল নম্বর</label>
+                        <input type="tel" id="loginPhone" placeholder="017XXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>পাসওয়ার্ড</label>
+                        <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" required>
+                    </div>
+                    <button type="submit" class="submit-btn">লগইন করুন</button>
+                    <p class="auth-helper-note">অ্যাকাউন্ট নেই? উপরে <strong>রেজিস্ট্রেশন</strong> ট্যাবে চাপুন।</p>
+                </form>
+
+                <!-- Registration Form -->
+                <form id="registerForm" class="auth-form" onsubmit="handleUserRegister(event)">
+                    <div class="form-group">
+                        <label>আপনার নাম</label>
+                        <input type="text" id="regName" placeholder="পুরো নাম লিখুন" required>
+                    </div>
+                    <div class="form-group">
+                        <label>মোবাইল নম্বর</label>
+                        <input type="tel" id="regPhone" placeholder="017XXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>পাসওয়ার্ড</label>
+                        <input type="password" id="regPassword" placeholder="পাসওয়ার্ড তৈরি করুন" required>
+                    </div>
+                    <div class="form-group">
+                        <label>রেফার কোড (ঐচ্ছিক)</label>
+                        <input type="text" id="regRefCode" placeholder="রেফার কোড থাকলে লিখুন (যেমন: EBD-123456)">
+                    </div>
+                    <button type="submit" class="submit-btn">রেজিস্ট্রেশন সম্পন্ন করুন</button>
+                </form>
+            </div>
+        </div>
+
         <!-- ==================== 1. HOME PAGE ==================== -->
-        <div id="homePage" class="page-section active">
+        <div id="homePage" class="page-section">
             <!-- Balance Card -->
             <div class="balance-card">
                 <div class="welcome-text">স্বাগতম, <span id="userNameDisplay">Sp</span></div>
@@ -857,7 +953,7 @@
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="bottom-nav">
+    <div id="bottomNavBar" class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="showPage('homePage')">
             <span class="nav-icon">🏠</span>
             হোম
@@ -883,6 +979,8 @@
     <script>
         const ADMIN_STORAGE_KEY = 'earnbd_admin_panel_state_v1';
         const USER_STORAGE_KEY = 'earnbd_user_local_state_v1';
+        const USERS_ACCOUNTS_KEY = 'earnbd_registered_users_v1';
+        const SESSION_KEY = 'earnbd_logged_in_flag_v1';
 
         const defaultPaymentConfig = {
             bkashAgent: '01700-000001',
@@ -955,7 +1053,146 @@
             }
         }
 
-        // admin.html থেকে আসা পরিবর্তনগুলোর সাথে ইউজার পেজ সিংক করা
+        function getRegisteredAccounts() {
+            try {
+                return JSON.parse(localStorage.getItem(USERS_ACCOUNTS_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveRegisteredAccounts(list) {
+            try {
+                localStorage.setItem(USERS_ACCOUNTS_KEY, JSON.stringify(list));
+            } catch (e) {
+                console.error('Accounts save error:', e);
+            }
+        }
+
+        function isUserLoggedIn() {
+            return localStorage.getItem(SESSION_KEY) === 'true';
+        }
+
+        function switchAuthTab(mode) {
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
+
+            if (mode === 'register') {
+                loginBtn.classList.remove('active');
+                regBtn.classList.add('active');
+                loginForm.classList.remove('active');
+                regForm.classList.add('active');
+            } else {
+                regBtn.classList.remove('active');
+                loginBtn.classList.add('active');
+                regForm.classList.remove('active');
+                loginForm.classList.add('active');
+            }
+        }
+
+        function handleUserRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const refCode = document.getElementById('regRefCode').value.trim();
+
+            if (!name || !phone || !password) {
+                alert('সব প্রয়োজনীয় তথ্য পূরণ করুন!');
+                return;
+            }
+
+            const accounts = getRegisteredAccounts();
+            const exists = accounts.find((acc) => acc.phone === phone);
+            if (exists) {
+                alert('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে। অনুগ্রহ করে লগইন করুন।');
+                switchAuthTab('login');
+                document.getElementById('loginPhone').value = phone;
+                return;
+            }
+
+            const newAccount = {
+                name,
+                phone,
+                password,
+                refCode,
+                balance: 0,
+                referBalance: 0
+            };
+            accounts.push(newAccount);
+            saveRegisteredAccounts(accounts);
+
+            userState = {
+                ...getDefaultUserState(),
+                userName: name,
+                phone,
+                balance: 0,
+                referBalance: 0,
+                appliedRefCode: refCode
+            };
+            saveUserState();
+
+            const adminState = getAdminState();
+            adminState.users = Array.isArray(adminState.users) ? adminState.users : [];
+            adminState.users.unshift({
+                id: 'U-' + Date.now(),
+                name,
+                phone,
+                email: `${phone}@earnbd.local`,
+                balance: 0,
+                refCode: refCode || 'নেই',
+                active: true
+            });
+            saveAdminState(adminState);
+
+            localStorage.setItem(SESSION_KEY, 'true');
+            updateUI();
+            showPage('homePage');
+            alert('রেজিস্ট্রেশন সফল হয়েছে!');
+        }
+
+        function handleUserLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const accounts = getRegisteredAccounts();
+            const matched = accounts.find((acc) => acc.phone === phone && acc.password === password);
+
+            if (matched) {
+                userState.userName = matched.name || userState.userName;
+                userState.phone = matched.phone;
+                if (matched.refCode) {
+                    userState.appliedRefCode = matched.refCode;
+                }
+            } else {
+                // প্রথমবার বা ডেমো লগইনের ক্ষেত্রে নম্বর অনুযায়ী প্রোফাইল সেট করা
+                userState.phone = phone;
+                if (!userState.userName) userState.userName = 'Sp';
+            }
+
+            saveUserState();
+            localStorage.setItem(SESSION_KEY, 'true');
+            syncWithAdminPanel();
+            updateUI();
+            showPage('homePage');
+        }
+
+        function logoutUser() {
+            localStorage.removeItem(SESSION_KEY);
+            showPage('authPage');
+        }
+
+        function handleHeaderBrandClick() {
+            if (isUserLoggedIn()) {
+                showPage('homePage');
+            } else {
+                showPage('authPage');
+            }
+        }
+
         function syncWithAdminPanel() {
             const adminState = getAdminState();
 
@@ -1064,6 +1301,10 @@
             if (refInput && document.activeElement !== refInput) {
                 refInput.value = activeRef;
             }
+            const regRefInput = document.getElementById('regRefCode');
+            if (regRefInput && document.activeElement !== regRefInput && activeRef) {
+                regRefInput.value = activeRef;
+            }
         }
 
         function initReferralFromURL() {
@@ -1072,6 +1313,7 @@
             if (refParam) {
                 userState.appliedRefCode = refParam;
                 saveUserState();
+                switchAuthTab('register');
             }
         }
 
@@ -1092,7 +1334,22 @@
         }
 
         function showPage(pageId) {
-            syncWithAdminPanel();
+            const loggedIn = isUserLoggedIn();
+            const bottomNav = document.getElementById('bottomNavBar');
+            const logoutBtn = document.getElementById('headerLogoutBtn');
+
+            if (!loggedIn && pageId !== 'authPage' && pageId !== 'adminPage') {
+                pageId = 'authPage';
+            }
+
+            if (pageId === 'authPage') {
+                bottomNav.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            } else {
+                bottomNav.style.display = 'flex';
+                logoutBtn.style.display = 'inline-block';
+                syncWithAdminPanel();
+            }
 
             document.querySelectorAll('.page-section').forEach((sec) => {
                 sec.classList.remove('active');
@@ -1436,7 +1693,6 @@
         }
 
         initReferralFromURL();
-        syncWithAdminPanel();
         updateUI();
         updatePayNumber();
         renderHistories();
@@ -1444,6 +1700,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('admin') === 'open') {
             showPage('adminPage');
+        } else if (isUserLoggedIn()) {
+            showPage('homePage');
+        } else {
+            showPage('authPage');
         }
     </script>
 </body>
