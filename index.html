@@ -112,6 +112,18 @@
             display: block;
         }
 
+        .bonus-banner {
+            background: #ecfdf5;
+            border: 1px solid #6ee7b7;
+            color: #065f46;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
         .auth-helper-note {
             font-size: 12px;
             color: #64748b;
@@ -189,7 +201,7 @@
         .welcome-text { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
         .balance-amount { font-size: 34px; font-weight: 700; margin-bottom: 8px; }
         .refer-income { font-size: 13px; opacity: 0.95; font-weight: 600; }
-        .midnight-note { font-size: 12px; opacity: 0.9; margin-top: 6px; color: #fde68a; font-weight: 600; }
+        .midnight-note { font-size: 12px; opacity: 0.92; margin-top: 6px; color: #fde68a; font-weight: 600; }
 
         /* Customer Support */
         .support-card {
@@ -624,6 +636,7 @@
 
                 <!-- Registration Form -->
                 <form id="registerForm" class="auth-form" onsubmit="handleUserRegister(event)">
+                    <div class="bonus-banner">🎉 রেজিস্ট্রেশন করার সাথে সাথে একাউন্টে ৩০০ টাকা বোনাস পাবেন!</div>
                     <div class="form-group">
                         <label>আপনার নাম</label>
                         <input type="text" id="regName" placeholder="পুরো নাম লিখুন" required>
@@ -640,7 +653,7 @@
                         <label>রেফার কোড (ঐচ্ছিক)</label>
                         <input type="text" id="regRefCode" placeholder="রেফার কোড থাকলে লিখুন (যেমন: EBD-123456)">
                     </div>
-                    <button type="submit" class="submit-btn">রেজিস্ট্রেশন সম্পন্ন করুন</button>
+                    <button type="submit" class="submit-btn">রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন</button>
                 </form>
             </div>
         </div>
@@ -715,14 +728,12 @@
                     <label>পেমেন্ট মেথড নির্বাচন করুন</label>
                     <select id="depMethod" onchange="updatePayNumber()">
                         <option value="বিকাশ এজেন্ট">বিকাশ এজেন্ট</option>
-                        <option value="বিকাশ পারসোনাল">বিকাশ পারসোনাল</option>
-                        <option value="নগদ এজেন্ট">নগদ এজেন্ট</option>
                         <option value="নগদ পারসোনাল">নগদ পারসোনাল</option>
                     </select>
                 </div>
 
                 <div class="payment-number-box">
-                    <p class="intro-label" id="paymentIntroLabel">নির্বাচিত মেথডের নম্বরসমূহ (যেকোনো একটিতে পাঠান):</p>
+                    <p class="intro-label" id="paymentIntroLabel">নির্বাচিত মেথডের নম্বরসমূহ:</p>
                     <div id="adminPayNumber"></div>
                     <p style="font-size:12px; color:#dc2626; margin-top:8px;">পেমেন্ট করার পর স্ক্রিনশট ও TrxID নিচে জমা দিন</p>
                 </div>
@@ -762,8 +773,8 @@
                 <div class="form-group">
                     <label>উত্তোলন মেথড</label>
                     <select id="withMethod">
-                        <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
-                        <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                        <option value="বিকাশ এজেন্ট">বিকাশ এজেন্ট</option>
+                        <option value="নগদ পারসোনাল">নগদ পারসোনাল</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -915,11 +926,12 @@
         const USER_STORAGE_KEY = 'earnbd_user_local_state_v1';
         const USERS_ACCOUNTS_KEY = 'earnbd_registered_users_v1';
         const SESSION_KEY = 'earnbd_logged_in_flag_v1';
+        const REGISTRATION_BONUS = 300;
 
         const defaultProducts = [
             {
                 id: 'PROD-STARTER',
-                name: 'Starter Plan (45 দিন)',
+                name: 'Starter Plan',
                 price: 670,
                 dailyIncome: 85,
                 days: 45,
@@ -929,7 +941,7 @@
             },
             {
                 id: 'PROD-SILVER',
-                name: 'Silver Plan (45 দিন)',
+                name: 'Silver Plan',
                 price: 1200,
                 dailyIncome: 160,
                 days: 45,
@@ -939,7 +951,7 @@
             },
             {
                 id: 'PROD-GOLD',
-                name: 'Gold Plan (45 দিন)',
+                name: 'Gold Plan',
                 price: 2500,
                 dailyIncome: 350,
                 days: 45,
@@ -950,10 +962,8 @@
         ];
 
         const defaultPaymentNumbers = {
-            bkashAgent: ['01700-000001', '01700-000002'],
-            bkashPersonal: ['01732311711', '01732311712'],
-            nagadAgent: ['01800-000003', '01800-000004'],
-            nagadPersonal: ['01819442098', '01819442099']
+            bkashAgent: ['01700-000001'],
+            nagadPersonal: ['01819442098']
         };
 
         const defaultSupportConfig = {
@@ -1086,7 +1096,6 @@
             return localStorage.getItem(SESSION_KEY) === 'true' && Boolean(activePhone) && isRegistered;
         }
 
-        // প্রতিদিন রাত ১২:০০ টার (00:00) পর কেনা পণ্যের দৈনিক ইনকাম অটোমেটিক যুক্ত করা
         function applyMidnightDailyProductIncome() {
             if (!isUserLoggedIn()) return;
             if (!Array.isArray(userState.products) || userState.products.length === 0) {
@@ -1122,7 +1131,6 @@
                 userState.lastMidnightPayoutDate = todayKey;
                 saveUserState();
 
-                // অ্যাডমিন প্যানেলে ইউজারের আপডেট ব্যালেন্স সিংক করা
                 const adminState = getAdminState();
                 if (Array.isArray(adminState.users)) {
                     const u = adminState.users.find((item) => normalizePhone(item.phone) === normalizePhone(userState.phone));
@@ -1134,7 +1142,6 @@
             }
         }
 
-        // রেফার কমিশন শুধুমাত্র ১ম বার পণ্য কেনার সময় প্রদান
         function awardReferralCommissionOnFirstPurchase(purchasePrice) {
             if (userState.hasPurchasedBefore) {
                 return 0;
@@ -1228,6 +1235,7 @@
             }
         }
 
+        // রেজিস্ট্রেশন করার সাথে সাথেই ৩০০ টাকা বোনাস যুক্ত হবে
         function handleUserRegister(event) {
             event.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -1263,7 +1271,7 @@
                 password,
                 myRefCode: myUniqueCode,
                 refCode,
-                balance: 0,
+                balance: REGISTRATION_BONUS,
                 referBalance: 0
             };
             accounts.push(newAccount);
@@ -1274,7 +1282,7 @@
                 userName: name,
                 phone,
                 myRefCode: myUniqueCode,
-                balance: 0,
+                balance: REGISTRATION_BONUS,
                 referBalance: 0,
                 lastMidnightPayoutDate: getTodayDateKey(),
                 appliedRefCode: refCode
@@ -1289,7 +1297,7 @@
                 phone,
                 email: `${phone}@earnbd.local`,
                 myRefCode: myUniqueCode,
-                balance: 0,
+                balance: REGISTRATION_BONUS,
                 refCode: refCode || 'নেই',
                 active: true
             });
@@ -1300,7 +1308,7 @@
             syncWithAdminPanel();
             updateUI();
             showPage('homePage');
-            alert(`রেজিস্ট্রেশন সফল হয়েছে! আপনার ইউনিক রেফার কোড: ${myUniqueCode}`);
+            alert(`অভিনন্দন! রেজিস্ট্রেশন সফল হয়েছে এবং আপনার একাউন্টে ৳${REGISTRATION_BONUS} বোনাস যুক্ত হয়েছে!`);
         }
 
         function handleUserLogin(event) {
@@ -1364,7 +1372,6 @@
         function syncWithAdminPanel(showNotice = false) {
             const adminState = getAdminState();
 
-            // ১. অ্যাডমিন প্যানেল থেকে পণ্য সিংক করা
             if (Array.isArray(adminState.products) && adminState.products.length > 0) {
                 catalogProducts = adminState.products.map((p, idx) => ({
                     id: p.id || `PROD-${idx + 1}`,
@@ -1382,36 +1389,22 @@
                 catalogProducts = [...defaultProducts];
             }
 
-            // ২. পেমেন্ট নম্বর সিংক করা (বিকাশ এজেন্ট/পারসোনাল, নগদ এজেন্ট/পারসোনাল — প্রতিটিতে ২টি নম্বর)
             paymentNumbersConfig = JSON.parse(JSON.stringify(defaultPaymentNumbers));
             if (adminState.paymentNumbers) {
                 const pn = adminState.paymentNumbers;
                 if (Array.isArray(pn.bkashAgentList) && pn.bkashAgentList.length) {
-                    paymentNumbersConfig.bkashAgent = pn.bkashAgentList.slice(0, 2);
+                    paymentNumbersConfig.bkashAgent = pn.bkashAgentList.filter(Boolean);
                 } else if (pn.bkashAgent) {
                     paymentNumbersConfig.bkashAgent = [pn.bkashAgent];
                 }
 
-                if (Array.isArray(pn.bkashPersonalList) && pn.bkashPersonalList.length) {
-                    paymentNumbersConfig.bkashPersonal = pn.bkashPersonalList.slice(0, 2);
-                } else if (pn.bkashPersonal || pn.bkash) {
-                    paymentNumbersConfig.bkashPersonal = [pn.bkashPersonal || pn.bkash];
-                }
-
-                if (Array.isArray(pn.nagadAgentList) && pn.nagadAgentList.length) {
-                    paymentNumbersConfig.nagadAgent = pn.nagadAgentList.slice(0, 2);
-                } else if (pn.nagadAgent) {
-                    paymentNumbersConfig.nagadAgent = [pn.nagadAgent];
-                }
-
                 if (Array.isArray(pn.nagadPersonalList) && pn.nagadPersonalList.length) {
-                    paymentNumbersConfig.nagadPersonal = pn.nagadPersonalList.slice(0, 2);
+                    paymentNumbersConfig.nagadPersonal = pn.nagadPersonalList.filter(Boolean);
                 } else if (pn.nagadPersonal || pn.nagad) {
                     paymentNumbersConfig.nagadPersonal = [pn.nagadPersonal || pn.nagad];
                 }
             }
 
-            // ৩. কাস্টমার সাপোর্ট সিংক করা
             supportConfig = { ...defaultSupportConfig };
             if (adminState.supportConfig) {
                 supportConfig = {
@@ -1424,7 +1417,6 @@
                 supportConfig.link = adminState.siteSettings.supportLink;
             }
 
-            // ৪. ইউজারের ব্যালেন্স ও রিকোয়েস্ট স্ট্যাটাস সিংক করা
             if (Array.isArray(adminState.users) && userState.phone) {
                 const matchedUser = adminState.users.find(
                     (u) => normalizePhone(u.phone) === normalizePhone(userState.phone)
@@ -1676,19 +1668,13 @@
             if (method === 'বিকাশ এজেন্ট') {
                 list = paymentNumbersConfig.bkashAgent || [];
                 tag = 'বিকাশ এজেন্ট';
-            } else if (method === 'বিকাশ পারসোনাল') {
-                list = paymentNumbersConfig.bkashPersonal || [];
-                tag = 'বিকাশ পারসোনাল';
-            } else if (method === 'নগদ এজেন্ট') {
-                list = paymentNumbersConfig.nagadAgent || [];
-                tag = 'নগদ এজেন্ট';
             } else if (method === 'নগদ পারসোনাল') {
                 list = paymentNumbersConfig.nagadPersonal || [];
                 tag = 'নগদ পারসোনাল';
             }
 
             if (intro) {
-                intro.textContent = `${tag} — পছন্দ অনুযায়ী যেকোনো একটি নম্বরে পেমেন্ট করুন:`;
+                intro.textContent = `${tag} — নির্ধারিত নম্বরে পেমেন্ট করুন:`;
             }
 
             const validNumbers = list.map((n) => String(n || '').trim()).filter(Boolean);
@@ -1702,7 +1688,7 @@
                 return `
                     <div class="number-option-card">
                         <div>
-                            <span class="number-type-tag">${tag} — নম্বর ${index + 1}</span>
+                            <span class="number-type-tag">${tag}${validNumbers.length > 1 ? ` — নম্বর ${index + 1}` : ''}</span>
                             <span class="number-value">${num}</span>
                         </div>
                         <button type="button" class="copy-mini-btn" onclick="copyText('${safeNum}')">কপি</button>
@@ -1850,7 +1836,6 @@
 
             userState.balance -= price;
 
-            // শুধুমাত্র ১ম বার পণ্য কেনার সময় রেফার কমিশন যুক্ত হবে
             const earnedRefBonus = awardReferralCommissionOnFirstPurchase(price);
             userState.hasPurchasedBefore = true;
 
@@ -1949,7 +1934,6 @@
             }
         }
 
-        // অন্য ট্যাবে অ্যাডমিন প্যানেল থেকে কিছু সেভ করলে সাথে সাথে সিংক করা
         window.addEventListener('storage', function (event) {
             if (event.key === ADMIN_STORAGE_KEY) {
                 applyMidnightDailyProductIncome();
