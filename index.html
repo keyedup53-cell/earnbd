@@ -548,7 +548,7 @@
                     <h4>টেলিগ্রাম সাপোর্ট</h4>
                     <p>যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
                 </div>
-                <a href="https://t.me/" target="_blank" class="telegram-btn">Telegram</a>
+                <a id="telegramSupportLink" href="https://t.me/earnbd_support" target="_blank" class="telegram-btn">Telegram</a>
             </div>
 
             <!-- Row 1: Main Actions -->
@@ -850,7 +850,7 @@
                 </div>
 
                 <button class="submit-btn" onclick="saveAdminSettings()">✅ সেটিংস সেভ করুন</button>
-                <div id="adminSaveMsg" class="save-success-msg">সব নম্বর ও সেটিংস সফলভাবে সেভ হয়েছে!</div>
+                <div id="adminSaveMsg" class="save-success-msg">সব নম্বর ও সেটিংস সফলভাবে সেভ হয়েছে!</div>
             </div>
         </div>
 
@@ -881,12 +881,15 @@
     </div>
 
     <script>
+        const ADMIN_STORAGE_KEY = 'earnbd_admin_panel_state_v1';
+        const USER_STORAGE_KEY = 'earnbd_user_local_state_v1';
+
         const defaultPaymentConfig = {
             bkashAgent: '01700-000001',
-            bkashPersonal: '01700-000002',
+            bkashPersonal: '01732311711',
             nagadAgent: '01800-000003',
-            nagadPersonal: '01800-000004',
-            trxAddress: 'TExampleTRC20WalletAddress123456'
+            nagadPersonal: '01819442098',
+            trxAddress: 'TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE'
         };
 
         let paymentConfig = {
@@ -908,200 +911,279 @@
             return code;
         }
 
-        let myOwnRefCode = getOrCreateMemberRefCode();
-        let balance = parseFloat(localStorage.getItem('earnbd_balance')) || 2600.00;
-        let referCommissionBalance = parseFloat(localStorage.getItem('earnbd_ref_commission')) || 0.00;
-        let hasBoughtFirstProduct = localStorage.getItem('earnbd_first_buy_done') === 'true';
-        let appliedRefCode = localStorage.getItem('earnbd_applied_ref') || '';
-
-        let level1Referrals = parseInt(localStorage.getItem('earnbd_lvl1_count')) || 0;
-        let level2Referrals = parseInt(localStorage.getItem('earnbd_lvl2_count')) || 0;
-        let level3Referrals = parseInt(localStorage.getItem('earnbd_lvl3_count')) || 0;
-
-        let depositHistory = JSON.parse(localStorage.getItem('earnbd_dep_hist')) || [];
-        let withdrawHistory = JSON.parse(localStorage.getItem('earnbd_with_hist')) || [];
-        let myProducts = JSON.parse(localStorage.getItem('earnbd_products')) || [];
-        let currentScreenshotBase64 = "";
-
-        function copyText(text, label) {
-            if (!text) return;
-            navigator.clipboard.writeText(text).then(() => {
-                alert(label + ' কপি হয়েছে: ' + text);
-            }).catch(() => {
-                prompt('কপি করুন:', text);
-            });
-        }
-
-        function updatePayNumber() {
-            const method = document.getElementById('depMethod').value;
-            const container = document.getElementById('adminPayNumber');
-
-            if (method === 'বিকাশ (bKash)') {
-                container.innerHTML = `
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">বিকাশ এজেন্ট নাম্বার (Cash Out)</span>
-                            <div class="number-value">${paymentConfig.bkashAgent || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.bkashAgent}', 'বিকাশ এজেন্ট নাম্বার')">কপি</button>
-                    </div>
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">বিকাশ পারসোনাল নাম্বার (Send Money)</span>
-                            <div class="number-value">${paymentConfig.bkashPersonal || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.bkashPersonal}', 'বিকাশ পারসোনাল নাম্বার')">কপি</button>
-                    </div>
-                `;
-            } else if (method === 'নগদ (Nagad)') {
-                container.innerHTML = `
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">নগদ এজেন্ট নাম্বার (Cash Out)</span>
-                            <div class="number-value">${paymentConfig.nagadAgent || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.nagadAgent}', 'নগদ এজেন্ট নাম্বার')">কপি</button>
-                    </div>
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">নগদ পারসোনাল নাম্বার (Send Money)</span>
-                            <div class="number-value">${paymentConfig.nagadPersonal || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.nagadPersonal}', 'নগদ পারসোনাল নাম্বার')">কপি</button>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">TRX (TRC20) Wallet Address</span>
-                            <div class="number-value">${paymentConfig.trxAddress || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.trxAddress}', 'TRX অ্যাড্রেস')">কপি</button>
-                    </div>
-                `;
+        function getAdminState() {
+            try {
+                return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEY)) || {};
+            } catch (e) {
+                return {};
             }
         }
 
-        function loadAdminInputs() {
-            document.getElementById('adminBkashAgent').value = paymentConfig.bkashAgent;
-            document.getElementById('adminBkashPersonal').value = paymentConfig.bkashPersonal;
-            document.getElementById('adminNagadAgent').value = paymentConfig.nagadAgent;
-            document.getElementById('adminNagadPersonal').value = paymentConfig.nagadPersonal;
-            document.getElementById('adminTrxAddress').value = paymentConfig.trxAddress;
-            document.getElementById('adminLvl1').value = level1Referrals;
-            document.getElementById('adminLvl2').value = level2Referrals;
-            document.getElementById('adminLvl3').value = level3Referrals;
-            document.getElementById('adminSaveMsg').style.display = 'none';
+        function saveAdminState(adminState) {
+            try {
+                localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(adminState));
+            } catch (e) {
+                console.error('Admin state save error:', e);
+            }
         }
 
-        function saveAdminSettings() {
-            paymentConfig = {
-                bkashAgent: document.getElementById('adminBkashAgent').value.trim(),
-                bkashPersonal: document.getElementById('adminBkashPersonal').value.trim(),
-                nagadAgent: document.getElementById('adminNagadAgent').value.trim(),
-                nagadPersonal: document.getElementById('adminNagadPersonal').value.trim(),
-                trxAddress: document.getElementById('adminTrxAddress').value.trim()
+        function getDefaultUserState() {
+            return {
+                userName: 'Sp',
+                phone: '01732311711',
+                balance: 2600,
+                referBalance: 0,
+                hasPurchasedBefore: false,
+                deposits: [],
+                withdrawals: [],
+                products: [],
+                teamStats: { lvl1: 0, lvl2: 0, lvl3: 0 },
+                appliedRefCode: ''
             };
+        }
 
-            level1Referrals = Math.max(0, parseInt(document.getElementById('adminLvl1').value) || 0);
-            level2Referrals = Math.max(0, parseInt(document.getElementById('adminLvl2').value) || 0);
-            level3Referrals = Math.max(0, parseInt(document.getElementById('adminLvl3').value) || 0);
+        let userState = {
+            ...getDefaultUserState(),
+            ...(JSON.parse(localStorage.getItem(USER_STORAGE_KEY)) || {})
+        };
 
-            localStorage.setItem('earnbd_payment_config', JSON.stringify(paymentConfig));
-            saveData();
-            syncReferralUI();
+        function saveUserState() {
+            try {
+                localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userState));
+            } catch (e) {
+                console.error('User state save error:', e);
+            }
+        }
+
+        // admin.html থেকে আসা পরিবর্তনগুলোর সাথে ইউজার পেজ সিংক করা
+        function syncWithAdminPanel() {
+            const adminState = getAdminState();
+
+            if (adminState.paymentNumbers) {
+                if (adminState.paymentNumbers.bkash) {
+                    paymentConfig.bkashPersonal = adminState.paymentNumbers.bkash;
+                }
+                if (adminState.paymentNumbers.nagad) {
+                    paymentConfig.nagadPersonal = adminState.paymentNumbers.nagad;
+                }
+                if (adminState.paymentNumbers.trxWallet) {
+                    paymentConfig.trxAddress = adminState.paymentNumbers.trxWallet;
+                }
+            }
+
+            if (adminState.siteSettings && adminState.siteSettings.supportLink) {
+                const tgBtn = document.getElementById('telegramSupportLink');
+                if (tgBtn) tgBtn.href = adminState.siteSettings.supportLink;
+            }
+
+            if (Array.isArray(adminState.users)) {
+                const matchedUser = adminState.users.find(
+                    (u) => u.phone === userState.phone || u.name === userState.userName
+                );
+                if (matchedUser && typeof matchedUser.balance === 'number') {
+                    userState.balance = matchedUser.balance;
+                }
+            }
+
+            if (Array.isArray(adminState.requests)) {
+                const userReqs = adminState.requests.filter(
+                    (r) => r.phone === userState.phone || r.userName === userState.userName
+                );
+
+                userReqs.forEach((r) => {
+                    if (r.type === 'ডিপোজিট') {
+                        const idx = userState.deposits.findIndex((d) => d.id === r.id);
+                        const mappedStatus = r.status === 'approved' ? 'success' : r.status === 'rejected' ? 'rejected' : 'pending';
+                        if (idx > -1) {
+                            userState.deposits[idx].status = mappedStatus;
+                        }
+                    } else if (r.type === 'উইথড্র') {
+                        const idx = userState.withdrawals.findIndex((w) => w.id === r.id);
+                        const mappedStatus = r.status === 'approved' ? 'success' : r.status === 'rejected' ? 'rejected' : 'pending';
+                        if (idx > -1) {
+                            userState.withdrawals[idx].status = mappedStatus;
+                        }
+                    }
+                });
+            }
+
+            saveUserState();
+            updateUI();
+            renderHistories();
             updatePayNumber();
-
-            const msg = document.getElementById('adminSaveMsg');
-            msg.style.display = 'block';
         }
 
-        function detectParamsFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const refParam = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('code');
-            if (refParam && refParam.trim() !== '' && refParam.trim() !== myOwnRefCode) {
-                appliedRefCode = refParam.trim();
-                localStorage.setItem('earnbd_applied_ref', appliedRefCode);
-            }
-            syncReferralUI();
+        function pushRequestToAdmin(reqObj) {
+            const adminState = getAdminState();
+            adminState.requests = Array.isArray(adminState.requests) ? adminState.requests : [];
+            adminState.users = Array.isArray(adminState.users) ? adminState.users : [];
 
-            if (urlParams.get('admin') === 'open' || window.location.hash === '#admin') {
-                showPage('adminPage');
+            const existingUser = adminState.users.find(
+                (u) => u.phone === userState.phone || u.name === userState.userName
+            );
+            if (existingUser) {
+                existingUser.balance = Number(userState.balance || 0);
+            } else {
+                adminState.users.unshift({
+                    id: 'U-' + Date.now(),
+                    name: userState.userName || 'Sp',
+                    phone: userState.phone || '01732311711',
+                    email: 'user@earnbd.com',
+                    balance: Number(userState.balance || 0),
+                    active: true
+                });
+            }
+
+            adminState.requests.unshift(reqObj);
+            saveAdminState(adminState);
+        }
+
+        let currentScreenshotBase64 = '';
+
+        function updateUI() {
+            document.getElementById('userNameDisplay').textContent = userState.userName;
+            document.getElementById('userBalance').textContent = Number(userState.balance).toFixed(2);
+            document.getElementById('referBalance').textContent = Number(userState.referBalance).toFixed(2);
+
+            const myCode = getOrCreateMemberRefCode();
+            document.getElementById('myUniqueRefCode').textContent = myCode;
+            const baseUrl = window.location.href.split('?')[0];
+            document.getElementById('referLink').value = `${baseUrl}?ref=${encodeURIComponent(myCode)}`;
+
+            document.getElementById('level1Count').textContent = userState.teamStats.lvl1;
+            document.getElementById('level2Count').textContent = userState.teamStats.lvl2;
+            document.getElementById('level3Count').textContent = userState.teamStats.lvl3;
+
+            document.getElementById('lvl1Inline').textContent = `${userState.teamStats.lvl1} জন`;
+            document.getElementById('lvl2Inline').textContent = `${userState.teamStats.lvl2} জন`;
+            document.getElementById('lvl3Inline').textContent = `${userState.teamStats.lvl3} জন`;
+
+            const activeRef = userState.appliedRefCode || '';
+            document.getElementById('activeRefCodeDisplay').textContent = activeRef ? activeRef : 'নেই';
+            const refInput = document.getElementById('appliedRefCodeInput');
+            if (refInput && document.activeElement !== refInput) {
+                refInput.value = activeRef;
             }
         }
 
-        function syncReferralUI() {
-            document.getElementById('myUniqueRefCode').innerText = myOwnRefCode;
-            const baseUrl = window.location.origin + window.location.pathname;
-            document.getElementById('referLink').value = baseUrl + '?ref=' + myOwnRefCode;
-
-            document.getElementById('level1Count').innerText = level1Referrals;
-            document.getElementById('level2Count').innerText = level2Referrals;
-            document.getElementById('level3Count').innerText = level3Referrals;
-            document.getElementById('lvl1Inline').innerText = level1Referrals + ' জন';
-            document.getElementById('lvl2Inline').innerText = level2Referrals + ' জন';
-            document.getElementById('lvl3Inline').innerText = level3Referrals + ' জন';
-
-            document.getElementById('activeRefCodeDisplay').innerText = appliedRefCode || 'নেই';
-            document.getElementById('appliedRefCodeInput').value = appliedRefCode;
+        function initReferralFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const refParam = (params.get('ref') || '').trim();
+            if (refParam) {
+                userState.appliedRefCode = refParam;
+                saveUserState();
+            }
         }
 
         function manualSetRefCode(val) {
-            appliedRefCode = val.trim();
-            localStorage.setItem('earnbd_applied_ref', appliedRefCode);
-            document.getElementById('activeRefCodeDisplay').innerText = appliedRefCode || 'নেই';
+            userState.appliedRefCode = val.trim();
+            saveUserState();
+            document.getElementById('activeRefCodeDisplay').textContent = userState.appliedRefCode || 'নেই';
         }
 
         function copyReferLink() {
             const input = document.getElementById('referLink');
-            copyText(input.value, 'রেফার লিংক');
-        }
-
-        function saveData() {
-            document.getElementById('userBalance').innerText = balance.toFixed(2);
-            document.getElementById('referBalance').innerText = referCommissionBalance.toFixed(2);
-            localStorage.setItem('earnbd_balance', balance);
-            localStorage.setItem('earnbd_ref_commission', referCommissionBalance);
-            localStorage.setItem('earnbd_first_buy_done', hasBoughtFirstProduct ? 'true' : 'false');
-            localStorage.setItem('earnbd_lvl1_count', level1Referrals);
-            localStorage.setItem('earnbd_lvl2_count', level2Referrals);
-            localStorage.setItem('earnbd_lvl3_count', level3Referrals);
-            localStorage.setItem('earnbd_dep_hist', JSON.stringify(depositHistory));
-            localStorage.setItem('earnbd_with_hist', JSON.stringify(withdrawHistory));
-            localStorage.setItem('earnbd_products', JSON.stringify(myProducts));
+            input.select();
+            input.setSelectionRange(0, 99999);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(input.value).catch(() => {});
+            }
+            alert('আপনার রেফার লিংক কপি হয়েছে: ' + input.value);
         }
 
         function showPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0, 0);
+            syncWithAdminPanel();
 
-            if (pageId === 'depositPage') updatePayNumber();
-            if (pageId === 'depositHistoryPage') renderDepositHistory();
-            if (pageId === 'withdrawHistoryPage') renderWithdrawHistory();
-            if (pageId === 'myProductsPage') renderMyProducts();
-            if (pageId === 'referPage') syncReferralUI();
-            if (pageId === 'adminPage') loadAdminInputs();
+            document.querySelectorAll('.page-section').forEach((sec) => {
+                sec.classList.remove('active');
+            });
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
 
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach((item) => item.classList.remove('active'));
             if (pageId === 'homePage') document.getElementById('nav-home').classList.add('active');
-            if (pageId === 'depositPage') document.getElementById('nav-deposit').classList.add('active');
+            if (pageId === 'depositPage') {
+                document.getElementById('nav-deposit').classList.add('active');
+                updatePayNumber();
+            }
             if (pageId === 'withdrawPage') document.getElementById('nav-withdraw').classList.add('active');
             if (pageId === 'referPage') document.getElementById('nav-refer').classList.add('active');
             if (pageId === 'myProductsPage') document.getElementById('nav-products').classList.add('active');
+            if (pageId === 'adminPage') loadAdminInputs();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderHistories();
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(() => {});
+            }
+            alert('কপি হয়েছে: ' + text);
+        }
+
+        function updatePayNumber() {
+            const method = document.getElementById('depMethod').value;
+            const box = document.getElementById('adminPayNumber');
+            if (!box) return;
+
+            if (method === 'বিকাশ (bKash)') {
+                box.innerHTML = `
+                    <div class="number-option-card">
+                        <div>
+                            <span class="number-type-tag">বিকাশ এজেন্ট (Cash Out)</span>
+                            <span class="number-value">${paymentConfig.bkashAgent}</span>
+                        </div>
+                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.bkashAgent}')">কপি</button>
+                    </div>
+                    <div class="number-option-card">
+                        <div>
+                            <span class="number-type-tag">বিকাশ পারসোনাল (Send Money)</span>
+                            <span class="number-value">${paymentConfig.bkashPersonal}</span>
+                        </div>
+                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.bkashPersonal}')">কপি</button>
+                    </div>
+                `;
+            } else if (method === 'নগদ (Nagad)') {
+                box.innerHTML = `
+                    <div class="number-option-card">
+                        <div>
+                            <span class="number-type-tag">নগদ এজেন্ট (Cash Out)</span>
+                            <span class="number-value">${paymentConfig.nagadAgent}</span>
+                        </div>
+                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.nagadAgent}')">কপি</button>
+                    </div>
+                    <div class="number-option-card">
+                        <div>
+                            <span class="number-type-tag">নগদ পারসোনাল (Send Money)</span>
+                            <span class="number-value">${paymentConfig.nagadPersonal}</span>
+                        </div>
+                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.nagadPersonal}')">কপি</button>
+                    </div>
+                `;
+            } else {
+                box.innerHTML = `
+                    <div class="number-option-card">
+                        <div>
+                            <span class="number-type-tag">TRX (TRC20) Wallet Address</span>
+                            <span class="number-value">${paymentConfig.trxAddress}</span>
+                        </div>
+                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.trxAddress}')">কপি</button>
+                    </div>
+                `;
+            }
         }
 
         function previewScreenshot(event) {
             const file = event.target.files[0];
             const img = document.getElementById('ssPreview');
             if (!file) {
-                currentScreenshotBase64 = "";
+                currentScreenshotBase64 = '';
                 img.style.display = 'none';
                 return;
             }
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 currentScreenshotBase64 = e.target.result;
                 img.src = currentScreenshotBase64;
                 img.style.display = 'block';
@@ -1115,31 +1197,48 @@
             const trx = document.getElementById('depTrx').value.trim();
 
             if (!amount || amount <= 0) {
-                alert('সঠিক টাকার পরিমাণ লিখুন।');
+                alert('সঠিক টাকার পরিমাণ লিখুন!');
                 return;
             }
             if (!trx) {
-                alert('Transaction ID (TrxID) লিখুন।');
+                alert('Transaction ID (TrxID) লিখুন!');
                 return;
             }
 
-            depositHistory.unshift({
+            const reqId = 'REQ-' + Date.now();
+            const dateStr = new Date().toLocaleString('bn-BD');
+
+            userState.deposits.unshift({
+                id: reqId,
                 method,
                 amount,
                 trx,
                 screenshot: currentScreenshotBase64,
-                status: 'Pending',
-                time: new Date().toLocaleString('bn-BD')
+                status: 'pending',
+                date: dateStr
+            });
+            saveUserState();
+
+            pushRequestToAdmin({
+                id: reqId,
+                type: 'ডিপোজিট',
+                userName: userState.userName,
+                phone: userState.phone,
+                method,
+                amount,
+                trxId: trx,
+                status: 'pending',
+                createdAt: dateStr,
+                screenshotText: `${method} • ৳${amount} • TrxID: ${trx}${currentScreenshotBase64 ? ' (স্ক্রিনশট যুক্ত)' : ''}`
             });
 
-            saveData();
             document.getElementById('depAmount').value = '';
             document.getElementById('depTrx').value = '';
             document.getElementById('depScreenshot').value = '';
             document.getElementById('ssPreview').style.display = 'none';
             currentScreenshotBase64 = '';
 
-            alert('ডিপোজিট রিকোয়েস্ট জমা হয়েছে!');
+            alert('ডিপোজিট রিকোয়েস্ট জমা হয়েছে এবং অ্যাডমিন প্যানেলে পাঠানো হয়েছে!');
             showPage('depositHistoryPage');
         }
 
@@ -1148,129 +1247,204 @@
             const number = document.getElementById('withNumber').value.trim();
             const amount = parseFloat(document.getElementById('withAmount').value);
 
-            if (!number) {
-                alert('আপনার একাউন্ট নম্বর লিখুন।');
+            if (!number || number.length < 6) {
+                alert('সঠিক একাউন্ট নম্বর লিখুন!');
                 return;
             }
             if (!amount || amount < 300) {
-                alert('সর্বনিম্ন ৩০০ টাকা উত্তোলন করতে পারবেন।');
+                alert('সর্বনিম্ন ৩০০ টাকা উত্তোলন করা যাবে!');
                 return;
             }
-            if (amount > balance) {
-                alert('আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই।');
+            if (amount > userState.balance) {
+                alert('আপনার পর্যাপ্ত ব্যালেন্স নেই!');
                 return;
             }
 
-            balance -= amount;
-            withdrawHistory.unshift({
+            const reqId = 'REQ-' + Date.now();
+            const dateStr = new Date().toLocaleString('bn-BD');
+
+            userState.balance -= amount;
+            userState.withdrawals.unshift({
+                id: reqId,
                 method,
                 number,
                 amount,
-                status: 'Pending',
-                time: new Date().toLocaleString('bn-BD')
+                status: 'pending',
+                date: dateStr
+            });
+            saveUserState();
+
+            pushRequestToAdmin({
+                id: reqId,
+                type: 'উইথড্র',
+                userName: userState.userName,
+                phone: number,
+                method,
+                amount,
+                trxId: `WITHDRAW-${method}`,
+                status: 'pending',
+                createdAt: dateStr,
+                screenshotText: `Withdraw to ${number} via ${method} — ৳${amount}`
             });
 
-            saveData();
+            updateUI();
+
             document.getElementById('withNumber').value = '';
             document.getElementById('withAmount').value = '';
+
             alert('উত্তোলন রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!');
             showPage('withdrawHistoryPage');
         }
 
-        function buyPlan(name, price, dailyIncome, days) {
-            if (balance < price) {
-                alert('আপনার ব্যালেন্স কম আছে। আগে ডিপোজিট করুন।');
+        function buyPlan(planName, price, dailyIncome, days) {
+            if (userState.balance < price) {
+                alert(`আপনার ব্যালেন্সে পর্যাপ্ত টাকা নেই! অনুগ্রহ করে ডিপোজিট করুন।`);
                 showPage('depositPage');
                 return;
             }
 
-            balance -= price;
-            myProducts.unshift({
-                name,
+            userState.balance -= price;
+
+            if (!userState.hasPurchasedBefore) {
+                userState.hasPurchasedBefore = true;
+            }
+
+            userState.products.unshift({
+                name: planName,
                 price,
                 dailyIncome,
                 days,
                 date: new Date().toLocaleString('bn-BD')
             });
 
-            if (!hasBoughtFirstProduct && appliedRefCode) {
-                const commission = price * 0.20;
-                referCommissionBalance += commission;
-                hasBoughtFirstProduct = true;
-            } else if (!hasBoughtFirstProduct) {
-                hasBoughtFirstProduct = true;
+            saveUserState();
+            const adminState = getAdminState();
+            if (Array.isArray(adminState.users)) {
+                const u = adminState.users.find((item) => item.phone === userState.phone || item.name === userState.userName);
+                if (u) {
+                    u.balance = Number(userState.balance || 0);
+                    saveAdminState(adminState);
+                }
             }
 
-            saveData();
-            alert(name + ' সফলভাবে কেনা হয়েছে!');
+            updateUI();
+            alert(`অভিনন্দন! আপনি "${planName}" সফলভাবে কিনেছেন।`);
             showPage('myProductsPage');
         }
 
-        function renderDepositHistory() {
-            const list = document.getElementById('depositHistoryList');
-            if (depositHistory.length === 0) {
-                list.innerHTML = '<div class="empty-msg">কোনো ডিপোজিট হিস্ট্রি পাওয়া যায়নি।</div>';
-                return;
-            }
-            list.innerHTML = depositHistory.map(item => `
-                <div class="list-item">
-                    <div class="list-top">
-                        <div>
-                            <h4>${item.method} — ৳ ${item.amount}</h4>
-                            <p>TrxID: ${item.trx}</p>
-                            <p>${item.time}</p>
+        function renderHistories() {
+            const depList = document.getElementById('depositHistoryList');
+            if (!userState.deposits.length) {
+                depList.innerHTML = `<div class="empty-msg">কোনো ডিপোজিট হিস্ট্রি পাওয়া যায়নি।</div>`;
+            } else {
+                depList.innerHTML = userState.deposits.map((d) => {
+                    const badgeClass = d.status === 'success' ? 'status-success' : d.status === 'rejected' ? 'status-rejected' : 'status-pending';
+                    const badgeText = d.status === 'success' ? 'সফল' : d.status === 'rejected' ? 'বাতিল' : 'পেন্ডিং';
+                    return `
+                        <div class="list-item">
+                            <div class="list-top">
+                                <div>
+                                    <h4>${d.method} — ৳ ${d.amount}</h4>
+                                    <p>TrxID: <strong>${d.trx}</strong></p>
+                                    <p>${d.date}</p>
+                                </div>
+                                <span class="status-badge ${badgeClass}">${badgeText}</span>
+                            </div>
+                            ${d.screenshot ? `<img src="${d.screenshot}" class="ss-thumb" alt="Deposit Screenshot">` : ''}
                         </div>
-                        <span class="status-badge status-pending">${item.status}</span>
+                    `;
+                }).join('');
+            }
+
+            const withList = document.getElementById('withdrawHistoryList');
+            if (!userState.withdrawals.length) {
+                withList.innerHTML = `<div class="empty-msg">কোনো উত্তোলন হিস্ট্রি পাওয়া যায়নি।</div>`;
+            } else {
+                withList.innerHTML = userState.withdrawals.map((w) => {
+                    const badgeClass = w.status === 'success' ? 'status-success' : w.status === 'rejected' ? 'status-rejected' : 'status-pending';
+                    const badgeText = w.status === 'success' ? 'সফল' : w.status === 'rejected' ? 'বাতিল' : 'পেন্ডিং';
+                    return `
+                        <div class="list-item">
+                            <div class="list-top">
+                                <div>
+                                    <h4>${w.method} — ৳ ${w.amount}</h4>
+                                    <p>নম্বর: <strong>${w.number}</strong></p>
+                                    <p>${w.date}</p>
+                                </div>
+                                <span class="status-badge ${badgeClass}">${badgeText}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const prodList = document.getElementById('myProductsList');
+            if (!userState.products.length) {
+                prodList.innerHTML = `<div class="empty-msg">আপনি এখনো কোনো পণ্য কেনেননি।</div>`;
+            } else {
+                prodList.innerHTML = userState.products.map((p) => `
+                    <div class="list-item">
+                        <div class="list-top">
+                            <div>
+                                <h4>${p.name}</h4>
+                                <p>দাম: ৳ ${p.price} | দৈনিক ইনকাম: ৳ ${p.dailyIncome}</p>
+                                <p>মেয়াদ: ${p.days} দিন | কেনার সময়: ${p.date}</p>
+                            </div>
+                            <span class="status-badge status-success">সক্রিয়</span>
+                        </div>
                     </div>
-                    ${item.screenshot ? `<img src="${item.screenshot}" class="ss-thumb" alt="Screenshot">` : ''}
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
-        function renderWithdrawHistory() {
-            const list = document.getElementById('withdrawHistoryList');
-            if (withdrawHistory.length === 0) {
-                list.innerHTML = '<div class="empty-msg">কোনো উত্তোলন হিস্ট্রি পাওয়া যায়নি।</div>';
-                return;
-            }
-            list.innerHTML = withdrawHistory.map(item => `
-                <div class="list-item">
-                    <div class="list-top">
-                        <div>
-                            <h4>${item.method} — ৳ ${item.amount}</h4>
-                            <p>নম্বর: ${item.number}</p>
-                            <p>${item.time}</p>
-                        </div>
-                        <span class="status-badge status-pending">${item.status}</span>
-                    </div>
-                </div>
-            `).join('');
+        function loadAdminInputs() {
+            document.getElementById('adminBkashAgent').value = paymentConfig.bkashAgent;
+            document.getElementById('adminBkashPersonal').value = paymentConfig.bkashPersonal;
+            document.getElementById('adminNagadAgent').value = paymentConfig.nagadAgent;
+            document.getElementById('adminNagadPersonal').value = paymentConfig.nagadPersonal;
+            document.getElementById('adminTrxAddress').value = paymentConfig.trxAddress;
+
+            document.getElementById('adminLvl1').value = userState.teamStats.lvl1;
+            document.getElementById('adminLvl2').value = userState.teamStats.lvl2;
+            document.getElementById('adminLvl3').value = userState.teamStats.lvl3;
         }
 
-        function renderMyProducts() {
-            const list = document.getElementById('myProductsList');
-            if (myProducts.length === 0) {
-                list.innerHTML = '<div class="empty-msg">আপনি এখনো কোনো পণ্য কেনেননি।</div>';
-                return;
-            }
-            list.innerHTML = myProducts.map(item => `
-                <div class="list-item">
-                    <div class="list-top">
-                        <div>
-                            <h4>${item.name}</h4>
-                            <p>দাম: ৳ ${item.price} | দৈনিক আয়: ৳ ${item.dailyIncome}</p>
-                            <p>মেয়াদ: ${item.days} দিন | কেনার সময়: ${item.date}</p>
-                        </div>
-                        <span class="status-badge status-success">Active</span>
-                    </div>
-                </div>
-            `).join('');
+        function saveAdminSettings() {
+            paymentConfig = {
+                bkashAgent: document.getElementById('adminBkashAgent').value.trim() || defaultPaymentConfig.bkashAgent,
+                bkashPersonal: document.getElementById('adminBkashPersonal').value.trim() || defaultPaymentConfig.bkashPersonal,
+                nagadAgent: document.getElementById('adminNagadAgent').value.trim() || defaultPaymentConfig.nagadAgent,
+                nagadPersonal: document.getElementById('adminNagadPersonal').value.trim() || defaultPaymentConfig.nagadPersonal,
+                trxAddress: document.getElementById('adminTrxAddress').value.trim() || defaultPaymentConfig.trxAddress
+            };
+            localStorage.setItem('earnbd_payment_config', JSON.stringify(paymentConfig));
+
+            userState.teamStats = {
+                lvl1: Math.max(0, parseInt(document.getElementById('adminLvl1').value, 10) || 0),
+                lvl2: Math.max(0, parseInt(document.getElementById('adminLvl2').value, 10) || 0),
+                lvl3: Math.max(0, parseInt(document.getElementById('adminLvl3').value, 10) || 0)
+            };
+            saveUserState();
+            updateUI();
+            updatePayNumber();
+
+            const msg = document.getElementById('adminSaveMsg');
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 2500);
         }
 
-        // Initial Setup
-        saveData();
+        initReferralFromURL();
+        syncWithAdminPanel();
+        updateUI();
         updatePayNumber();
-        detectParamsFromURL();
+        renderHistories();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === 'open') {
+            showPage('adminPage');
+        }
     </script>
 </body>
 </html>
