@@ -189,7 +189,7 @@
 
         .welcome-text { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
         .balance-amount { font-size: 34px; font-weight: 700; margin-bottom: 8px; }
-        .refer-income { font-size: 13px; opacity: 0.95; font-weight: 600; }
+        .refer-income { font-size: 14px; opacity: 0.98; font-weight: 700; }
         .midnight-note { font-size: 12px; opacity: 0.92; margin-top: 6px; color: #fde68a; font-weight: 600; }
 
         /* Customer Support */
@@ -413,7 +413,7 @@
         }
 
         .team-stat-box h3 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             color: #1d4ed8;
             line-height: 1.1;
@@ -441,6 +441,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
         }
 
         .my-code-badge span {
@@ -450,9 +451,10 @@
         }
 
         .my-code-badge strong {
-            font-size: 17px;
+            font-size: 16px;
             color: #b45309;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
+            word-break: break-all;
         }
 
         .ref-info-box {
@@ -463,6 +465,38 @@
             margin-bottom: 14px;
             font-size: 14px;
             color: #166534;
+        }
+
+        .ref-members-list {
+            margin-top: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .ref-members-list h5 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .ref-member-row {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            gap: 8px;
+        }
+
+        .ref-member-row:last-child {
+            margin-bottom: 0;
         }
 
         .level-card {
@@ -636,7 +670,7 @@
 </head>
 <body>
 
-    <!-- Clean Popup Modal (No URL header) -->
+    <!-- Clean Popup Modal -->
     <div id="cleanModalBackdrop" class="clean-modal-backdrop">
         <div class="clean-modal-box">
             <div id="cleanModalMessage" class="clean-modal-text">আবেদন জমা হয়েছে অপেক্ষা করেন</div>
@@ -873,6 +907,13 @@
                     <input type="text" id="referLink" value="" readonly>
                 </div>
                 <button class="submit-btn" onclick="copyReferLink()">📋 রেফার লিংক কপি করুন</button>
+
+                <div class="ref-members-list">
+                    <h5>আপনার রেফার লিংক/কোড দিয়ে একাউন্ট করা সদস্যরা:</h5>
+                    <div id="referredMembersList">
+                        <p style="font-size:13px; color:#64748b;">এখনো কেউ আপনার রেফার কোড দিয়ে একাউন্ট করেনি।</p>
+                    </div>
+                </div>
 
                 <hr style="border:none; border-top:1px solid #e2e8f0; margin:16px 0;">
 
@@ -1166,6 +1207,40 @@
             return localStorage.getItem(SESSION_KEY) === 'true' && Boolean(activePhone) && isRegistered;
         }
 
+        // বর্তমান সদস্যের ১ম, ২য় ও ৩য় স্তরের রেফার সংখ্যা এবং সদস্য তালিকা হিসাব করা
+        function calculateReferralTreeForCurrentUser() {
+            const accounts = getRegisteredAccounts();
+            const myCode = normalizeCode(getOrCreateMemberRefCode());
+            const currentPhone = normalizePhone(userState.phone);
+
+            if (!myCode) {
+                return { lvl1List: [], lvl2List: [], lvl3List: [] };
+            }
+
+            const lvl1List = accounts.filter(
+                (acc) => normalizeCode(acc.refCode) === myCode && normalizePhone(acc.phone) !== currentPhone
+            );
+            const lvl1Codes = new Set(lvl1List.map((a) => normalizeCode(a.myRefCode)).filter(Boolean));
+
+            const lvl2List = accounts.filter(
+                (acc) =>
+                    lvl1Codes.has(normalizeCode(acc.refCode)) &&
+                    normalizePhone(acc.phone) !== currentPhone &&
+                    !lvl1List.some((x) => normalizePhone(x.phone) === normalizePhone(acc.phone))
+            );
+            const lvl2Codes = new Set(lvl2List.map((a) => normalizeCode(a.myRefCode)).filter(Boolean));
+
+            const lvl3List = accounts.filter(
+                (acc) =>
+                    lvl2Codes.has(normalizeCode(acc.refCode)) &&
+                    normalizePhone(acc.phone) !== currentPhone &&
+                    !lvl1List.some((x) => normalizePhone(x.phone) === normalizePhone(acc.phone)) &&
+                    !lvl2List.some((x) => normalizePhone(x.phone) === normalizePhone(acc.phone))
+            );
+
+            return { lvl1List, lvl2List, lvl3List };
+        }
+
         function applyMidnightDailyProductIncome() {
             if (!isUserLoggedIn()) return;
             if (!Array.isArray(userState.products) || userState.products.length === 0) {
@@ -1212,6 +1287,7 @@
             }
         }
 
+        // রেফার করা ব্যক্তি ১ম বার পণ্য কেনার সাথে সাথে রেফারারের ব্যালেন্স ও মোট রেফার কমিশন আয়ে টাকা যুক্ত হবে
         function awardReferralCommissionOnFirstPurchase(purchasePrice) {
             if (userState.hasPurchasedBefore) {
                 return 0;
@@ -1240,6 +1316,7 @@
             );
             if (adminLvl1User) {
                 adminLvl1User.balance = Number(adminLvl1User.balance || 0) + lvl1Commission;
+                adminLvl1User.referBalance = Number(adminLvl1User.referBalance || 0) + lvl1Commission;
             }
 
             if (normalizePhone(userState.phone) === normalizePhone(level1Acc.phone)) {
@@ -1260,6 +1337,12 @@
                     );
                     if (adminLvl2User) {
                         adminLvl2User.balance = Number(adminLvl2User.balance || 0) + lvl2Commission;
+                        adminLvl2User.referBalance = Number(adminLvl2User.referBalance || 0) + lvl2Commission;
+                    }
+
+                    if (normalizePhone(userState.phone) === normalizePhone(level2Acc.phone)) {
+                        userState.balance = Number(userState.balance || 0) + lvl2Commission;
+                        userState.referBalance = Number(userState.referBalance || 0) + lvl2Commission;
                     }
 
                     const lvl3Code = normalizeCode(level2Acc.refCode);
@@ -1275,6 +1358,12 @@
                             );
                             if (adminLvl3User) {
                                 adminLvl3User.balance = Number(adminLvl3User.balance || 0) + lvl3Commission;
+                                adminLvl3User.referBalance = Number(adminLvl3User.referBalance || 0) + lvl3Commission;
+                            }
+
+                            if (normalizePhone(userState.phone) === normalizePhone(level3Acc.phone)) {
+                                userState.balance = Number(userState.balance || 0) + lvl3Commission;
+                                userState.referBalance = Number(userState.referBalance || 0) + lvl3Commission;
                             }
                         }
                     }
@@ -1368,6 +1457,7 @@
                 email: `${phone}@earnbd.local`,
                 myRefCode: myUniqueCode,
                 balance: REGISTRATION_BONUS,
+                referBalance: 0,
                 refCode: refCode || 'নেই',
                 active: true
             });
@@ -1413,6 +1503,8 @@
             userState.userName = matchedPhoneAccount.name || 'Member';
             userState.phone = matchedPhoneAccount.phone;
             userState.myRefCode = uniqueCode;
+            userState.balance = typeof matchedPhoneAccount.balance === 'number' ? matchedPhoneAccount.balance : userState.balance;
+            userState.referBalance = typeof matchedPhoneAccount.referBalance === 'number' ? matchedPhoneAccount.referBalance : 0;
             if (matchedPhoneAccount.refCode) {
                 userState.appliedRefCode = matchedPhoneAccount.refCode;
             }
@@ -1441,6 +1533,7 @@
 
         function syncWithAdminPanel() {
             const adminState = getAdminState();
+            const accounts = getRegisteredAccounts();
 
             if (Array.isArray(adminState.products) && adminState.products.length > 0) {
                 catalogProducts = adminState.products.map((p, idx) => ({
@@ -1487,12 +1580,29 @@
                 supportConfig.link = adminState.siteSettings.supportLink;
             }
 
+            if (userState.phone) {
+                const matchedAcc = accounts.find(
+                    (a) => normalizePhone(a.phone) === normalizePhone(userState.phone)
+                );
+                if (matchedAcc) {
+                    if (typeof matchedAcc.balance === 'number') {
+                        userState.balance = matchedAcc.balance;
+                    }
+                    if (typeof matchedAcc.referBalance === 'number') {
+                        userState.referBalance = matchedAcc.referBalance;
+                    }
+                }
+            }
+
             if (Array.isArray(adminState.users) && userState.phone) {
                 const matchedUser = adminState.users.find(
                     (u) => normalizePhone(u.phone) === normalizePhone(userState.phone)
                 );
                 if (matchedUser && typeof matchedUser.balance === 'number') {
                     userState.balance = matchedUser.balance;
+                }
+                if (matchedUser && typeof matchedUser.referBalance === 'number') {
+                    userState.referBalance = Math.max(Number(userState.referBalance || 0), Number(matchedUser.referBalance || 0));
                 }
             }
 
@@ -1583,6 +1693,7 @@
             );
             if (existingUser) {
                 existingUser.balance = Number(userState.balance || 0);
+                existingUser.referBalance = Number(userState.referBalance || 0);
             } else {
                 adminState.users.unshift({
                     id: 'U-' + Date.now(),
@@ -1591,6 +1702,7 @@
                     email: `${userState.phone || 'user'}@earnbd.local`,
                     myRefCode: userState.myRefCode || '',
                     balance: Number(userState.balance || 0),
+                    referBalance: Number(userState.referBalance || 0),
                     active: true
                 });
             }
@@ -1612,13 +1724,41 @@
             const baseUrl = window.location.href.split('?')[0];
             document.getElementById('referLink').value = `${baseUrl}?ref=${encodeURIComponent(myCode)}`;
 
-            document.getElementById('level1Count').textContent = userState.teamStats.lvl1;
-            document.getElementById('level2Count').textContent = userState.teamStats.lvl2;
-            document.getElementById('level3Count').textContent = userState.teamStats.lvl3;
+            const tree = calculateReferralTreeForCurrentUser();
+            const c1 = tree.lvl1List.length;
+            const c2 = tree.lvl2List.length;
+            const c3 = tree.lvl3List.length;
+            userState.teamStats = { lvl1: c1, lvl2: c2, lvl3: c3 };
 
-            document.getElementById('lvl1Inline').textContent = `${userState.teamStats.lvl1} জন`;
-            document.getElementById('lvl2Inline').textContent = `${userState.teamStats.lvl2} জন`;
-            document.getElementById('lvl3Inline').textContent = `${userState.teamStats.lvl3} জন`;
+            document.getElementById('level1Count').textContent = c1;
+            document.getElementById('level2Count').textContent = c2;
+            document.getElementById('level3Count').textContent = c3;
+
+            document.getElementById('lvl1Inline').textContent = `${c1} জন`;
+            document.getElementById('lvl2Inline').textContent = `${c2} জন`;
+            document.getElementById('lvl3Inline').textContent = `${c3} জন`;
+
+            const membersContainer = document.getElementById('referredMembersList');
+            if (membersContainer) {
+                const allRefs = [
+                    ...tree.lvl1List.map((m) => ({ ...m, levelLabel: '১ম স্তর' })),
+                    ...tree.lvl2List.map((m) => ({ ...m, levelLabel: '২য় স্তর' })),
+                    ...tree.lvl3List.map((m) => ({ ...m, levelLabel: '৩য় স্তর' }))
+                ];
+                if (!allRefs.length) {
+                    membersContainer.innerHTML = `<p style="font-size:13px; color:#64748b;">এখনো কেউ আপনার রেফার কোড দিয়ে একাউন্ট করেনি।</p>`;
+                } else {
+                    membersContainer.innerHTML = allRefs.map((m) => `
+                        <div class="ref-member-row">
+                            <div>
+                                <strong>${m.name || 'Member'}</strong><br>
+                                <span style="color:#64748b; font-size:12px;">${m.phone || ''}</span>
+                            </div>
+                            <span class="status-badge status-success">${m.levelLabel}</span>
+                        </div>
+                    `).join('');
+                }
+            }
 
             const activeRef = userState.appliedRefCode || '';
             document.getElementById('activeRefCodeDisplay').textContent = activeRef ? activeRef : 'নেই';
@@ -1957,12 +2097,22 @@
                 date: new Date().toLocaleString('bn-BD')
             });
 
+            // বর্তমান সদস্যের ব্যালেন্স রেজিস্টার্ড অ্যাকাউন্ট লিস্টে সেভ করা
+            const accounts = getRegisteredAccounts();
+            const currentAcc = accounts.find((a) => normalizePhone(a.phone) === normalizePhone(userState.phone));
+            if (currentAcc) {
+                currentAcc.balance = Number(userState.balance || 0);
+                currentAcc.referBalance = Number(userState.referBalance || 0);
+                saveRegisteredAccounts(accounts);
+            }
+
             saveUserState();
             const adminState = getAdminState();
             if (Array.isArray(adminState.users)) {
                 const u = adminState.users.find((item) => normalizePhone(item.phone) === normalizePhone(userState.phone));
                 if (u) {
                     u.balance = Number(userState.balance || 0);
+                    u.referBalance = Number(userState.referBalance || 0);
                     saveAdminState(adminState);
                 }
             }
@@ -2043,7 +2193,7 @@
         }
 
         window.addEventListener('storage', function (event) {
-            if (event.key === ADMIN_STORAGE_KEY) {
+            if (event.key === ADMIN_STORAGE_KEY || event.key === USERS_ACCOUNTS_KEY) {
                 applyMidnightDailyProductIncome();
                 syncWithAdminPanel();
             }
