@@ -38,12 +38,6 @@
             font-weight: 700;
         }
 
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
         .logout-btn {
             background: rgba(255, 255, 255, 0.22);
             color: white;
@@ -61,10 +55,8 @@
             margin: 0 auto;
         }
 
-        /* Auth Box (Login & Registration) */
-        .auth-wrapper {
-            margin-top: 10px;
-        }
+        /* Auth Box */
+        .auth-wrapper { margin-top: 10px; }
 
         .auth-tabs {
             display: grid;
@@ -93,13 +85,8 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
 
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
 
         .bonus-banner {
             background: #ecfdf5;
@@ -120,22 +107,19 @@
             text-align: center;
         }
 
-        /* Page Switching System */
+        /* Page Switching */
         .page-section {
             display: none;
             animation: fadeIn 0.2s ease;
         }
 
-        .page-section.active {
-            display: block;
-        }
+        .page-section.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Sub-page Top Bar */
         .page-top-bar {
             display: flex;
             align-items: center;
@@ -192,7 +176,7 @@
         .refer-income { font-size: 14px; opacity: 0.98; font-weight: 700; }
         .midnight-note { font-size: 12px; opacity: 0.92; margin-top: 6px; color: #fde68a; font-weight: 600; }
 
-        /* Customer Support */
+        /* Support Cards */
         .support-card {
             background: white;
             padding: 14px 16px;
@@ -201,20 +185,32 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             gap: 10px;
         }
 
-        .support-info h4 { font-size: 16px; color: #0284c7; font-weight: 700; }
+        .support-info h4 { font-size: 15px; color: #0284c7; font-weight: 700; }
         .support-info p { font-size: 12px; color: #64748b; }
+
         .support-btn {
             background: #0ea5e9;
             color: white;
             text-decoration: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .group-btn {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
             white-space: nowrap;
         }
 
@@ -259,6 +255,7 @@
             color: #0f172a;
             margin-bottom: 12px;
         }
+
         .plan-card {
             border-radius: 18px;
             padding: 18px;
@@ -267,11 +264,12 @@
             overflow: hidden;
             margin-bottom: 15px;
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
         }
 
-        .plan-starter { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
-        .plan-silver { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
-        .plan-gold { background: linear-gradient(135deg, #d97706, #b45309); }
+        .plan-card.theme-1 { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .plan-card.theme-2 { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+        .plan-card.theme-3 { background: linear-gradient(135deg, #d97706, #b45309); }
 
         .badge {
             position: absolute;
@@ -286,7 +284,7 @@
         }
 
         .plan-content { display: flex; align-items: center; gap: 15px; }
-        .plan-icon { font-size: 48px; }
+        .plan-icon { font-size: 46px; }
         .plan-details { flex: 1; }
         .plan-details h3 { font-size: 18px; margin-bottom: 6px; }
         .plan-details p { font-size: 14px; margin-bottom: 4px; opacity: 0.95; }
@@ -305,7 +303,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
-        /* Form Card inside Full Pages */
+        /* Form Card */
         .card-box {
             background: white;
             padding: 20px;
@@ -334,8 +332,7 @@
             background: white;
             border: 1px solid #bfdbfe;
             border-radius: 10px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
+            padding: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -343,31 +340,28 @@
             gap: 8px;
         }
 
-        .number-option-card:last-of-type {
-            margin-bottom: 0;
-        }
-
         .number-type-tag {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #1d4ed8;
             display: block;
         }
 
         .number-value {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             color: #0f172a;
             word-break: break-all;
+            margin-top: 2px;
         }
 
         .copy-mini-btn {
             background: #dbeafe;
             color: #1d4ed8;
             border: none;
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
@@ -395,7 +389,7 @@
             margin-bottom: 14px;
         }
 
-        /* Referral Team Count Grid */
+        /* Referral Grid */
         .team-stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -426,10 +420,7 @@
             margin-top: 3px;
         }
 
-        .team-stat-box small {
-            font-size: 11px;
-            color: #64748b;
-        }
+        .team-stat-box small { font-size: 11px; color: #64748b; }
 
         .my-code-badge {
             background: #fef3c7;
@@ -443,18 +434,8 @@
             gap: 8px;
         }
 
-        .my-code-badge span {
-            font-size: 14px;
-            font-weight: 600;
-            color: #92400e;
-        }
-
-        .my-code-badge strong {
-            font-size: 16px;
-            color: #b45309;
-            letter-spacing: 0.4px;
-            word-break: break-all;
-        }
+        .my-code-badge span { font-size: 14px; font-weight: 600; color: #92400e; }
+        .my-code-badge strong { font-size: 16px; color: #b45309; word-break: break-all; }
 
         .ref-info-box {
             background: #f0fdf4;
@@ -494,9 +475,7 @@
             gap: 8px;
         }
 
-        .ref-member-row:last-child {
-            margin-bottom: 0;
-        }
+        .ref-member-row:last-child { margin-bottom: 0; }
 
         .level-tag {
             background: #e0e7ff;
@@ -553,7 +532,6 @@
             margin-top: 6px;
         }
 
-        /* List Items */
         .list-item {
             background: white;
             border: 1px solid #e2e8f0;
@@ -613,9 +591,7 @@
             z-index: 999;
         }
 
-        .clean-modal-backdrop.active {
-            display: flex;
-        }
+        .clean-modal-backdrop.active { display: flex; }
 
         .clean-modal-box {
             background: white;
@@ -635,10 +611,7 @@
             line-height: 1.5;
         }
 
-        .clean-modal-actions {
-            display: flex;
-            justify-content: flex-end;
-        }
+        .clean-modal-actions { display: flex; justify-content: flex-end; }
 
         .clean-modal-ok {
             background: #1d4ed8;
@@ -663,9 +636,7 @@
             z-index: 100;
         }
 
-        .bottom-nav.visible {
-            display: flex;
-        }
+        .bottom-nav.visible { display: flex; }
 
         .nav-item {
             text-align: center;
@@ -714,7 +685,6 @@
                     </button>
                 </div>
 
-                <!-- Login Form -->
                 <form id="loginForm" class="auth-form active" onsubmit="handleUserLogin(event)">
                     <div class="form-group">
                         <label>মোবাইল নম্বর</label>
@@ -728,7 +698,6 @@
                     <p class="auth-helper-note">রেজিস্ট্রেশন করা নম্বর ও পাসওয়ার্ড দিয়ে লগইন করুন। অ্যাকাউন্ট না থাকলে উপরে <strong>রেজিস্ট্রেশন</strong> ট্যাবে চাপুন।</p>
                 </form>
 
-                <!-- Registration Form -->
                 <form id="registerForm" class="auth-form" onsubmit="handleUserRegister(event)">
                     <div class="bonus-banner">🎉 রেজিস্ট্রেশন করার সাথে সাথে একাউন্টে ৩০০ টাকা বোনাস পাবেন!</div>
                     <div class="form-group">
@@ -754,7 +723,6 @@
 
         <!-- ==================== 1. HOME PAGE ==================== -->
         <div id="homePage" class="page-section">
-            <!-- Balance Card -->
             <div class="balance-card">
                 <div class="welcome-text">স্বাগতম, <span id="userNameDisplay">Member</span></div>
                 <div class="balance-amount">৳ <span id="userBalance">0.00</span></div>
@@ -762,13 +730,22 @@
                 <div class="midnight-note">⏰ কেনা পণ্যের ইনকাম প্রতিদিন রাত ১২:০০ টায় অটোমেটিক যুক্ত হয়</div>
             </div>
 
-            <!-- Customer Support -->
+            <!-- Telegram Personal Support -->
             <div class="support-card">
                 <div class="support-info">
-                    <h4 id="supportTitleText">কাস্টমার সাপোর্ট</h4>
-                    <p id="supportSubText">যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
+                    <h4>টেলিগ্রাম পারসোনাল সাপোর্ট</h4>
+                    <p id="tgPersonalText">@earnbd_support</p>
                 </div>
-                <a id="customerSupportLink" href="https://t.me/earnbd_support" target="_blank" class="support-btn">সাপোর্ট</a>
+                <a id="tgPersonalLink" href="https://t.me/earnbd_support" target="_blank" class="support-btn">পারসোনাল আইডি</a>
+            </div>
+
+            <!-- Telegram Group Support -->
+            <div class="support-card">
+                <div class="support-info">
+                    <h4>অফিশিয়াল টেলিগ্রাম গ্রুপ</h4>
+                    <p id="tgGroupText">আমাদের টেলিগ্রাম গ্রুপে যুক্ত হোন</p>
+                </div>
+                <a id="tgGroupLink" href="https://t.me/earnbd_group" target="_blank" class="group-btn">টেলিগ্রাম গ্রুপ</a>
             </div>
 
             <!-- Row 1: Main Actions -->
@@ -803,50 +780,14 @@
                 </button>
             </div>
 
-            <!-- Plans Section -->
+            <!-- Dynamic Plans Section -->
             <div class="plans-container">
                 <div class="plans-heading">📦 উপলব্ধ পণ্য ও প্যাকেজসমূহ</div>
-
-                <div class="plan-card plan-starter">
-                    <div class="badge">POPULAR</div>
-                    <div class="plan-content">
-                        <div class="plan-icon">🎁</div>
-                        <div class="plan-details">
-                            <h3>Starter Plan (45 দিন)</h3>
-                            <p>💰 দাম: ৳ 670</p>
-                            <p>📅 দৈনিক ইনকাম: ৳ 85</p>
-                            <button class="buy-btn" onclick="buyPlan('Starter Plan', 670, 85, 45)">🛒 কিনুন →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="plan-card plan-silver">
-                    <div class="plan-content">
-                        <div class="plan-icon">💎</div>
-                        <div class="plan-details">
-                            <h3>Silver Plan (45 দিন)</h3>
-                            <p>💰 দাম: ৳ 1,200</p>
-                            <p>📅 দৈনিক ইনকাম: ৳ 160</p>
-                            <button class="buy-btn" onclick="buyPlan('Silver Plan', 1200, 160, 45)">🛒 কিনুন →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="plan-card plan-gold">
-                    <div class="plan-content">
-                        <div class="plan-icon">👑</div>
-                        <div class="plan-details">
-                            <h3>Gold Plan (45 দিন)</h3>
-                            <p>💰 দাম: ৳ 2,500</p>
-                            <p>📅 দৈনিক ইনকাম: ৳ 350</p>
-                            <button class="buy-btn" onclick="buyPlan('Gold Plan', 2500, 350, 45)">🛒 কিনুন →</button>
-                        </div>
-                    </div>
-                </div>
+                <div id="plansList"></div>
             </div>
         </div>
 
-        <!-- ==================== 2. DEPOSIT PAGE ==================== -->
+        <!-- ==================== 2. DEPOSIT PAGE (ONLY বিকাশ এজেন্ট & নগদ পারসোনাল) ==================== -->
         <div id="depositPage" class="page-section">
             <div class="page-top-bar">
                 <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
@@ -858,15 +799,12 @@
                     <label>পেমেন্ট মেথড নির্বাচন করুন</label>
                     <select id="depMethod" onchange="updatePayNumber()">
                         <option value="বিকাশ এজেন্ট">বিকাশ এজেন্ট</option>
-                        <option value="বিকাশ পারসোনাল">বিকাশ পারসোনাল</option>
-                        <option value="নগদ এজেন্ট">নগদ এজেন্ট</option>
                         <option value="নগদ পারসোনাল">নগদ পারসোনাল</option>
-                        <option value="TRX (TRC20)">TRX (TRC20)</option>
                     </select>
                 </div>
 
                 <div class="payment-number-box">
-                    <p class="intro-label" id="paymentIntroLabel">নির্বাচিত মেথডের নম্বর:</p>
+                    <p class="intro-label">নির্বাচিত মেথডের নম্বর:</p>
                     <div id="adminPayNumber"></div>
                     <p style="font-size:12px; color:#dc2626; margin-top:8px;">পেমেন্ট করার পর স্ক্রিনশট ও TrxID নিচে জমা দিন</p>
                 </div>
@@ -906,8 +844,8 @@
                 <div class="form-group">
                     <label>উত্তোলন মেথড</label>
                     <select id="withMethod">
-                        <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
-                        <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                        <option value="বিকাশ এজেন্ট">বিকাশ এজেন্ট</option>
+                        <option value="নগদ পারসোনাল">নগদ পারসোনাল</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1064,21 +1002,79 @@
     <script>
         const defaultPaymentConfig = {
             bkashAgent: '01700-000001',
-            bkashPersonal: '01700-000002',
-            nagadAgent: '01800-000003',
-            nagadPersonal: '01800-000004',
-            trxAddress: 'TExampleTRC20WalletAddress123456'
+            nagadPersonal: '01800-000004'
         };
+
+        const defaultSupportConfig = {
+            tgPersonal: 'earnbd_support',
+            tgGroup: 'earnbd_group'
+        };
+
+        const defaultPlans = [
+            { id: 'starter', name: 'Starter Plan', price: 670, dailyIncome: 85, days: 45, icon: '🎁', badge: 'POPULAR', theme: 'theme-1' },
+            { id: 'silver', name: 'Silver Plan', price: 1200, dailyIncome: 160, days: 45, icon: '💎', badge: '', theme: 'theme-2' },
+            { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, icon: '👑', badge: '', theme: 'theme-3' }
+        ];
 
         let paymentConfig = {
             ...defaultPaymentConfig,
             ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {})
         };
 
-        // রেজিস্টার্ড ইউজারদের ডাটাবেজ: { phone: { name, phone, password, refCode, referredBy, balance, referCommission, firstBuyDone, appliedRef, depositHistory, withdrawHistory, myProducts } }
+        let supportConfig = {
+            ...defaultSupportConfig,
+            ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {})
+        };
+
+        let plansConfig = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
         let usersDB = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
         let currentUserPhone = localStorage.getItem('earnbd_current_user_phone') || '';
         let currentScreenshotBase64 = '';
+
+        function buildTelegramUrl(rawVal, fallback) {
+            const clean = (rawVal || fallback || '').trim();
+            if (!clean) return 'https://t.me/';
+            if (clean.startsWith('http://') || clean.startsWith('https://')) return clean;
+            const handle = clean.replace(/^@/, '');
+            return 'https://t.me/' + handle;
+        }
+
+        function syncSupportAndPlansUI() {
+            paymentConfig = {
+                ...defaultPaymentConfig,
+                ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {})
+            };
+            supportConfig = {
+                ...defaultSupportConfig,
+                ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {})
+            };
+            plansConfig = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
+
+            const pVal = (supportConfig.tgPersonal || 'earnbd_support').trim();
+            const gVal = (supportConfig.tgGroup || 'earnbd_group').trim();
+
+            document.getElementById('tgPersonalText').innerText = pVal.startsWith('http') ? pVal : '@' + pVal.replace(/^@/, '');
+            document.getElementById('tgPersonalLink').href = buildTelegramUrl(pVal, 'earnbd_support');
+
+            document.getElementById('tgGroupText').innerText = gVal.startsWith('http') ? gVal : 'গ্রুপ: ' + gVal;
+            document.getElementById('tgGroupLink').href = buildTelegramUrl(gVal, 'earnbd_group');
+
+            const plansContainer = document.getElementById('plansList');
+            plansContainer.innerHTML = plansConfig.map((p, idx) => `
+                <div class="plan-card ${p.theme || ('theme-' + ((idx % 3) + 1))}">
+                    ${p.badge ? `<div class="badge">${p.badge}</div>` : ''}
+                    <div class="plan-content">
+                        <div class="plan-icon">${p.icon || '📦'}</div>
+                        <div class="plan-details">
+                            <h3>${p.name} (${p.days} দিন)</h3>
+                            <p>💰 দাম: ৳ ${Number(p.price).toLocaleString('en-US')}</p>
+                            <p>📅 দৈনিক ইনকাম: ৳ ${Number(p.dailyIncome).toLocaleString('en-US')}</p>
+                            <button class="buy-btn" onclick="buyPlan('${p.name.replace(/'/g, "\\'")}', ${Number(p.price)}, ${Number(p.dailyIncome)}, ${Number(p.days)})">🛒 কিনুন →</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
 
         function showCleanModal(message) {
             document.getElementById('cleanModalMessage').innerText = message;
@@ -1115,7 +1111,6 @@
             return Object.values(usersDB).find(u => (u.refCode || '').toUpperCase() === target) || null;
         }
 
-        // ১ম, ২য় এবং ৩য় স্তরের সদস্যদের তালিকা বের করা
         function getReferralLevelsForUser(user) {
             if (!user || !user.refCode) {
                 return { level1: [], level2: [], level3: [] };
@@ -1123,14 +1118,10 @@
             const allUsers = Object.values(usersDB);
             const myCode = user.refCode.toUpperCase();
 
-            // ১ম স্তর: যাদের referredBy === myCode
             const level1 = allUsers.filter(u => (u.referredBy || '').toUpperCase() === myCode);
-
-            // ২য় স্তর: ১ম স্তরের সদস্যদের রেফার কোড দিয়ে যারা একাউন্ট করেছে
             const l1Codes = new Set(level1.map(u => (u.refCode || '').toUpperCase()).filter(Boolean));
             const level2 = allUsers.filter(u => u.referredBy && l1Codes.has(u.referredBy.toUpperCase()));
 
-            // ৩য় স্তর: ২য় স্তরের সদস্যদের রেফার কোড দিয়ে যারা একাউন্ট করেছে
             const l2Codes = new Set(level2.map(u => (u.refCode || '').toUpperCase()).filter(Boolean));
             const level3 = allUsers.filter(u => u.referredBy && l2Codes.has(u.referredBy.toUpperCase()));
 
@@ -1167,7 +1158,7 @@
                 refCode: generateUniqueRefCode(phone),
                 referredBy: referrerUser ? referrerUser.refCode : referrerCode,
                 appliedRef: referrerUser ? referrerUser.refCode : referrerCode,
-                balance: 300.00, // রেজিস্ট্রেশন বোনাস ৩০০ টাকা
+                balance: 300.00,
                 referCommission: 0.00,
                 firstBuyDone: false,
                 depositHistory: [],
@@ -1190,6 +1181,7 @@
             const phone = document.getElementById('loginPhone').value.trim();
             const password = document.getElementById('loginPassword').value;
 
+            usersDB = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
             const user = usersDB[phone];
             if (!user || user.password !== password) {
                 showCleanModal('ভুল মোবাইল নম্বর বা পাসওয়ার্ড! আগে রেজিস্ট্রেশন করে থাকলে সঠিক তথ্য দিন।');
@@ -1229,6 +1221,7 @@
             if (!user) return;
             document.getElementById('headerLogoutBtn').style.display = 'inline-block';
             document.getElementById('bottomNav').classList.add('visible');
+            syncSupportAndPlansUI();
             showPage('homePage');
             syncDashboardUI();
         }
@@ -1237,6 +1230,7 @@
             const user = getCurrentUser();
             if (!user) return;
 
+            syncSupportAndPlansUI();
             document.getElementById('userNameDisplay').innerText = user.name || 'Member';
             document.getElementById('userBalance').innerText = (parseFloat(user.balance) || 0).toFixed(2);
             document.getElementById('referBalance').innerText = (parseFloat(user.referCommission) || 0).toFixed(2);
@@ -1339,24 +1333,13 @@
             };
             const method = document.getElementById('depMethod').value;
             const container = document.getElementById('adminPayNumber');
-            let label = '';
-            let val = '';
 
-            if (method === 'বিকাশ এজেন্ট') {
-                label = 'বিকাশ এজেন্ট নাম্বার (Cash Out)';
-                val = paymentConfig.bkashAgent;
-            } else if (method === 'বিকাশ পারসোনাল') {
-                label = 'বিকাশ পারসোনাল নাম্বার (Send Money)';
-                val = paymentConfig.bkashPersonal;
-            } else if (method === 'নগদ এজেন্ট') {
-                label = 'নগদ এজেন্ট নাম্বার (Cash Out)';
-                val = paymentConfig.nagadAgent;
-            } else if (method === 'নগদ পারসোনাল') {
+            let label = 'বিকাশ এজেন্ট নাম্বার (Cash Out)';
+            let val = paymentConfig.bkashAgent;
+
+            if (method === 'নগদ পারসোনাল') {
                 label = 'নগদ পারসোনাল নাম্বার (Send Money)';
                 val = paymentConfig.nagadPersonal;
-            } else {
-                label = 'TRX (TRC20) Wallet Address';
-                val = paymentConfig.trxAddress;
             }
 
             container.innerHTML = `
@@ -1493,7 +1476,6 @@
             showCleanModal('উত্তোলন আবেদন জমা হয়েছে অপেক্ষা করেন');
         }
 
-        // পণ্য কেনার সাথে সাথে উপরের ১ম, ২য় ও ৩য় স্তরের রেফারারদের কমিশন যুক্ত হবে
         function distributeReferralCommissionsOnFirstBuy(buyerUser, price) {
             if (!buyerUser || buyerUser.firstBuyDone) return;
             buyerUser.firstBuyDone = true;
@@ -1622,13 +1604,19 @@
             `).join('');
         }
 
-        // URL থেকে ?ref=CODE থাকলে রেজিস্ট্রেশন ও রেফার ফিল্ডে অটো বসানো
+        window.addEventListener('storage', () => {
+            syncDashboardUI();
+            updatePayNumber();
+        });
+
         (function initApp() {
             const urlParams = new URLSearchParams(window.location.search);
             const refParam = (urlParams.get('ref') || '').trim().toUpperCase();
             if (refParam) {
                 document.getElementById('regRefCode').value = refParam;
             }
+
+            syncSupportAndPlansUI();
 
             if (currentUserPhone && usersDB[currentUserPhone]) {
                 enterDashboard();
