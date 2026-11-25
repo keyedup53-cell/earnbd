@@ -22,7 +22,7 @@
         .header {
             background: linear-gradient(90deg, #0f172a, #1e3a8a);
             color: white;
-            padding: 18px 20px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -32,13 +32,16 @@
             box-shadow: 0 3px 12px rgba(0,0,0,0.15);
         }
 
-        .header h1 { font-size: 22px; font-weight: 700; }
+        .header h1 {
+            font-size: 21px;
+            font-weight: 700;
+        }
 
         .lock-btn {
-            background: rgba(255, 255, 255, 0.18);
+            background: #ef4444;
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 9px 15px;
+            border: none;
+            padding: 9px 16px;
             border-radius: 10px;
             font-size: 14px;
             font-weight: 700;
@@ -46,33 +49,45 @@
         }
 
         .container {
-            max-width: 540px;
+            max-width: 520px;
             margin: 0 auto;
             padding: 16px;
         }
 
-        .stat-hero-card {
+        .total-members-banner {
             background: linear-gradient(135deg, #1d4ed8, #0284c7);
             color: white;
             border-radius: 18px;
-            padding: 22px;
-            margin-bottom: 18px;
-            box-shadow: 0 8px 20px rgba(29, 78, 216, 0.25);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(29, 78, 216, 0.22);
         }
 
-        .stat-hero-card p { font-size: 15px; opacity: 0.92; margin-bottom: 6px; }
-        .stat-hero-card h2 { font-size: 38px; font-weight: 700; }
+        .total-members-banner span {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .total-members-banner h2 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-top: 4px;
+            line-height: 1.1;
+        }
 
         .card {
             background: white;
             border-radius: 18px;
-            padding: 22px 18px;
+            padding: 20px;
             box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
             margin-bottom: 18px;
         }
 
         .section-title {
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 700;
             color: #1e3a8a;
             margin-bottom: 14px;
@@ -80,45 +95,67 @@
             border-bottom: 2px solid #e2e8f0;
         }
 
-        .form-group { margin-bottom: 16px; }
+        .form-group {
+            margin-bottom: 14px;
+        }
 
         .form-group label {
             display: block;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #1e293b;
-            margin-bottom: 7px;
+            margin-bottom: 6px;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 14px 14px;
-            border: 2px solid #cbd5e1;
+            padding: 13px 14px;
+            border: 1.5px solid #cbd5e1;
             border-radius: 12px;
-            font-size: 17px;
+            font-size: 16px;
             background: #f8fafc;
             color: #0f172a;
         }
 
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #1d4ed8;
-            background: #ffffff;
+        .big-btn {
+            width: 100%;
+            border: none;
+            padding: 15px 18px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 6px;
+            display: block;
+        }
+
+        .big-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-save {
+            background: #1d4ed8;
+            color: white;
+        }
+
+        .btn-bonus {
+            background: #059669;
+            color: white;
         }
 
         .plan-editor-box {
             background: #f8fafc;
-            border: 1px solid #cbd5e1;
+            border: 1.5px solid #cbd5e1;
             border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 16px;
+            padding: 14px;
+            margin-bottom: 14px;
         }
 
         .plan-editor-box h4 {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .grid-2 {
@@ -127,133 +164,63 @@
             gap: 10px;
         }
 
-        .btn-large {
-            width: 100%;
-            background: #1d4ed8;
-            color: white;
-            border: none;
-            padding: 15px 18px;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 6px;
-            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
-        }
-
-        .btn-green {
-            width: 100%;
-            background: #059669;
-            color: white;
-            border: none;
-            padding: 15px 18px;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 6px;
-        }
-
-        .btn-large:active, .btn-green:active { transform: scale(0.98); }
-
-        .success-box {
-            display: none;
-            background: #dcfce7;
-            color: #15803d;
-            border: 1px solid #86efac;
-            padding: 13px 15px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            margin-top: 14px;
-        }
-
-        .error-text {
-            color: #dc2626;
-            font-size: 14px;
-            font-weight: 700;
-            margin-top: 8px;
-            display: none;
-        }
-
         .req-card {
             background: #f8fafc;
-            border: 1.5px solid #cbd5e1;
+            border: 1.5px solid #e2e8f0;
             border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
         }
 
-        .req-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .req-amount {
-            font-size: 19px;
+        .req-card h4 {
+            font-size: 16px;
             font-weight: 700;
             color: #0f172a;
-        }
-
-        .badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .badge-pending { background: #fef3c7; color: #b45309; }
-        .badge-approved { background: #dcfce7; color: #15803d; }
-        .badge-rejected { background: #fee2e2; color: #b91c1c; }
-
-        .req-meta {
-            font-size: 14px;
-            color: #334155;
             margin-bottom: 4px;
         }
 
-        .req-ss {
-            width: 100%;
-            max-height: 220px;
-            object-fit: contain;
-            background: #e2e8f0;
-            border-radius: 10px;
-            margin-top: 10px;
-            border: 1px solid #cbd5e1;
+        .req-card p {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 3px;
         }
 
-        .action-row {
+        .req-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-top: 12px;
         }
 
-        .approve-btn {
+        .btn-approve {
             background: #16a34a;
             color: white;
             border: none;
             padding: 12px;
             border-radius: 11px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
         }
 
-        .reject-btn {
+        .btn-reject {
             background: #dc2626;
             color: white;
             border: none;
             padding: 12px;
             border-radius: 11px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
+        }
+
+        .ss-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-top: 8px;
         }
 
         .member-item {
@@ -261,15 +228,23 @@
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 12px 14px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .member-item strong { font-size: 16px; display: block; }
-        .member-item span { font-size: 13px; color: #475569; }
+        .member-item strong {
+            font-size: 15px;
+            display: block;
+        }
+
+        .member-item span {
+            font-size: 13px;
+            color: #64748b;
+        }
+
         .member-bal {
             background: #dbeafe;
             color: #1d4ed8;
@@ -280,123 +255,144 @@
             white-space: nowrap;
         }
 
-        .empty-note {
-            color: #64748b;
-            font-size: 15px;
+        .empty-text {
             text-align: center;
-            padding: 16px;
+            color: #64748b;
+            padding: 18px;
+            font-size: 15px;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            display: none;
+            z-index: 999;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .error-text {
+            color: #dc2626;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 8px;
+            display: none;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>⚙️ EarnBD Admin</h1>
+        <h1>⚙️ EarnBD Admin Panel</h1>
         <button class="lock-btn" onclick="lockAdmin()">🔒 লক</button>
     </div>
 
+    <div id="toastMsg" class="toast-msg">সেভ হয়েছে!</div>
+
     <div class="container">
 
-        <!-- PIN Login -->
+        <!-- PIN Lock -->
         <div id="loginCard" class="card">
             <div class="section-title">অ্যাডমিন প্যানেলে প্রবেশ করুন</div>
             <div class="form-group">
                 <label>অ্যাডমিন পিন</label>
                 <input type="password" id="pinInput" placeholder="পিন লিখুন (ডিফল্ট: 1234)" onkeydown="if(event.key==='Enter') unlockAdmin()">
-                <div id="pinError" class="error-text">ভুল পিন! সঠিক অ্যাডমিন পিন দিন।</div>
+                <div id="pinError" class="error-text">ভুল পিন! সঠিক পিন দিন।</div>
             </div>
-            <button class="btn-large" onclick="unlockAdmin()">লগইন করুন</button>
+            <button class="big-btn btn-save" onclick="unlockAdmin()">🔓 প্যানেল খুলুন</button>
         </div>
 
-        <!-- Admin Main Panel -->
-        <div id="adminPanelCard" style="display: none;">
+        <!-- Main Admin Dashboard -->
+        <div id="adminPanel" style="display: none;">
 
-            <!-- Total Members Count -->
-            <div class="stat-hero-card">
-                <p>মোট রেজিস্টার্ড সদস্য সংখ্যা</p>
-                <h2 id="totalMembersCount">0 জন</h2>
+            <!-- Total Registered Members -->
+            <div class="total-members-banner">
+                <span>মোট রেজিস্ট্রেশনকৃত সদস্য</span>
+                <h2 id="totalMembersCount">0</h2>
             </div>
 
-            <!-- 1. Deposit Approve / Reject -->
+            <!-- 1. Deposit Numbers Setup -->
             <div class="card">
-                <div class="section-title">💰 ডিপোজিট অনুমোদন / বাতিল</div>
-                <div id="adminDepositList">
-                    <div class="empty-note">কোনো ডিপোজিট আবেদন নেই।</div>
-                </div>
-            </div>
-
-            <!-- 2. Withdraw Approve / Reject -->
-            <div class="card">
-                <div class="section-title">💸 উত্তোলন অনুমোদন / বাতিল</div>
-                <div id="adminWithdrawList">
-                    <div class="empty-note">কোনো উত্তোলন আবেদন নেই।</div>
-                </div>
-            </div>
-
-            <!-- 3. Deposit Numbers -->
-            <div class="card">
-                <div class="section-title">💳 ডিপোজিট নম্বর এড / পরিবর্তন</div>
+                <div class="section-title">💳 ডিপোজিট নম্বর অ্যাড / পরিবর্তন</div>
                 <div class="form-group">
                     <label>বিকাশ এজেন্ট নাম্বার</label>
-                    <input type="text" id="bkashAgent" placeholder="যেমন: 01711-000001">
+                    <input type="text" id="bkashAgentInput" placeholder="যেমন: 01711-000001">
                 </div>
                 <div class="form-group">
                     <label>নগদ পারসোনাল নাম্বার</label>
-                    <input type="text" id="nagadPersonal" placeholder="যেমন: 01811-000002">
+                    <input type="text" id="nagadPersonalInput" placeholder="যেমন: 01811-000002">
                 </div>
-                <button class="btn-large" onclick="saveDepositNumbers()">✅ ডিপোজিট নম্বর সেভ করুন</button>
-                <div id="depositMsg" class="success-box">ডিপোজিট নম্বর আপডেট হয়েছে!</div>
+                <button class="big-btn btn-save" onclick="savePaymentNumbers()">✅ ডিপোজিট নম্বর সেভ করুন</button>
             </div>
 
-            <!-- 4. Telegram Personal ID & Group -->
+            <!-- 2. Telegram Personal ID & Group Setup -->
             <div class="card">
-                <div class="section-title">📢 কাস্টমার সাপোর্ট টেলিগ্রাম আইডি ও গ্রুপ</div>
+                <div class="section-title">✈️ কাস্টমার সাপোর্ট (টেলিগ্রাম পারসোনাল ও গ্রুপ)</div>
                 <div class="form-group">
-                    <label>টেলিগ্রাম পারসোনাল আইডি (ইউজারনেম বা লিংক)</label>
-                    <input type="text" id="tgPersonal" placeholder="যেমন: @my_telegram_id বা https://t.me/my_id">
+                    <label>টেলিগ্রাম পারসোনাল আইডি লিংক</label>
+                    <input type="text" id="tgPersonalInput" placeholder="যেমন: https://t.me/username">
                 </div>
                 <div class="form-group">
-                    <label>টেলিগ্রাম গ্রুপ (ইউজারনেম বা লিংক)</label>
-                    <input type="text" id="tgGroup" placeholder="যেমন: @my_group বা https://t.me/my_group">
+                    <label>টেলিগ্রাম গ্রুপ লিংক</label>
+                    <input type="text" id="tgGroupInput" placeholder="যেমন: https://t.me/yourgroup">
                 </div>
-                <button class="btn-large" onclick="saveSupportSettings()">✅ টেলিগ্রাম তথ্য সেভ করুন</button>
-                <div id="supportMsg" class="success-box">টেলিগ্রাম পারসোনাল আইডি ও গ্রুপ সেভ হয়েছে!</div>
+                <button class="big-btn btn-save" onclick="saveSupportLinks()">✅ সাপোর্ট লিংক সেভ করুন</button>
             </div>
 
-            <!-- 5. Bonus System -->
+            <!-- 3. Give Bonus to Member -->
             <div class="card">
                 <div class="section-title">🎁 সদস্যকে বোনাস দিন</div>
                 <div class="form-group">
-                    <label>সদস্য নির্বাচন করুন (মোবাইল নম্বর)</label>
-                    <select id="bonusTargetPhone">
-                        <option value="__ALL__">সকল সদস্যকে বোনাস দিন</option>
+                    <label>সদস্য নির্বাচন করুন বা মোবাইল নম্বর লিখুন</label>
+                    <select id="bonusMemberSelect" onchange="syncBonusPhoneField()">
+                        <option value="">-- সদস্য সিলেক্ট করুন --</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>বোনাসের পরিমাণ (৳)</label>
-                    <input type="number" id="bonusAmount" placeholder="যেমন: 100">
+                    <label>সদস্যের মোবাইল নম্বর</label>
+                    <input type="tel" id="bonusPhoneInput" placeholder="017XXXXXXXX">
                 </div>
-                <button class="btn-green" onclick="giveBonusToMember()">🎉 বোনাস পাঠান</button>
-                <div id="bonusMsg" class="success-box">বোনাস সফলভাবে যুক্ত হয়েছে!</div>
+                <div class="form-group">
+                    <label>বোনাসের পরিমাণ (৳)</label>
+                    <input type="number" id="bonusAmountInput" placeholder="যেমন: 100">
+                </div>
+                <button class="big-btn btn-bonus" onclick="giveBonusToMember()">💰 বোনাস পাঠান</button>
             </div>
 
-            <!-- 6. Packages Editor -->
+            <!-- 4. Pending Deposits Approval / Rejection -->
+            <div class="card">
+                <div class="section-title">📥 পেন্ডিং ডিপোজিট অনুমোদন / বাতিল</div>
+                <div id="pendingDepositsList"></div>
+            </div>
+
+            <!-- 5. Pending Withdrawals Approval / Rejection -->
+            <div class="card">
+                <div class="section-title">📤 পেন্ডিং উত্তোলন অনুমোদন / বাতিল</div>
+                <div id="pendingWithdrawsList"></div>
+            </div>
+
+            <!-- 6. Edit Packages -->
             <div class="card">
                 <div class="section-title">📦 প্যাকেজ পরিবর্তন করুন</div>
-                <div id="plansEditorList"></div>
-                <button class="btn-large" onclick="saveAllPlans()">✅ সব প্যাকেজ সেভ করুন</button>
-                <div id="plansMsg" class="success-box">সব প্যাকেজ সফলভাবে পরিবর্তন হয়েছে!</div>
+                <div id="packageEditorList"></div>
+                <button class="big-btn btn-save" onclick="saveAllPackages()">✅ সব প্যাকেজ সেভ করুন</button>
             </div>
 
             <!-- 7. Registered Members List -->
             <div class="card">
-                <div class="section-title">👥 একাউন্ট করা সদস্যদের তালিকা</div>
-                <div id="membersListBox">
-                    <p style="color:#64748b; font-size:15px;">এখনো কোনো সদস্য একাউন্ট করেনি।</p>
-                </div>
+                <div class="section-title">👥 সকল সদস্যের তালিকা</div>
+                <div id="membersListBox"></div>
             </div>
 
         </div>
+
     </div>
 
     <script>
@@ -404,332 +400,302 @@
 
         const defaultPaymentConfig = {
             bkashAgent: '01700-000001',
-            nagadPersonal: '01800-000004'
+            nagadPersonal: '01800-000002'
         };
 
         const defaultSupportConfig = {
-            tgPersonal: 'earnbd_support',
-            tgGroup: 'earnbd_group'
+            personalUrl: 'https://t.me/',
+            groupUrl: 'https://t.me/'
         };
 
         const defaultPlans = [
-            { id: 'starter', name: 'Starter Plan', price: 670, dailyIncome: 85, days: 45, icon: '🎁', badge: 'POPULAR', theme: 'theme-1' },
-            { id: 'silver', name: 'Silver Plan', price: 1200, dailyIncome: 160, days: 45, icon: '💎', badge: '', theme: 'theme-2' },
-            { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, icon: '👑', badge: '', theme: 'theme-3' }
+            { id: 'starter', name: 'Starter Plan', price: 670, dailyIncome: 85, days: 45, badge: 'POPULAR', icon: '🎁', theme: 'plan-starter' },
+            { id: 'silver', name: 'Silver Plan', price: 1200, dailyIncome: 160, days: 45, badge: '', icon: '💎', theme: 'plan-silver' },
+            { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, badge: '', icon: '👑', theme: 'plan-gold' }
         ];
 
-        function showBoxMsg(id, text) {
-            const el = document.getElementById(id);
+        function showToast(text) {
+            const el = document.getElementById('toastMsg');
             el.innerText = text;
             el.style.display = 'block';
-            setTimeout(() => { el.style.display = 'none'; }, 2500);
+            setTimeout(() => { el.style.display = 'none'; }, 2400);
         }
 
         function unlockAdmin() {
-            const entered = document.getElementById('pinInput').value.trim();
-            const err = document.getElementById('pinError');
-            if (entered === ADMIN_PIN) {
-                err.style.display = 'none';
-                sessionStorage.setItem('earnbd_admin_auth', 'true');
-                showPanel();
+            const pin = document.getElementById('pinInput').value.trim();
+            if (pin === ADMIN_PIN) {
+                document.getElementById('loginCard').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                sessionStorage.setItem('earnbd_admin_logged_in', 'true');
+                refreshAdminAll();
             } else {
-                err.style.display = 'block';
+                document.getElementById('pinError').style.display = 'block';
             }
         }
 
         function lockAdmin() {
-            sessionStorage.removeItem('earnbd_admin_auth');
+            sessionStorage.removeItem('earnbd_admin_logged_in');
             document.getElementById('pinInput').value = '';
-            document.getElementById('adminPanelCard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('loginCard').style.display = 'block';
         }
 
-        function showPanel() {
-            document.getElementById('loginCard').style.display = 'none';
-            document.getElementById('adminPanelCard').style.display = 'block';
-            loadAllAdminData();
+        function getUsersDB() {
+            return JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
         }
 
-        function loadAllAdminData() {
+        function saveUsersDB(db) {
+            localStorage.setItem('earnbd_users_db', JSON.stringify(db));
+        }
+
+        function refreshAdminAll() {
+            const db = getUsersDB();
+            const users = Object.values(db);
+            document.getElementById('totalMembersCount').innerText = users.length;
+
             const payCfg = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
-            document.getElementById('bkashAgent').value = payCfg.bkashAgent || '';
-            document.getElementById('nagadPersonal').value = payCfg.nagadPersonal || '';
+            document.getElementById('bkashAgentInput').value = payCfg.bkashAgent || '';
+            document.getElementById('nagadPersonalInput').value = payCfg.nagadPersonal || '';
 
             const supCfg = { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) };
-            document.getElementById('tgPersonal').value = supCfg.tgPersonal || '';
-            document.getElementById('tgGroup').value = supCfg.tgGroup || '';
+            document.getElementById('tgPersonalInput').value = supCfg.personalUrl || '';
+            document.getElementById('tgGroupInput').value = supCfg.groupUrl || '';
 
-            const plans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
-            renderPlansEditor(plans);
-            renderMembersSection();
-            renderAdminRequests();
+            const select = document.getElementById('bonusMemberSelect');
+            const prevVal = select.value;
+            select.innerHTML = '<option value="">-- সদস্য সিলেক্ট করুন --</option>' + users.map(u => `
+                <option value="${u.phone}">${u.name} (${u.phone}) — ৳ ${(parseFloat(u.balance) || 0).toFixed(2)}</option>
+            `).join('');
+            if (prevVal && db[prevVal]) select.value = prevVal;
+
+            renderPackageEditors();
+            renderPendingDeposits(db);
+            renderPendingWithdraws(db);
+            renderMembersList(users);
         }
 
-        function renderAdminRequests() {
-            const db = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
-            const depListEl = document.getElementById('adminDepositList');
-            const withListEl = document.getElementById('adminWithdrawList');
+        function savePaymentNumbers() {
+            const cfg = {
+                bkashAgent: document.getElementById('bkashAgentInput').value.trim(),
+                nagadPersonal: document.getElementById('nagadPersonalInput').value.trim()
+            };
+            localStorage.setItem('earnbd_payment_config', JSON.stringify(cfg));
+            showToast('ডিপোজিট নম্বর আপডেট হয়েছে!');
+        }
 
-            const allDeposits = [];
-            const allWithdraws = [];
+        function saveSupportLinks() {
+            const cfg = {
+                personalUrl: document.getElementById('tgPersonalInput').value.trim() || 'https://t.me/',
+                groupUrl: document.getElementById('tgGroupInput').value.trim() || 'https://t.me/'
+            };
+            localStorage.setItem('earnbd_support_config', JSON.stringify(cfg));
+            showToast('টেলিগ্রাম সাপোর্ট লিংক আপডেট হয়েছে!');
+        }
 
-            Object.values(db).forEach(user => {
-                (user.depositHistory || []).forEach((item, idx) => {
-                    allDeposits.push({
-                        userPhone: user.phone,
-                        userName: user.name,
-                        index: idx,
-                        ...item
-                    });
-                });
-                (user.withdrawHistory || []).forEach((item, idx) => {
-                    allWithdraws.push({
-                        userPhone: user.phone,
-                        userName: user.name,
-                        index: idx,
-                        ...item
-                    });
+        function syncBonusPhoneField() {
+            const sel = document.getElementById('bonusMemberSelect').value;
+            if (sel) {
+                document.getElementById('bonusPhoneInput').value = sel;
+            }
+        }
+
+        function giveBonusToMember() {
+            const phone = document.getElementById('bonusPhoneInput').value.trim();
+            const amount = parseFloat(document.getElementById('bonusAmountInput').value);
+
+            if (!phone || !amount || amount <= 0) {
+                alert('সঠিক মোবাইল নম্বর এবং বোনাসের পরিমাণ দিন।');
+                return;
+            }
+
+            const db = getUsersDB();
+            if (!db[phone]) {
+                alert('এই মোবাইল নম্বরে কোনো সদস্য অ্যাকাউন্ট পাওয়া যায়নি।');
+                return;
+            }
+
+            db[phone].balance = (parseFloat(db[phone].balance) || 0) + amount;
+            saveUsersDB(db);
+            document.getElementById('bonusAmountInput').value = '';
+            refreshAdminAll();
+            showToast(`${db[phone].name}-কে ৳ ${amount} বোনাস দেওয়া হয়েছে!`);
+        }
+
+        function renderPendingDeposits(db) {
+            const box = document.getElementById('pendingDepositsList');
+            const rows = [];
+
+            Object.values(db).forEach(u => {
+                (u.depositHistory || []).forEach((item, idx) => {
+                    if (item.status === 'Pending') {
+                        rows.push({ user: u, item, idx });
+                    }
                 });
             });
 
-            if (allDeposits.length === 0) {
-                depListEl.innerHTML = '<div class="empty-note">কোনো ডিপোজিট আবেদন নেই।</div>';
-            } else {
-                depListEl.innerHTML = allDeposits.map(d => {
-                    const st = d.status || 'Pending';
-                    const badgeClass = st === 'Approved' ? 'badge-approved' : (st === 'Rejected' ? 'badge-rejected' : 'badge-pending');
-                    return `
-                        <div class="req-card">
-                            <div class="req-header">
-                                <span class="req-amount">৳ ${Number(d.amount).toFixed(2)} (${d.method})</span>
-                                <span class="badge ${badgeClass}">${st}</span>
-                            </div>
-                            <div class="req-meta"><strong>সদস্য:</strong> ${d.userName} (${d.userPhone})</div>
-                            <div class="req-meta"><strong>TrxID:</strong> ${d.trx}</div>
-                            <div class="req-meta"><strong>সময়:</strong> ${d.time || '-'}</div>
-                            ${d.screenshot ? `<img src="${d.screenshot}" class="req-ss" alt="Deposit Screenshot">` : ''}
-                            ${st === 'Pending' ? `
-                                <div class="action-row">
-                                    <button class="approve-btn" onclick="handleDepositAction('${d.userPhone}', ${d.index}, 'Approved')">✅ অনুমোদন</button>
-                                    <button class="reject-btn" onclick="handleDepositAction('${d.userPhone}', ${d.index}, 'Rejected')">❌ বাতিল</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                }).join('');
+            if (rows.length === 0) {
+                box.innerHTML = '<div class="empty-text">কোনো পেন্ডিং ডিপোজিট রিকোয়েস্ট নেই।</div>';
+                return;
             }
 
-            if (allWithdraws.length === 0) {
-                withListEl.innerHTML = '<div class="empty-note">কোনো উত্তোলন আবেদন নেই।</div>';
-            } else {
-                withListEl.innerHTML = allWithdraws.map(w => {
-                    const st = w.status || 'Pending';
-                    const badgeClass = st === 'Approved' ? 'badge-approved' : (st === 'Rejected' ? 'badge-rejected' : 'badge-pending');
-                    return `
-                        <div class="req-card">
-                            <div class="req-header">
-                                <span class="req-amount">৳ ${Number(w.amount).toFixed(2)} (${w.method})</span>
-                                <span class="badge ${badgeClass}">${st}</span>
-                            </div>
-                            <div class="req-meta"><strong>সদস্য:</strong> ${w.userName} (${w.userPhone})</div>
-                            <div class="req-meta"><strong>প্রাপক নম্বর:</strong> ${w.number}</div>
-                            <div class="req-meta"><strong>সময়:</strong> ${w.time || '-'}</div>
-                            ${st === 'Pending' ? `
-                                <div class="action-row">
-                                    <button class="approve-btn" onclick="handleWithdrawAction('${w.userPhone}', ${w.index}, 'Approved')">✅ অনুমোদন</button>
-                                    <button class="reject-btn" onclick="handleWithdrawAction('${w.userPhone}', ${w.index}, 'Rejected')">❌ বাতিল ও রিফান্ড</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                }).join('');
-            }
+            box.innerHTML = rows.map(({ user, item, idx }) => `
+                <div class="req-card">
+                    <h4>${user.name} (${user.phone})</h4>
+                    <p><strong>মেথড:</strong> ${item.method} | <strong>পরিমাণ:</strong> ৳ ${item.amount}</p>
+                    <p><strong>TrxID:</strong> ${item.trx}</p>
+                    <p><strong>সময়:</strong> ${item.time}</p>
+                    ${item.screenshot ? `<img src="${item.screenshot}" class="ss-preview" alt="Deposit Screenshot">` : ''}
+                    <div class="req-actions">
+                        <button class="btn-approve" onclick="handleDepositAction('${user.phone}', ${idx}, 'approve')">✅ অনুমোদন</button>
+                        <button class="btn-reject" onclick="handleDepositAction('${user.phone}', ${idx}, 'reject')">❌ বাতিল</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function handleDepositAction(phone, index, action) {
-            const db = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
+            const db = getUsersDB();
             const user = db[phone];
             if (!user || !user.depositHistory || !user.depositHistory[index]) return;
 
             const item = user.depositHistory[index];
-            if ((item.status || 'Pending') !== 'Pending') return;
+            if (item.status !== 'Pending') return;
 
-            item.status = action;
-            if (action === 'Approved') {
+            if (action === 'approve') {
+                item.status = 'Approved';
                 user.balance = (parseFloat(user.balance) || 0) + (parseFloat(item.amount) || 0);
+                showToast('ডিপোজিট অনুমোদিত ও ব্যালেন্স যুক্ত হয়েছে!');
+            } else {
+                item.status = 'Rejected';
+                showToast('ডিপোজিট বাতিল করা হয়েছে!');
             }
 
-            db[phone] = user;
-            localStorage.setItem('earnbd_users_db', JSON.stringify(db));
-            renderAdminRequests();
-            renderMembersSection();
+            saveUsersDB(db);
+            refreshAdminAll();
+        }
+
+        function renderPendingWithdraws(db) {
+            const box = document.getElementById('pendingWithdrawsList');
+            const rows = [];
+
+            Object.values(db).forEach(u => {
+                (u.withdrawHistory || []).forEach((item, idx) => {
+                    if (item.status === 'Pending') {
+                        rows.push({ user: u, item, idx });
+                    }
+                });
+            });
+
+            if (rows.length === 0) {
+                box.innerHTML = '<div class="empty-text">কোনো পেন্ডিং উত্তোলন রিকোয়েস্ট নেই।</div>';
+                return;
+            }
+
+            box.innerHTML = rows.map(({ user, item, idx }) => `
+                <div class="req-card">
+                    <h4>${user.name} (${user.phone})</h4>
+                    <p><strong>মেথড:</strong> ${item.method} | <strong>পরিমাণ:</strong> ৳ ${item.amount}</p>
+                    <p><strong>অ্যাকাউন্ট নম্বর:</strong> ${item.number}</p>
+                    <p><strong>সময়:</strong> ${item.time}</p>
+                    <div class="req-actions">
+                        <button class="btn-approve" onclick="handleWithdrawAction('${user.phone}', ${idx}, 'approve')">✅ অনুমোদন</button>
+                        <button class="btn-reject" onclick="handleWithdrawAction('${user.phone}', ${idx}, 'reject')">❌ বাতিল</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function handleWithdrawAction(phone, index, action) {
-            const db = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
+            const db = getUsersDB();
             const user = db[phone];
             if (!user || !user.withdrawHistory || !user.withdrawHistory[index]) return;
 
             const item = user.withdrawHistory[index];
-            if ((item.status || 'Pending') !== 'Pending') return;
+            if (item.status !== 'Pending') return;
 
-            item.status = action;
-            if (action === 'Rejected') {
+            if (action === 'approve') {
+                item.status = 'Approved';
+                showToast('উত্তোলন অনুমোদিত হয়েছে!');
+            } else {
+                item.status = 'Rejected';
                 user.balance = (parseFloat(user.balance) || 0) + (parseFloat(item.amount) || 0);
+                showToast('উত্তোলন বাতিল করা হয়েছে ও টাকা ফেরত দেওয়া হয়েছে!');
             }
 
-            db[phone] = user;
-            localStorage.setItem('earnbd_users_db', JSON.stringify(db));
-            renderAdminRequests();
-            renderMembersSection();
+            saveUsersDB(db);
+            refreshAdminAll();
         }
 
-        function saveDepositNumbers() {
-            const updated = {
-                bkashAgent: document.getElementById('bkashAgent').value.trim(),
-                nagadPersonal: document.getElementById('nagadPersonal').value.trim()
-            };
-            localStorage.setItem('earnbd_payment_config', JSON.stringify(updated));
-            showBoxMsg('depositMsg', 'বিকাশ এজেন্ট ও নগদ পারসোনাল নম্বর আপডেট হয়েছে!');
-        }
-
-        function saveSupportSettings() {
-            const updated = {
-                tgPersonal: document.getElementById('tgPersonal').value.trim(),
-                tgGroup: document.getElementById('tgGroup').value.trim()
-            };
-            localStorage.setItem('earnbd_support_config', JSON.stringify(updated));
-            showBoxMsg('supportMsg', 'টেলিগ্রাম পারসোনাল আইডি ও গ্রুপ সেভ হয়েছে!');
-        }
-
-        function renderPlansEditor(plans) {
-            const container = document.getElementById('plansEditorList');
-            container.innerHTML = plans.map((p, i) => `
-                <div class="plan-editor-box" data-index="${i}">
-                    <h4>প্যাকেজ #${i + 1}</h4>
+        function renderPackageEditors() {
+            const plans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
+            const box = document.getElementById('packageEditorList');
+            box.innerHTML = plans.map((p, i) => `
+                <div class="plan-editor-box">
+                    <h4>প্যাকেজ #${i + 1} (${p.icon || '🎁'})</h4>
                     <div class="form-group">
                         <label>প্যাকেজের নাম</label>
-                        <input type="text" class="plan-name" value="${p.name}">
+                        <input type="text" id="planName_${i}" value="${p.name}">
                     </div>
                     <div class="grid-2">
                         <div class="form-group">
                             <label>দাম (৳)</label>
-                            <input type="number" class="plan-price" value="${p.price}">
+                            <input type="number" id="planPrice_${i}" value="${p.price}">
                         </div>
                         <div class="form-group">
                             <label>দৈনিক ইনকাম (৳)</label>
-                            <input type="number" class="plan-daily" value="${p.dailyIncome}">
+                            <input type="number" id="planDaily_${i}" value="${p.dailyIncome}">
                         </div>
                     </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>মেয়াদ (দিন)</label>
-                            <input type="number" class="plan-days" value="${p.days}">
-                        </div>
-                        <div class="form-group">
-                            <label>আইকন</label>
-                            <input type="text" class="plan-icon" value="${p.icon || '📦'}">
-                        </div>
+                    <div class="form-group">
+                        <label>মেয়াদ (দিন)</label>
+                        <input type="number" id="planDays_${i}" value="${p.days}">
                     </div>
                 </div>
             `).join('');
         }
 
-        function saveAllPlans() {
-            const oldPlans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
-            const boxes = document.querySelectorAll('.plan-editor-box');
-            const updatedPlans = Array.from(boxes).map((box, idx) => {
-                const prev = oldPlans[idx] || {};
-                return {
-                    id: prev.id || ('plan-' + (idx + 1)),
-                    name: box.querySelector('.plan-name').value.trim() || ('Plan ' + (idx + 1)),
-                    price: parseFloat(box.querySelector('.plan-price').value) || 0,
-                    dailyIncome: parseFloat(box.querySelector('.plan-daily').value) || 0,
-                    days: parseInt(box.querySelector('.plan-days').value) || 45,
-                    icon: box.querySelector('.plan-icon').value.trim() || '📦',
-                    badge: prev.badge || '',
-                    theme: prev.theme || ('theme-' + ((idx % 3) + 1))
-                };
-            });
+        function saveAllPackages() {
+            const currentPlans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
+            const updated = currentPlans.map((p, i) => ({
+                ...p,
+                name: document.getElementById(`planName_${i}`).value.trim() || p.name,
+                price: Math.max(1, parseFloat(document.getElementById(`planPrice_${i}`).value) || p.price),
+                dailyIncome: Math.max(0, parseFloat(document.getElementById(`planDaily_${i}`).value) || p.dailyIncome),
+                days: Math.max(1, parseInt(document.getElementById(`planDays_${i}`).value) || p.days)
+            }));
 
-            localStorage.setItem('earnbd_plans_config', JSON.stringify(updatedPlans));
-            showBoxMsg('plansMsg', 'সব প্যাকেজ সফলভাবে আপডেট হয়েছে!');
+            localStorage.setItem('earnbd_plans_config', JSON.stringify(updated));
+            renderPackageEditors();
+            showToast('সব প্যাকেজ পরিবর্তন সেভ হয়েছে!');
         }
 
-        function renderMembersSection() {
-            const db = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
-            const members = Object.values(db);
-
-            document.getElementById('totalMembersCount').innerText = members.length + ' জন';
-
-            const select = document.getElementById('bonusTargetPhone');
-            select.innerHTML = '<option value="__ALL__">সকল সদস্যকে বোনাস দিন (' + members.length + ' জন)</option>';
-            members.forEach(m => {
-                const opt = document.createElement('option');
-                opt.value = m.phone;
-                opt.textContent = `${m.name} (${m.phone}) — ব্যালেন্স: ৳${(parseFloat(m.balance) || 0).toFixed(2)}`;
-                select.appendChild(opt);
-            });
-
-            const listBox = document.getElementById('membersListBox');
-            if (members.length === 0) {
-                listBox.innerHTML = '<p style="color:#64748b; font-size:15px;">এখনো কোনো সদস্য একাউন্ট করেনি।</p>';
+        function renderMembersList(users) {
+            const box = document.getElementById('membersListBox');
+            if (users.length === 0) {
+                box.innerHTML = '<div class="empty-text">এখনো কোনো সদস্য একাউন্ট করেনি।</div>';
                 return;
             }
-
-            listBox.innerHTML = members.map(m => `
+            box.innerHTML = users.map(u => `
                 <div class="member-item">
                     <div>
-                        <strong>${m.name}</strong>
-                        <span>ফোন: ${m.phone} | কোড: ${m.refCode}</span>
+                        <strong>${u.name}</strong>
+                        <span>${u.phone} • কোড: ${u.refCode}</span>
                     </div>
-                    <span class="member-bal">৳ ${(parseFloat(m.balance) || 0).toFixed(2)}</span>
+                    <span class="member-bal">৳ ${(parseFloat(u.balance) || 0).toFixed(2)}</span>
                 </div>
             `).join('');
-        }
-
-        function giveBonusToMember() {
-            const target = document.getElementById('bonusTargetPhone').value;
-            const amount = parseFloat(document.getElementById('bonusAmount').value);
-
-            if (!amount || amount <= 0) {
-                alert('সঠিক বোনাসের পরিমাণ লিখুন।');
-                return;
-            }
-
-            const db = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
-            const phones = Object.keys(db);
-            if (phones.length === 0) {
-                alert('কোনো সদস্য পাওয়া যায়নি।');
-                return;
-            }
-
-            if (target === '__ALL__') {
-                phones.forEach(p => {
-                    db[p].balance = (parseFloat(db[p].balance) || 0) + amount;
-                });
-                localStorage.setItem('earnbd_users_db', JSON.stringify(db));
-                document.getElementById('bonusAmount').value = '';
-                renderMembersSection();
-                showBoxMsg('bonusMsg', `সকল সদস্যকে ৳${amount} করে বোনাস দেওয়া হয়েছে!`);
-            } else if (db[target]) {
-                db[target].balance = (parseFloat(db[target].balance) || 0) + amount;
-                localStorage.setItem('earnbd_users_db', JSON.stringify(db));
-                document.getElementById('bonusAmount').value = '';
-                renderMembersSection();
-                showBoxMsg('bonusMsg', `${db[target].name} (${target}) এর একাউন্টে ৳${amount} বোনাস যুক্ত হয়েছে!`);
-            }
         }
 
         window.addEventListener('storage', () => {
-            if (sessionStorage.getItem('earnbd_admin_auth') === 'true') {
-                renderMembersSection();
-                renderAdminRequests();
+            if (document.getElementById('adminPanel').style.display !== 'none') {
+                refreshAdminAll();
             }
         });
 
-        if (sessionStorage.getItem('earnbd_admin_auth') === 'true') {
-            showPanel();
+        if (sessionStorage.getItem('earnbd_admin_logged_in') === 'true') {
+            document.getElementById('loginCard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            refreshAdminAll();
         }
     </script>
 </body>
