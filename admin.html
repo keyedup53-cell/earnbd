@@ -1,513 +1,55 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EarnBD - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
-        }
-
-        body {
-            background-color: #eef2f6;
-            color: #0f172a;
-            padding-bottom: 50px;
-        }
-
-        .header {
-            background: linear-gradient(90deg, #0f172a, #1e3a8a);
-            color: white;
-            padding: 18px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
-        }
-
-        .header h1 { font-size: 22px; font-weight: 700; }
-
-        .lock-btn {
-            background: rgba(255, 255, 255, 0.18);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 9px 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .container {
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-
-        .stat-hero-card {
-            background: linear-gradient(135deg, #1d4ed8, #0284c7);
-            color: white;
-            border-radius: 18px;
-            padding: 22px;
-            margin-bottom: 18px;
-            box-shadow: 0 8px 20px rgba(29, 78, 216, 0.25);
-        }
-
-        .stat-hero-card p { font-size: 15px; opacity: 0.92; margin-bottom: 6px; }
-        .stat-hero-card h2 { font-size: 38px; font-weight: 700; }
-
-        .card {
-            background: white;
-            border-radius: 18px;
-            padding: 22px 18px;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
-            margin-bottom: 18px;
-        }
-
-        .section-title {
-            font-size: 19px;
-            font-weight: 700;
-            color: #1e3a8a;
-            margin-bottom: 14px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .form-group { margin-bottom: 16px; }
-
-        .form-group label {
-            display: block;
-            font-size: 16px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 7px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 14px 14px;
-            border: 2px solid #cbd5e1;
-            border-radius: 12px;
-            font-size: 17px;
-            background: #f8fafc;
-            color: #0f172a;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #1d4ed8;
-            background: #ffffff;
-        }
-
-        .plan-editor-box {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 16px;
-        }
-
-        .plan-editor-box h4 {
-            font-size: 17px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 12px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .btn-large {
-            width: 100%;
-            background: #1d4ed8;
-            color: white;
-            border: none;
-            padding: 15px 18px;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 6px;
-            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
-        }
-
-        .btn-green {
-            width: 100%;
-            background: #059669;
-            color: white;
-            border: none;
-            padding: 15px 18px;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 6px;
-        }
-
-        .btn-large:active, .btn-green:active { transform: scale(0.98); }
-
-        .success-box {
-            display: none;
-            background: #dcfce7;
-            color: #15803d;
-            border: 1px solid #86efac;
-            padding: 13px 15px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            margin-top: 14px;
-        }
-
-        .error-text {
-            color: #dc2626;
-            font-size: 14px;
-            font-weight: 700;
-            margin-top: 8px;
-            display: none;
-        }
-
-        .member-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .member-item strong { font-size: 16px; display: block; }
-        .member-item span { font-size: 13px; color: #475569; }
-        .member-bal {
-            background: #dbeafe;
-            color: #1d4ed8;
-            font-weight: 700;
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h1>⚙️ EarnBD Admin</h1>
-        <button class="lock-btn" onclick="lockAdmin()">🔒 লক</button>
-    </div>
-
-    <div class="container">
-
-        <!-- PIN Login -->
-        <div id="loginCard" class="card">
-            <div class="section-title">অ্যাডমিন প্যানেলে প্রবেশ করুন</div>
-            <div class="form-group">
-                <label>অ্যাডমিন পিন</label>
-                <input type="password" id="pinInput" placeholder="পিন লিখুন (ডিফল্ট: 1234)" onkeydown="if(event.key==='Enter') unlockAdmin()">
-                <div id="pinError" class="error-text">ভুল পিন! সঠিক অ্যাডমিন পিন দিন।</div>
-            </div>
-            <button class="btn-large" onclick="unlockAdmin()">লগইন করুন</button>
-        </div>
-
-        <!-- Admin Main Panel -->
-        <div id="adminPanelCard" style="display: none;">
-
-            <!-- Total Members Count -->
-            <div class="stat-hero-card">
-                <p>মোট রেজিস্টার্ড সদস্য সংখ্যা</p>
-                <h2 id="totalMembersCount">0 জন</h2>
-            </div>
-
-            <!-- 1. Deposit Numbers (বিকাশ এজেন্ট & নগদ পারসোনাল) -->
-            <div class="card">
-                <div class="section-title">💳 ডিপোজিট নম্বর এড / পরিবর্তন</div>
-                <div class="form-group">
-                    <label>বিকাশ এজেন্ট নাম্বার</label>
-                    <input type="text" id="bkashAgent" placeholder="যেমন: 01711-000001">
-                </div>
-                <div class="form-group">
-                    <label>নগদ পারসোনাল নাম্বার</label>
-                    <input type="text" id="nagadPersonal" placeholder="যেমন: 01811-000002">
-                </div>
-                <button class="btn-large" onclick="saveDepositNumbers()">✅ ডিপোজিট নম্বর সেভ করুন</button>
-                <div id="depositMsg" class="success-box">ডিপোজিট নম্বর আপডেট হয়েছে!</div>
-            </div>
-
-            <!-- 2. Telegram Personal ID & Group -->
-            <div class="card">
-                <div class="section-title">📢 কাস্টমার সাপোর্ট টেলিগ্রাম আইডি ও গ্রুপ</div>
-                <div class="form-group">
-                    <label>টেলিগ্রাম পারসোনাল আইডি (ইউজারনেম বা লিংক)</label>
-                    <input type="text" id="tgPersonal" placeholder="যেমন: @my_telegram_id বা https://t.me/my_id">
-                </div>
-                <div class="form-group">
-                    <label>টেলিগ্রাম গ্রুপ (ইউজারনেম বা লিংক)</label>
-                    <input type="text" id="tgGroup" placeholder="যেমন: @my_group বা https://t.me/my_group">
-                </div>
-                <button class="btn-large" onclick="saveSupportSettings()">✅ টেলিগ্রাম তথ্য সেভ করুন</button>
-                <div id="supportMsg" class="success-box">টেলিগ্রাম পারসোনাল আইডি ও গ্রুপ সেভ হয়েছে!</div>
-            </div>
-
-            <!-- 3. Bonus System -->
-            <div class="card">
-                <div class="section-title">🎁 সদস্যকে বোনাস দিন</div>
-                <div class="form-group">
-                    <label>সদস্য নির্বাচন করুন (মোবাইল নম্বর)</label>
-                    <select id="bonusTargetPhone">
-                        <option value="__ALL__">সকল সদস্যকে বোনাস দিন</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>বোনাসের পরিমাণ (৳)</label>
-                    <input type="number" id="bonusAmount" placeholder="যেমন: 100">
-                </div>
-                <button class="btn-green" onclick="giveBonusToMember()">🎉 বোনাস পাঠান</button>
-                <div id="bonusMsg" class="success-box">বোনাস সফলভাবে যুক্ত হয়েছে!</div>
-            </div>
-
-            <!-- 4. Packages Editor -->
-            <div class="card">
-                <div class="section-title">📦 প্যাকেজ পরিবর্তন করুন</div>
-                <div id="plansEditorList"></div>
-                <button class="btn-large" onclick="saveAllPlans()">✅ সব প্যাকেজ সেভ করুন</button>
-                <div id="plansMsg" class="success-box">সব প্যাকেজ সফলভাবে পরিবর্তন হয়েছে!</div>
-            </div>
-
-            <!-- 5. Registered Members List -->
-            <div class="card">
-                <div class="section-title">👥 একাউন্ট করা সদস্যদের তালিকা</div>
-                <div id="membersListBox">
-                    <p style="color:#64748b; font-size:15px;">এখনো কোনো সদস্য একাউন্ট করেনি।</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        const ADMIN_PIN = '1234';
-
-        const defaultPaymentConfig = {
-            bkashAgent: '01700-000001',
-            nagadPersonal: '01800-000004'
-        };
-
-        const defaultSupportConfig = {
-            tgPersonal: 'earnbd_support',
-            tgGroup: 'earnbd_group'
-        };
-
-        const defaultPlans = [
-            { id: 'starter', name: 'Starter Plan', price: 670, dailyIncome: 85, days: 45, icon: '🎁', badge: 'POPULAR', theme: 'theme-1' },
-            { id: 'silver', name: 'Silver Plan', price: 1200, dailyIncome: 160, days: 45, icon: '💎', badge: '', theme: 'theme-2' },
-            { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, icon: '👑', badge: '', theme: 'theme-3' }
-        ];
-
-        function showBoxMsg(id, text) {
-            const el = document.getElementById(id);
-            el.innerText = text;
-            el.style.display = 'block';
-            setTimeout(() => { el.style.display = 'none'; }, 2500);
-        }
-
-        function unlockAdmin() {
-            const entered = document.getElementById('pinInput').value.trim();
-            const err = document.getElementById('pinError');
-            if (entered === ADMIN_PIN) {
-                err.style.display = 'none';
-                sessionStorage.setItem('earnbd_admin_auth', 'true');
-                showPanel();
-            } else {
-                err.style.display = 'block';
+function getStatusBadgeHtml(status) {
+            const st = status || 'Pending';
+            if (st === 'Approved') {
+                return `<span class="status-badge status-success">Approved</span>`;
             }
+            if (st === 'Rejected') {
+                return `<span class="status-badge" style="background:#fee2e2; color:#b91c1c;">Rejected</span>`;
+            }
+            return `<span class="status-badge status-pending">Pending</span>`;
         }
 
-        function lockAdmin() {
-            sessionStorage.removeItem('earnbd_admin_auth');
-            document.getElementById('pinInput').value = '';
-            document.getElementById('adminPanelCard').style.display = 'none';
-            document.getElementById('loginCard').style.display = 'block';
-        }
-
-        function showPanel() {
-            document.getElementById('loginCard').style.display = 'none';
-            document.getElementById('adminPanelCard').style.display = 'block';
-            loadAllAdminData();
-        }
-
-        function loadAllAdminData() {
-            const payCfg = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
-            document.getElementById('bkashAgent').value = payCfg.bkashAgent || '';
-            document.getElementById('nagadPersonal').value = payCfg.nagadPersonal || '';
-
-            const supCfg = { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) };
-            document.getElementById('tgPersonal').value = supCfg.tgPersonal || '';
-            document.getElementById('tgGroup').value = supCfg.tgGroup || '';
-
-            const plans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
-            renderPlansEditor(plans);
-            renderMembersSection();
-        }
-
-        function saveDepositNumbers() {
-            const updated = {
-                bkashAgent: document.getElementById('bkashAgent').value.trim(),
-                nagadPersonal: document.getElementById('nagadPersonal').value.trim()
-            };
-            localStorage.setItem('earnbd_payment_config', JSON.stringify(updated));
-            showBoxMsg('depositMsg', 'বিকাশ এজেন্ট ও নগদ পারসোনাল নম্বর আপডেট হয়েছে!');
-        }
-
-        function saveSupportSettings() {
-            const updated = {
-                tgPersonal: document.getElementById('tgPersonal').value.trim(),
-                tgGroup: document.getElementById('tgGroup').value.trim()
-            };
-            localStorage.setItem('earnbd_support_config', JSON.stringify(updated));
-            showBoxMsg('supportMsg', 'টেলিগ্রাম পারসোনাল আইডি ও গ্রুপ সেভ হয়েছে!');
-        }
-
-        function renderPlansEditor(plans) {
-            const container = document.getElementById('plansEditorList');
-            container.innerHTML = plans.map((p, i) => `
-                <div class="plan-editor-box" data-index="${i}">
-                    <h4>প্যাকেজ #${i + 1}</h4>
-                    <div class="form-group">
-                        <label>প্যাকেজের নাম</label>
-                        <input type="text" class="plan-name" value="${p.name}">
+        function renderDepositHistory() {
+            const user = getCurrentUser();
+            const list = document.getElementById('depositHistoryList');
+            const items = (user && user.depositHistory) || [];
+            if (items.length === 0) {
+                list.innerHTML = '<div class="empty-msg">কোনো ডিপোজিট হিস্ট্রি পাওয়া যায়নি।</div>';
+                return;
+            }
+            list.innerHTML = items.map(item => `
+                <div class="list-item">
+                    <div class="list-top">
+                        <div>
+                            <h4>${item.method} — ৳ ${item.amount}</h4>
+                            <p>TrxID: ${item.trx}</p>
+                            <p>${item.time}</p>
+                        </div>
+                        ${getStatusBadgeHtml(item.status)}
                     </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>দাম (৳)</label>
-                            <input type="number" class="plan-price" value="${p.price}">
-                        </div>
-                        <div class="form-group">
-                            <label>দৈনিক ইনকাম (৳)</label>
-                            <input type="number" class="plan-daily" value="${p.dailyIncome}">
-                        </div>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>মেয়াদ (দিন)</label>
-                            <input type="number" class="plan-days" value="${p.days}">
-                        </div>
-                        <div class="form-group">
-                            <label>আইকন</label>
-                            <input type="text" class="plan-icon" value="${p.icon || '📦'}">
-                        </div>
-                    </div>
+                    ${item.screenshot ? `<img src="${item.screenshot}" class="ss-thumb" alt="Screenshot">` : ''}
                 </div>
             `).join('');
         }
 
-        function saveAllPlans() {
-            const oldPlans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
-            const boxes = document.querySelectorAll('.plan-editor-box');
-            const updatedPlans = Array.from(boxes).map((box, idx) => {
-                const prev = oldPlans[idx] || {};
-                return {
-                    id: prev.id || ('plan-' + (idx + 1)),
-                    name: box.querySelector('.plan-name').value.trim() || ('Plan ' + (idx + 1)),
-                    price: parseFloat(box.querySelector('.plan-price').value) || 0,
-                    dailyIncome: parseFloat(box.querySelector('.plan-daily').value) || 0,
-                    days: parseInt(box.querySelector('.plan-days').value) || 45,
-                    icon: box.querySelector('.plan-icon').value.trim() || '📦',
-                    badge: prev.badge || '',
-                    theme: prev.theme || ('theme-' + ((idx % 3) + 1))
-                };
-            });
-
-            localStorage.setItem('earnbd_plans_config', JSON.stringify(updatedPlans));
-            showBoxMsg('plansMsg', 'সব প্যাকেজ সফলভাবে আপডেট হয়েছে!');
-        }
-
-        function renderMembersSection() {
-            const db = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
-            const members = Object.values(db);
-
-            document.getElementById('totalMembersCount').innerText = members.length + ' জন';
-
-            const select = document.getElementById('bonusTargetPhone');
-            select.innerHTML = '<option value="__ALL__">সকল সদস্যকে বোনাস দিন (' + members.length + ' জন)</option>';
-            members.forEach(m => {
-                const opt = document.createElement('option');
-                opt.value = m.phone;
-                opt.textContent = `${m.name} (${m.phone}) — ব্যালেন্স: ৳${(parseFloat(m.balance) || 0).toFixed(2)}`;
-                select.appendChild(opt);
-            });
-
-            const listBox = document.getElementById('membersListBox');
-            if (members.length === 0) {
-                listBox.innerHTML = '<p style="color:#64748b; font-size:15px;">এখনো কোনো সদস্য একাউন্ট করেনি।</p>';
+        function renderWithdrawHistory() {
+            const user = getCurrentUser();
+            const list = document.getElementById('withdrawHistoryList');
+            const items = (user && user.withdrawHistory) || [];
+            if (items.length === 0) {
+                list.innerHTML = '<div class="empty-msg">কোনো উত্তোলন হিস্ট্রি পাওয়া যায়নি।</div>';
                 return;
             }
-
-            listBox.innerHTML = members.map(m => `
-                <div class="member-item">
-                    <div>
-                        <strong>${m.name}</strong>
-                        <span>ফোন: ${m.phone} | কোড: ${m.refCode}</span>
+            list.innerHTML = items.map(item => `
+                <div class="list-item">
+                    <div class="list-top">
+                        <div>
+                            <h4>${item.method} — ৳ ${item.amount}</h4>
+                            <p>নম্বর: ${item.number}</p>
+                            <p>${item.time}</p>
+                        </div>
+                        ${getStatusBadgeHtml(item.status)}
                     </div>
-                    <span class="member-bal">৳ ${(parseFloat(m.balance) || 0).toFixed(2)}</span>
                 </div>
             `).join('');
         }
-
-        function giveBonusToMember() {
-            const target = document.getElementById('bonusTargetPhone').value;
-            const amount = parseFloat(document.getElementById('bonusAmount').value);
-
-            if (!amount || amount <= 0) {
-                alert('সঠিক বোনাসের পরিমাণ লিখুন।');
-                return;
-            }
-
-            const db = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
-            const phones = Object.keys(db);
-            if (phones.length === 0) {
-                alert('কোনো সদস্য পাওয়া যায়নি।');
-                return;
-            }
-
-            if (target === '__ALL__') {
-                phones.forEach(p => {
-                    db[p].balance = (parseFloat(db[p].balance) || 0) + amount;
-                });
-                localStorage.setItem('earnbd_users_db', JSON.stringify(db));
-                document.getElementById('bonusAmount').value = '';
-                renderMembersSection();
-                showBoxMsg('bonusMsg', `সকল সদস্যকে ৳${amount} করে বোনাস দেওয়া হয়েছে!`);
-            } else if (db[target]) {
-                db[target].balance = (parseFloat(db[target].balance) || 0) + amount;
-                localStorage.setItem('earnbd_users_db', JSON.stringify(db));
-                document.getElementById('bonusAmount').value = '';
-                renderMembersSection();
-                showBoxMsg('bonusMsg', `${db[target].name} (${target}) এর একাউন্টে ৳${amount} বোনাস যুক্ত হয়েছে!`);
-            }
-        }
-
-        window.addEventListener('storage', () => {
-            if (sessionStorage.getItem('earnbd_admin_auth') === 'true') {
-                renderMembersSection();
-            }
-        });
-
-        if (sessionStorage.getItem('earnbd_admin_auth') === 'true') {
-            showPanel();
-        }
-    </script>
-</body>
-</html>
