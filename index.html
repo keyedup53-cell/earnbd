@@ -19,7 +19,6 @@
             padding-bottom: 85px;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(90deg, #0284c7, #1d4ed8);
             color: white;
@@ -61,7 +60,6 @@
             margin: 0 auto;
         }
 
-        /* Auth Box (Login & Registration) */
         .auth-wrapper {
             margin-top: 10px;
         }
@@ -120,7 +118,6 @@
             text-align: center;
         }
 
-        /* Page Switching System */
         .page-section {
             display: none;
             animation: fadeIn 0.2s ease;
@@ -135,7 +132,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Sub-page Top Bar */
         .page-top-bar {
             display: flex;
             align-items: center;
@@ -164,7 +160,6 @@
             color: #0f172a;
         }
 
-        /* Balance Card */
         .balance-card {
             background: linear-gradient(135deg, #1d63dc, #0e47b5);
             color: white;
@@ -192,7 +187,6 @@
         .refer-income { font-size: 14px; opacity: 0.98; font-weight: 700; }
         .midnight-note { font-size: 12px; opacity: 0.92; margin-top: 6px; color: #fde68a; font-weight: 600; }
 
-        /* Customer Support */
         .support-card {
             background: white;
             padding: 14px 16px;
@@ -231,7 +225,6 @@
             background: #2563eb;
         }
 
-        /* Action Grid */
         .action-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -264,7 +257,6 @@
         .btn-with-hist { background: #fadbd8; color: #1e293b; }
         .btn-my-prod { background: #e8daef; color: #1e293b; }
 
-        /* Plans Section */
         .plans-container { margin-top: 18px; }
         .plans-heading {
             font-size: 17px;
@@ -285,6 +277,7 @@
         .plan-starter { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
         .plan-silver { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
         .plan-gold { background: linear-gradient(135deg, #d97706, #b45309); }
+        .plan-extra { background: linear-gradient(135deg, #0f766e, #115e59); }
 
         .badge {
             position: absolute;
@@ -318,7 +311,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
-        /* Form Card inside Full Pages */
         .card-box {
             background: white;
             padding: 20px;
@@ -403,7 +395,6 @@
             margin-bottom: 14px;
         }
 
-        /* Referral Team Count Grid */
         .team-stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -561,7 +552,6 @@
             margin-top: 6px;
         }
 
-        /* List Items */
         .list-item {
             background: white;
             border: 1px solid #e2e8f0;
@@ -612,7 +602,6 @@
             font-size: 15px;
         }
 
-        /* Custom Clean Center Popup Modal */
         .clean-modal-backdrop {
             position: fixed;
             inset: 0;
@@ -662,7 +651,6 @@
             cursor: pointer;
         }
 
-        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -693,7 +681,6 @@
 </head>
 <body>
 
-    <!-- Clean Popup Modal -->
     <div id="cleanModalBackdrop" class="clean-modal-backdrop">
         <div class="clean-modal-box">
             <div id="cleanModalMessage" class="clean-modal-text">আবেদন জমা হয়েছে অপেক্ষা করেন</div>
@@ -703,7 +690,6 @@
         </div>
     </div>
 
-    <!-- Top Header -->
     <div class="header">
         <h1 onclick="handleHeaderBrandClick()" style="cursor:pointer;">EarnBD</h1>
         <div class="header-actions">
@@ -713,7 +699,7 @@
 
     <div class="container">
 
-        <!-- ==================== 0. LOGIN & REGISTRATION SCREEN ==================== -->
+        <!-- 0. LOGIN & REGISTRATION -->
         <div id="authPage" class="page-section active">
             <div class="auth-wrapper card-box">
                 <div class="auth-tabs">
@@ -725,7 +711,6 @@
                     </button>
                 </div>
 
-                <!-- Login Form -->
                 <form id="loginForm" class="auth-form active" onsubmit="handleUserLogin(event)">
                     <div class="form-group">
                         <label>মোবাইল নম্বর</label>
@@ -739,7 +724,6 @@
                     <p class="auth-helper-note">রেজিস্ট্রেশন করা নম্বর ও পাসওয়ার্ড দিয়ে লগইন করুন। অ্যাকাউন্ট না থাকলে উপরে <strong>রেজিস্ট্রেশন</strong> ট্যাবে চাপুন।</p>
                 </form>
 
-                <!-- Registration Form -->
                 <form id="registerForm" class="auth-form" onsubmit="handleUserRegister(event)">
                     <div class="bonus-banner">🎉 রেজিস্ট্রেশন করার সাথে সাথে একাউন্টে ৩০০ টাকা বোনাস পাবেন!</div>
                     <div class="form-group">
@@ -763,9 +747,8 @@
             </div>
         </div>
 
-        <!-- ==================== 1. HOME PAGE ==================== -->
+        <!-- 1. HOME PAGE -->
         <div id="homePage" class="page-section">
-            <!-- Balance Card -->
             <div class="balance-card">
                 <div class="welcome-text">স্বাগতম, <span id="userNameDisplay">Member</span></div>
                 <div class="balance-amount">৳ <span id="userBalance">0.00</span></div>
@@ -773,7 +756,6 @@
                 <div class="midnight-note">⏰ কেনা পণ্যের ইনকাম প্রতিদিন রাত ১২:০০ টায় অটোমেটিক যুক্ত হয়</div>
             </div>
 
-            <!-- Customer Support (Personal ID & Group) -->
             <div class="support-card">
                 <div class="support-info">
                     <h4>কাস্টমার সাপোর্ট</h4>
@@ -785,7 +767,6 @@
                 </div>
             </div>
 
-            <!-- Row 1: Main Actions -->
             <div class="action-grid">
                 <button class="action-btn btn-deposit" onclick="showPage('depositPage')">
                     <div class="icon">👛</div>
@@ -801,7 +782,6 @@
                 </button>
             </div>
 
-            <!-- Row 2: History & Products -->
             <div class="action-grid">
                 <button class="action-btn btn-dep-hist" onclick="showPage('depositHistoryPage')">
                     <div class="icon">💳</div>
@@ -817,14 +797,13 @@
                 </button>
             </div>
 
-            <!-- Dynamic Plans Section -->
             <div class="plans-container">
                 <div class="plans-heading">📦 উপলব্ধ পণ্য ও প্যাকেজসমূহ</div>
                 <div id="plansContainerList"></div>
             </div>
         </div>
 
-        <!-- ==================== 2. DEPOSIT PAGE ==================== -->
+        <!-- 2. DEPOSIT PAGE -->
         <div id="depositPage" class="page-section">
             <div class="page-top-bar">
                 <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
@@ -866,7 +845,7 @@
             </div>
         </div>
 
-        <!-- ==================== 3. WITHDRAW PAGE ==================== -->
+        <!-- 3. WITHDRAW PAGE -->
         <div id="withdrawPage" class="page-section">
             <div class="page-top-bar">
                 <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
@@ -879,15 +858,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label>উত্তোলন মেথড</label>
-                    <select id="withMethod">
-                        <option value="বিকাশ এজেন্ট">বিকাশ এজেন্ট</option>
-                        <option value="নগদ পারসোনাল">নগদ পারসোনাল</option>
+                    <label>উত্তোলন মেথড নির্বাচন করুন</label>
+                    <select id="withMethod" onchange="updateWithdrawPlaceholder()">
+                        <option value="বিকাশ">বিকাশ</option>
+                        <option value="নগদ">নগদ</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>আপনার একাউন্ট নম্বর</label>
-                    <input type="text" id="withNumber" placeholder="017XXXXXXXX">
+                    <label id="withNumberLabel">আপনার বিকাশ একাউন্ট নম্বর বসান</label>
+                    <input type="tel" id="withNumber" placeholder="বিকাশ নম্বর (017XXXXXXXX)">
                 </div>
                 <div class="form-group">
                     <label>টাকার পরিমাণ (৳)</label>
@@ -897,7 +876,7 @@
             </div>
         </div>
 
-        <!-- ==================== 4. REFER PAGE ==================== -->
+        <!-- 4. REFER PAGE -->
         <div id="referPage" class="page-section">
             <div class="page-top-bar">
                 <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
@@ -945,7 +924,7 @@
 
                 <div class="ref-info-box">
                     <strong>ব্যবহৃত / অটো রেফার কোড:</strong> <span id="activeRefCodeDisplay">নেই</span><br>
-                    <small>* কেউ রেফার লিংক দিয়ে ঢুকলে বা রেজিস্ট্রেশনে কোড বসালে ১ম, ২য়, ৩য় স্তরে রেফার সংখ্যা অটোমেটিক গণনা হবে।</small>
+                    <small>* অন্য মোবাইল থেকেও আপনার রেফার কোড বা লিংক ব্যবহার করে একাউন্ট করলে ১ম, ২য়, ৩য় স্তরে গণনা হবে।</small>
                 </div>
 
                 <div class="form-group">
@@ -983,7 +962,7 @@
             </div>
         </div>
 
-        <!-- ==================== 5. DEPOSIT HISTORY PAGE ==================== -->
+        <!-- 5. DEPOSIT HISTORY -->
         <div id="depositHistoryPage" class="page-section">
             <div class="page-top-bar">
                 <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
@@ -992,7 +971,7 @@
             <div id="depositHistoryList"></div>
         </div>
 
-        <!-- ==================== 6. WITHDRAW HISTORY PAGE ==================== -->
+        <!-- 6. WITHDRAW HISTORY -->
         <div id="withdrawHistoryPage" class="page-section">
             <div class="page-top-bar">
                 <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
@@ -1001,7 +980,7 @@
             <div id="withdrawHistoryList"></div>
         </div>
 
-        <!-- ==================== 7. MY PURCHASED PRODUCTS PAGE ==================== -->
+        <!-- 7. MY PRODUCTS -->
         <div id="myProductsPage" class="page-section">
             <div class="page-top-bar">
                 <button class="back-btn" onclick="showPage('homePage')">← ফিরে যান</button>
@@ -1012,7 +991,6 @@
 
     </div>
 
-    <!-- Bottom Navigation -->
     <div id="bottomNav" class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="showPage('homePage')">
             <span class="nav-icon">🏠</span>
@@ -1053,32 +1031,85 @@
             { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, badge: '', icon: '👑', theme: 'plan-gold' }
         ];
 
-        let paymentConfig = {
-            ...defaultPaymentConfig,
-            ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {})
+        const defaultCloudConfig = {
+            binId: '6b06d1ddffd5d16053dcf15d',
+            apiKey: '$2a$10$3.BbHD8KyzSufz2khSKM6uOsQzSMMpWAOLAGX2SlsFiR8SlS35XPy'
         };
 
-        let supportConfig = {
-            ...defaultSupportConfig,
-            ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {})
-        };
-
+        let paymentConfig = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
+        let supportConfig = { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) };
         let plansConfig = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
+        let cloudConfig = { ...defaultCloudConfig, ...(JSON.parse(localStorage.getItem('earnbd_cloud_config')) || {}) };
         let usersDB = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
         let currentUserPhone = localStorage.getItem('earnbd_current_user_phone') || '';
         let currentScreenshotBase64 = '';
 
-        function reloadSharedConfigs() {
-            paymentConfig = {
-                ...defaultPaymentConfig,
-                ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {})
-            };
-            supportConfig = {
-                ...defaultSupportConfig,
-                ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {})
-            };
+        function reloadLocalConfigs() {
+            paymentConfig = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
+            supportConfig = { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) };
             plansConfig = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
+            cloudConfig = { ...defaultCloudConfig, ...(JSON.parse(localStorage.getItem('earnbd_cloud_config')) || {}) };
             usersDB = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
+        }
+
+        function hasCloudConfigured() {
+            reloadLocalConfigs();
+            return Boolean(cloudConfig.binId && cloudConfig.apiKey);
+        }
+
+        async function pullFromCloud() {
+            if (!hasCloudConfigured()) return false;
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${cloudConfig.binId}/latest`, {
+                    headers: { 'X-Master-Key': cloudConfig.apiKey }
+                });
+                if (!res.ok) return false;
+                const data = await res.json();
+                const record = data.record || {};
+                if (record.usersDB) {
+                    usersDB = record.usersDB;
+                    localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
+                }
+                if (record.paymentConfig) {
+                    paymentConfig = { ...defaultPaymentConfig, ...record.paymentConfig };
+                    localStorage.setItem('earnbd_payment_config', JSON.stringify(paymentConfig));
+                }
+                if (record.supportConfig) {
+                    supportConfig = { ...defaultSupportConfig, ...record.supportConfig };
+                    localStorage.setItem('earnbd_support_config', JSON.stringify(supportConfig));
+                }
+                if (record.plansConfig) {
+                    plansConfig = record.plansConfig;
+                    localStorage.setItem('earnbd_plans_config', JSON.stringify(plansConfig));
+                }
+                return true;
+            } catch (err) {
+                return false;
+            }
+        }
+
+        async function pushToCloud() {
+            if (!hasCloudConfigured()) return false;
+            try {
+                const payload = {
+                    usersDB,
+                    paymentConfig,
+                    supportConfig,
+                    plansConfig,
+                    updatedAt: Date.now()
+                };
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${cloudConfig.binId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': cloudConfig.apiKey
+                    },
+                    body: JSON.stringify(payload)
+                });
+                return res.ok;
+            } catch (err) {
+                return false;
+            }
         }
 
         function showCleanModal(message) {
@@ -1132,9 +1163,10 @@
             return { level1, level2, level3 };
         }
 
-        function handleUserRegister(e) {
+        async function handleUserRegister(e) {
             e.preventDefault();
-            reloadSharedConfigs();
+            reloadLocalConfigs();
+            await pullFromCloud();
 
             const name = document.getElementById('regName').value.trim();
             const phone = document.getElementById('regPhone').value.trim();
@@ -1176,15 +1208,17 @@
             currentUserPhone = phone;
             localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
             localStorage.setItem('earnbd_current_user_phone', currentUserPhone);
+            await pushToCloud();
 
             document.getElementById('registerForm').reset();
             enterDashboard();
             showCleanModal('অভিনন্দন! আপনার একাউন্টে ৩০০ টাকা বোনাস যুক্ত হয়েছে।');
         }
 
-        function handleUserLogin(e) {
+        async function handleUserLogin(e) {
             e.preventDefault();
-            reloadSharedConfigs();
+            reloadLocalConfigs();
+            await pullFromCloud();
 
             const phone = document.getElementById('loginPhone').value.trim();
             const password = document.getElementById('loginPassword').value;
@@ -1212,22 +1246,23 @@
         }
 
         function getCurrentUser() {
-            reloadSharedConfigs();
+            reloadLocalConfigs();
             return currentUserPhone ? usersDB[currentUserPhone] : null;
         }
 
-        function saveCurrentUser(user) {
+        async function saveCurrentUser(user) {
             if (!user || !user.phone) return;
             usersDB[user.phone] = user;
             localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
             syncDashboardUI();
+            await pushToCloud();
         }
 
         function renderPlans() {
-            reloadSharedConfigs();
+            reloadLocalConfigs();
             const container = document.getElementById('plansContainerList');
             container.innerHTML = plansConfig.map((p, idx) => {
-                const themeClass = p.theme || (idx === 0 ? 'plan-starter' : idx === 1 ? 'plan-silver' : 'plan-gold');
+                const themeClass = p.theme || (idx === 0 ? 'plan-starter' : idx === 1 ? 'plan-silver' : idx === 2 ? 'plan-gold' : 'plan-extra');
                 return `
                     <div class="plan-card ${themeClass}">
                         ${p.badge ? `<div class="badge">${p.badge}</div>` : ''}
@@ -1246,11 +1281,9 @@
         }
 
         function renderSupportLinks() {
-            reloadSharedConfigs();
-            const pLink = document.getElementById('telegramPersonalLink');
-            const gLink = document.getElementById('telegramGroupLink');
-            pLink.href = supportConfig.personalUrl || 'https://t.me/';
-            gLink.href = supportConfig.groupUrl || 'https://t.me/';
+            reloadLocalConfigs();
+            document.getElementById('telegramPersonalLink').href = supportConfig.personalUrl || 'https://t.me/';
+            document.getElementById('telegramGroupLink').href = supportConfig.groupUrl || 'https://t.me/';
         }
 
         function enterDashboard() {
@@ -1260,6 +1293,10 @@
             document.getElementById('bottomNav').classList.add('visible');
             showPage('homePage');
             syncDashboardUI();
+            pullFromCloud().then(() => {
+                syncDashboardUI();
+                updatePayNumber();
+            });
         }
 
         function syncDashboardUI() {
@@ -1334,7 +1371,7 @@
             }
         }
 
-        function applyManualReferralCode(val) {
+        async function applyManualReferralCode(val) {
             const user = getCurrentUser();
             if (!user) return;
             const code = (val || '').trim().toUpperCase();
@@ -1347,7 +1384,7 @@
             if (!user.referredBy && code) {
                 user.referredBy = code;
             }
-            saveCurrentUser(user);
+            await saveCurrentUser(user);
         }
 
         function copyText(text, label) {
@@ -1365,7 +1402,7 @@
         }
 
         function updatePayNumber() {
-            reloadSharedConfigs();
+            reloadLocalConfigs();
             const method = document.getElementById('depMethod').value;
             const container = document.getElementById('adminPayNumber');
             let label = '';
@@ -1390,6 +1427,12 @@
             `;
         }
 
+        function updateWithdrawPlaceholder() {
+            const method = document.getElementById('withMethod').value;
+            document.getElementById('withNumberLabel').innerText = `আপনার ${method} একাউন্ট নম্বর বসান`;
+            document.getElementById('withNumber').placeholder = `${method} নম্বর (017XXXXXXXX)`;
+        }
+
         function showPage(pageId) {
             if (!currentUserPhone || !usersDB[currentUserPhone]) {
                 pageId = 'authPage';
@@ -1400,7 +1443,7 @@
 
             if (pageId === 'homePage') syncDashboardUI();
             if (pageId === 'depositPage') updatePayNumber();
-            if (pageId === 'withdrawPage') syncDashboardUI();
+            if (pageId === 'withdrawPage') { syncDashboardUI(); updateWithdrawPlaceholder(); }
             if (pageId === 'referPage') syncReferralUI();
             if (pageId === 'depositHistoryPage') renderDepositHistory();
             if (pageId === 'withdrawHistoryPage') renderWithdrawHistory();
@@ -1431,7 +1474,7 @@
             reader.readAsDataURL(file);
         }
 
-        function submitDeposit() {
+        async function submitDeposit() {
             const user = getCurrentUser();
             if (!user) return;
 
@@ -1459,7 +1502,7 @@
                 time: new Date().toLocaleString('bn-BD')
             });
 
-            saveCurrentUser(user);
+            await saveCurrentUser(user);
             document.getElementById('depAmount').value = '';
             document.getElementById('depTrx').value = '';
             document.getElementById('depScreenshot').value = '';
@@ -1470,7 +1513,7 @@
             showCleanModal('আবেদন জমা হয়েছে অপেক্ষা করেন');
         }
 
-        function submitWithdraw() {
+        async function submitWithdraw() {
             const user = getCurrentUser();
             if (!user) return;
 
@@ -1484,7 +1527,7 @@
             const amount = parseFloat(document.getElementById('withAmount').value);
 
             if (!number) {
-                showCleanModal('আপনার একাউন্ট নম্বর লিখুন।');
+                showCleanModal(`আপনার ${method} একাউন্ট নম্বর লিখুন।`);
                 return;
             }
             if (!amount || amount < 300) {
@@ -1507,7 +1550,7 @@
                 time: new Date().toLocaleString('bn-BD')
             });
 
-            saveCurrentUser(user);
+            await saveCurrentUser(user);
             document.getElementById('withNumber').value = '';
             document.getElementById('withAmount').value = '';
 
@@ -1549,7 +1592,7 @@
             localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
         }
 
-        function buyPlan(name, price, dailyIncome, days) {
+        async function buyPlan(name, price, dailyIncome, days) {
             const user = getCurrentUser();
             if (!user) return;
 
@@ -1570,7 +1613,7 @@
             });
 
             distributeReferralCommissionsOnFirstBuy(user, price);
-            saveCurrentUser(user);
+            await saveCurrentUser(user);
 
             showPage('myProductsPage');
             showCleanModal(name + ' সফলভাবে কেনা হয়েছে!');
@@ -1624,7 +1667,7 @@
                     <div class="list-top">
                         <div>
                             <h4>${item.method} — ৳ ${item.amount}</h4>
-                            <p>নম্বর: ${item.number}</p>
+                            <p>${item.method} নম্বর: ${item.number}</p>
                             <p>${item.time}</p>
                         </div>
                         <span class="status-badge ${getStatusBadgeClass(item.status)}">${getStatusLabelBn(item.status)}</span>
@@ -1660,12 +1703,16 @@
             updatePayNumber();
         });
 
-        (function initApp() {
+        (async function initApp() {
             const urlParams = new URLSearchParams(window.location.search);
             const refParam = (urlParams.get('ref') || '').trim().toUpperCase();
             if (refParam) {
                 document.getElementById('regRefCode').value = refParam;
             }
+
+            await pullFromCloud();
+            renderPlans();
+            renderSupportLinks();
 
             if (currentUserPhone && usersDB[currentUserPhone]) {
                 enterDashboard();
