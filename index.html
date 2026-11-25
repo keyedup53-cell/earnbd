@@ -19,6 +19,7 @@
             padding-bottom: 85px;
         }
 
+        /* Header */
         .header {
             background: linear-gradient(90deg, #0284c7, #1d4ed8);
             color: white;
@@ -37,8 +38,14 @@
             font-weight: 700;
         }
 
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
         .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.22);
             color: white;
             border: 1px solid rgba(255,255,255,0.3);
             padding: 6px 14px;
@@ -54,6 +61,66 @@
             margin: 0 auto;
         }
 
+        /* Auth Box (Login & Registration) */
+        .auth-wrapper {
+            margin-top: 10px;
+        }
+
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+            background: #e2e8f0;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .auth-tab-btn {
+            border: none;
+            background: transparent;
+            padding: 10px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .auth-tab-btn.active {
+            background: white;
+            color: #1d4ed8;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .bonus-banner {
+            background: #ecfdf5;
+            border: 1px solid #6ee7b7;
+            color: #065f46;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .auth-helper-note {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Page Switching System */
         .page-section {
             display: none;
             animation: fadeIn 0.2s ease;
@@ -68,6 +135,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Sub-page Top Bar */
         .page-top-bar {
             display: flex;
             align-items: center;
@@ -96,6 +164,7 @@
             color: #0f172a;
         }
 
+        /* Balance Card */
         .balance-card {
             background: linear-gradient(135deg, #1d63dc, #0e47b5);
             color: white;
@@ -120,8 +189,10 @@
 
         .welcome-text { font-size: 14px; opacity: 0.9; margin-bottom: 5px; }
         .balance-amount { font-size: 34px; font-weight: 700; margin-bottom: 8px; }
-        .refer-income { font-size: 13px; opacity: 0.95; font-weight: 600; }
+        .refer-income { font-size: 14px; opacity: 0.98; font-weight: 700; }
+        .midnight-note { font-size: 12px; opacity: 0.92; margin-top: 6px; color: #fde68a; font-weight: 600; }
 
+        /* Customer Support */
         .support-card {
             background: white;
             padding: 14px 16px;
@@ -131,20 +202,23 @@
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.04);
             margin-bottom: 16px;
+            gap: 10px;
         }
 
         .support-info h4 { font-size: 16px; color: #0284c7; font-weight: 700; }
         .support-info p { font-size: 12px; color: #64748b; }
-        .telegram-btn {
+        .support-btn {
             background: #0ea5e9;
             color: white;
             text-decoration: none;
-            padding: 8px 18px;
+            padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
+        /* Action Grid */
         .action-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -177,7 +251,14 @@
         .btn-with-hist { background: #fadbd8; color: #1e293b; }
         .btn-my-prod { background: #e8daef; color: #1e293b; }
 
+        /* Plans Section */
         .plans-container { margin-top: 18px; }
+        .plans-heading {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
         .plan-card {
             border-radius: 18px;
             padding: 18px;
@@ -191,6 +272,7 @@
         .plan-starter { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
         .plan-silver { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
         .plan-gold { background: linear-gradient(135deg, #d97706, #b45309); }
+        .plan-custom { background: linear-gradient(135deg, #0f766e, #115e59); }
 
         .badge {
             position: absolute;
@@ -224,6 +306,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
+        /* Form Card inside Full Pages */
         .card-box {
             background: white;
             padding: 20px;
@@ -245,6 +328,7 @@
             font-size: 13px;
             color: #475569;
             margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .number-option-card {
@@ -260,9 +344,23 @@
             gap: 8px;
         }
 
-        .number-option-card:last-of-type { margin-bottom: 0; }
-        .number-type-tag { font-size: 12px; font-weight: 700; color: #1d4ed8; display: block; }
-        .number-value { font-size: 16px; font-weight: 700; color: #0f172a; word-break: break-all; }
+        .number-option-card:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .number-type-tag {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1d4ed8;
+            display: block;
+        }
+
+        .number-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            word-break: break-all;
+        }
 
         .copy-mini-btn {
             background: #dbeafe;
@@ -287,6 +385,18 @@
             background: #f8fafc;
         }
 
+        .withdraw-rule-alert {
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            color: #9a3412;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        /* Referral Team Count Grid */
         .team-stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -303,7 +413,7 @@
         }
 
         .team-stat-box h3 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             color: #1d4ed8;
             line-height: 1.1;
@@ -331,10 +441,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
         }
 
-        .my-code-badge span { font-size: 14px; font-weight: 600; color: #92400e; }
-        .my-code-badge strong { font-size: 17px; color: #b45309; letter-spacing: 0.5px; }
+        .my-code-badge span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .my-code-badge strong {
+            font-size: 16px;
+            color: #b45309;
+            letter-spacing: 0.4px;
+            word-break: break-all;
+        }
 
         .ref-info-box {
             background: #f0fdf4;
@@ -344,6 +465,38 @@
             margin-bottom: 14px;
             font-size: 14px;
             color: #166534;
+        }
+
+        .ref-members-list {
+            margin-top: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .ref-members-list h5 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .ref-member-row {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            gap: 8px;
+        }
+
+        .ref-member-row:last-child {
+            margin-bottom: 0;
         }
 
         .level-card {
@@ -391,6 +544,7 @@
             margin-top: 6px;
         }
 
+        /* List Items */
         .list-item {
             background: white;
             border: 1px solid #e2e8f0;
@@ -418,6 +572,7 @@
 
         .status-pending { background: #fef3c7; color: #b45309; }
         .status-success { background: #dcfce7; color: #15803d; }
+        .status-rejected { background: #fee2e2; color: #b91c1c; }
 
         .ss-thumb {
             width: 100%;
@@ -438,6 +593,57 @@
             font-size: 15px;
         }
 
+        /* Custom Clean Center Popup Modal */
+        .clean-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 999;
+        }
+
+        .clean-modal-backdrop.active {
+            display: flex;
+        }
+
+        .clean-modal-box {
+            background: white;
+            width: 100%;
+            max-width: 340px;
+            border-radius: 20px;
+            padding: 26px 20px 20px;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.22);
+            text-align: center;
+        }
+
+        .clean-modal-text {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+
+        .clean-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .clean-modal-ok {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 9px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -464,29 +670,96 @@
 </head>
 <body>
 
+    <!-- Clean Popup Modal -->
+    <div id="cleanModalBackdrop" class="clean-modal-backdrop">
+        <div class="clean-modal-box">
+            <div id="cleanModalMessage" class="clean-modal-text">আবেদন জমা হয়েছে অপেক্ষা করেন</div>
+            <div class="clean-modal-actions">
+                <button type="button" id="cleanModalOkBtn" class="clean-modal-ok" onclick="closeCleanModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Header -->
     <div class="header">
-        <h1 onclick="showPage('homePage')" style="cursor:pointer;">EarnBD</h1>
-        <button class="logout-btn" onclick="alert('লগআউট সফল হয়েছে!')">লগআউট</button>
+        <h1 onclick="handleHeaderBrandClick()" style="cursor:pointer;">EarnBD</h1>
+        <div class="header-actions">
+            <button id="headerLogoutBtn" class="logout-btn" onclick="logoutUser()">লগআউট</button>
+        </div>
     </div>
 
     <div class="container">
 
+        <!-- ==================== 0. LOGIN & REGISTRATION SCREEN ==================== -->
+        <div id="authPage" class="page-section active">
+            <div class="auth-wrapper card-box">
+                <div class="auth-tabs">
+                    <button type="button" id="tabLoginBtn" class="auth-tab-btn active" onclick="switchAuthTab('login')">
+                        লগইন
+                    </button>
+                    <button type="button" id="tabRegisterBtn" class="auth-tab-btn" onclick="switchAuthTab('register')">
+                        রেজিস্ট্রেশন
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active" onsubmit="handleUserLogin(event)">
+                    <div class="form-group">
+                        <label>মোবাইল নম্বর</label>
+                        <input type="tel" id="loginPhone" placeholder="017XXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>পাসওয়ার্ড</label>
+                        <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" required>
+                    </div>
+                    <button type="submit" class="submit-btn">লগইন করুন</button>
+                    <p class="auth-helper-note">শুধুমাত্র রেজিস্ট্রেশন করা নম্বর দিয়ে লগইন করা যাবে। অ্যাকাউন্ট না থাকলে উপরে <strong>রেজিস্ট্রেশন</strong> ট্যাবে চাপুন।</p>
+                </form>
+
+                <!-- Registration Form -->
+                <form id="registerForm" class="auth-form" onsubmit="handleUserRegister(event)">
+                    <div class="bonus-banner">🎉 রেজিস্ট্রেশন করার সাথে সাথে একাউন্টে ৩০০ টাকা বোনাস পাবেন!</div>
+                    <div class="form-group">
+                        <label>আপনার নাম</label>
+                        <input type="text" id="regName" placeholder="পুরো নাম লিখুন" required>
+                    </div>
+                    <div class="form-group">
+                        <label>মোবাইল নম্বর</label>
+                        <input type="tel" id="regPhone" placeholder="017XXXXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>পাসওয়ার্ড</label>
+                        <input type="password" id="regPassword" placeholder="পাসওয়ার্ড তৈরি করুন" required>
+                    </div>
+                    <div class="form-group">
+                        <label>রেফার কোড (ঐচ্ছিক)</label>
+                        <input type="text" id="regRefCode" placeholder="রেফার কোড থাকলে লিখুন (যেমন: EBD-123456)">
+                    </div>
+                    <button type="submit" class="submit-btn">রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন</button>
+                </form>
+            </div>
+        </div>
+
         <!-- ==================== 1. HOME PAGE ==================== -->
-        <div id="homePage" class="page-section active">
+        <div id="homePage" class="page-section">
+            <!-- Balance Card -->
             <div class="balance-card">
-                <div class="welcome-text">স্বাগতম, <span id="userNameDisplay">Sp</span></div>
-                <div class="balance-amount">৳ <span id="userBalance">2600.00</span></div>
+                <div class="welcome-text">স্বাগতম, <span id="userNameDisplay">Member</span></div>
+                <div class="balance-amount">৳ <span id="userBalance">0.00</span></div>
                 <div class="refer-income">মোট রেফার কমিশন আয়: ৳ <span id="referBalance">0.00</span></div>
+                <div class="midnight-note">⏰ কেনা পণ্যের ইনকাম প্রতিদিন রাত ১২:০০ টায় অটোমেটিক যুক্ত হয়</div>
             </div>
 
+            <!-- Customer Support -->
             <div class="support-card">
                 <div class="support-info">
-                    <h4>টেলিগ্রাম সাপোর্ট</h4>
-                    <p>যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
+                    <h4 id="supportTitleText">কাস্টমার সাপোর্ট</h4>
+                    <p id="supportSubText">যেকোনো প্রয়োজনে যোগাযোগ করুন</p>
                 </div>
-                <a href="https://t.me/" target="_blank" class="telegram-btn">Telegram</a>
+                <a id="customerSupportLink" href="https://t.me/earnbd_support" target="_blank" class="support-btn">সাপোর্ট</a>
             </div>
 
+            <!-- Row 1: Main Actions -->
             <div class="action-grid">
                 <button class="action-btn btn-deposit" onclick="showPage('depositPage')">
                     <div class="icon">👛</div>
@@ -502,6 +775,7 @@
                 </button>
             </div>
 
+            <!-- Row 2: History & Products -->
             <div class="action-grid">
                 <button class="action-btn btn-dep-hist" onclick="showPage('depositHistoryPage')">
                     <div class="icon">💳</div>
@@ -517,43 +791,10 @@
                 </button>
             </div>
 
+            <!-- Dynamic Plans Section (Synced from Admin Panel) -->
             <div class="plans-container">
-                <div class="plan-card plan-starter">
-                    <div class="badge">POPULAR</div>
-                    <div class="plan-content">
-                        <div class="plan-icon">🎁</div>
-                        <div class="plan-details">
-                            <h3>Starter Plan (45 দিন)</h3>
-                            <p>💰 দাম: ৳ 670</p>
-                            <p>📅 দৈনিক ইনকাম: ৳ 85</p>
-                            <button class="buy-btn" onclick="buyPlan('Starter Plan', 670, 85, 45)">🛒 কিনুন →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="plan-card plan-silver">
-                    <div class="plan-content">
-                        <div class="plan-icon">💎</div>
-                        <div class="plan-details">
-                            <h3>Silver Plan (45 দিন)</h3>
-                            <p>💰 দাম: ৳ 1,200</p>
-                            <p>📅 দৈনিক ইনকাম: ৳ 160</p>
-                            <button class="buy-btn" onclick="buyPlan('Silver Plan', 1200, 160, 45)">🛒 কিনুন →</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="plan-card plan-gold">
-                    <div class="plan-content">
-                        <div class="plan-icon">👑</div>
-                        <div class="plan-details">
-                            <h3>Gold Plan (45 দিন)</h3>
-                            <p>💰 দাম: ৳ 2,500</p>
-                            <p>📅 দৈনিক ইনকাম: ৳ 350</p>
-                            <button class="buy-btn" onclick="buyPlan('Gold Plan', 2500, 350, 45)">🛒 কিনুন →</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="plans-heading">📦 উপলব্ধ পণ্য ও প্যাকেজসমূহ</div>
+                <div id="plansList"></div>
             </div>
         </div>
 
@@ -565,19 +806,18 @@
             </div>
 
             <div class="card-box">
-                <div class="payment-number-box">
-                    <p class="intro-label">নিচের নম্বরগুলোতে পেমেন্ট / Send Money করুন:</p>
-                    <div id="adminPayNumber"></div>
-                    <p style="font-size:12px; color:#dc2626; margin-top:8px;">পেমেন্ট করার পর স্ক্রিনশট ও TrxID নিচে জমা দিন</p>
-                </div>
-
                 <div class="form-group">
                     <label>পেমেন্ট মেথড নির্বাচন করুন</label>
                     <select id="depMethod" onchange="updatePayNumber()">
-                        <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
-                        <option value="নগদ (Nagad)">নগদ (Nagad)</option>
-                        <option value="TRX (TRC20)">TRX (TRC20)</option>
+                        <option value="বিকাশ এজেন্ট">বিকাশ এজেন্ট</option>
+                        <option value="নগদ পারসোনাল">নগদ পারসোনাল</option>
                     </select>
+                </div>
+
+                <div class="payment-number-box">
+                    <p class="intro-label" id="paymentIntroLabel">নির্বাচিত মেথডের নম্বরসমূহ:</p>
+                    <div id="adminPayNumber"></div>
+                    <p style="font-size:12px; color:#dc2626; margin-top:8px;">পেমেন্ট করার পর স্ক্রিনশট ও TrxID নিচে জমা দিন (একটি স্ক্রিনশট ও TrxID শুধু একবার দেওয়া যাবে)</p>
                 </div>
 
                 <div class="form-group">
@@ -608,11 +848,15 @@
             </div>
 
             <div class="card-box">
+                <div class="withdraw-rule-alert" id="withdrawEligibilityBox">
+                    শর্ত: টাকা উত্তোলনের আবেদন করতে হলে আপনার অ্যাকাউন্টে অন্তত ১টি পণ্য কেনা থাকতে হবে।
+                </div>
+
                 <div class="form-group">
                     <label>উত্তোলন মেথড</label>
                     <select id="withMethod">
-                        <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
-                        <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+                        <option value="বিকাশ এজেন্ট">বিকাশ এজেন্ট</option>
+                        <option value="নগদ পারসোনাল">নগদ পারসোনাল</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -664,16 +908,23 @@
                 </div>
                 <button class="submit-btn" onclick="copyReferLink()">📋 রেফার লিংক কপি করুন</button>
 
+                <div class="ref-members-list">
+                    <h5>আপনার রেফার লিংক/কোড দিয়ে একাউন্ট করা সদস্যরা:</h5>
+                    <div id="referredMembersList">
+                        <p style="font-size:13px; color:#64748b;">এখনো কেউ আপনার রেফার কোড দিয়ে একাউন্ট করেনি।</p>
+                    </div>
+                </div>
+
                 <hr style="border:none; border-top:1px solid #e2e8f0; margin:16px 0;">
 
                 <div class="ref-info-box">
                     <strong>ব্যবহৃত / অটো রেফার কোড:</strong> <span id="activeRefCodeDisplay">নেই</span><br>
-                    <small>* কেউ রেফার লিংক দিয়ে ঢুকলে বা কোড বসালে ১ম, ২য়, ৩য় স্তরে রেফার সংখ্যা অটোমেটিক গণনা হবে।</small>
+                    <small>* কেউ কারো রেফার লিংক দিয়ে ঢুকলে তার রেফার কোড অটোমেটিক বসে যাবে।</small>
                 </div>
 
                 <div class="form-group">
                     <label>যার রেফারে জয়েন করেছেন তার কোড:</label>
-                    <input type="text" id="appliedRefCodeInput" placeholder="রেফার কোড লিখুন বা অটো বসবে" onchange="applyReferrerCode(this.value)">
+                    <input type="text" id="appliedRefCodeInput" placeholder="রেফার কোড থাকলে এখানে অটো বসবে" oninput="manualSetRefCode(this.value)">
                 </div>
 
                 <div class="level-card">
@@ -701,7 +952,7 @@
                 </div>
 
                 <p style="font-size:12px; color:#dc2626; margin-top:12px; font-weight:600;">
-                    শর্ত: রেফার করা সদস্যরা ১ম বার পণ্য কেনার সাথে সাথে ১ম স্তরে ২০%, ২য় স্তরে ১% এবং ৩য় স্তরে ১% কমিশন জমা হবে।
+                    শর্ত: রেফার করা ব্যক্তি ১ম বার পণ্য কেনার সাথে সাথে কমিশন জমা হবে। ২য় বার পণ্য কিনলে আর কোনো কমিশন পাওয়া যাবে না।
                 </p>
             </div>
         </div>
@@ -735,7 +986,8 @@
 
     </div>
 
-    <div class="bottom-nav">
+    <!-- Bottom Navigation -->
+    <div id="bottomNavBar" class="bottom-nav">
         <div class="nav-item active" id="nav-home" onclick="showPage('homePage')">
             <span class="nav-icon">🏠</span>
             হোম
@@ -759,258 +1011,938 @@
     </div>
 
     <script>
-        const defaultPaymentConfig = {
-            bkashAgent: '01700-000001',
-            bkashPersonal: '01700-000002',
-            nagadAgent: '01800-000003',
-            nagadPersonal: '01800-000004',
-            trxAddress: 'TExampleTRC20WalletAddress123456'
+        const ADMIN_STORAGE_KEY = 'earnbd_admin_panel_state_v1';
+        const USER_STORAGE_KEY = 'earnbd_user_local_state_v1';
+        const USERS_ACCOUNTS_KEY = 'earnbd_registered_users_v1';
+        const SESSION_KEY = 'earnbd_logged_in_flag_v1';
+        const REGISTRATION_BONUS = 300;
+
+        let pendingModalCallback = null;
+
+        function openCleanModal(message, onOk = null) {
+            const backdrop = document.getElementById('cleanModalBackdrop');
+            const msgEl = document.getElementById('cleanModalMessage');
+            pendingModalCallback = typeof onOk === 'function' ? onOk : null;
+            if (msgEl) msgEl.textContent = message;
+            if (backdrop) backdrop.classList.add('active');
+        }
+
+        function closeCleanModal() {
+            const backdrop = document.getElementById('cleanModalBackdrop');
+            if (backdrop) backdrop.classList.remove('active');
+            const cb = pendingModalCallback;
+            pendingModalCallback = null;
+            if (cb) cb();
+        }
+
+        const defaultProducts = [
+            {
+                id: 'PROD-STARTER',
+                name: 'Starter Plan',
+                price: 670,
+                dailyIncome: 85,
+                days: 45,
+                icon: '🎁',
+                theme: 'plan-starter',
+                badge: 'POPULAR'
+            },
+            {
+                id: 'PROD-SILVER',
+                name: 'Silver Plan',
+                price: 1200,
+                dailyIncome: 160,
+                days: 45,
+                icon: '💎',
+                theme: 'plan-silver',
+                badge: ''
+            },
+            {
+                id: 'PROD-GOLD',
+                name: 'Gold Plan',
+                price: 2500,
+                dailyIncome: 350,
+                days: 45,
+                icon: '👑',
+                theme: 'plan-gold',
+                badge: ''
+            }
+        ];
+
+        const defaultPaymentNumbers = {
+            bkashAgent: ['01700-000001'],
+            nagadPersonal: ['01819442098']
         };
 
-        let paymentConfig = {
-            ...defaultPaymentConfig,
-            ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {})
+        const defaultSupportConfig = {
+            title: 'কাস্টমার সাপোর্ট',
+            subtitle: 'যেকোনো প্রয়োজনে যোগাযোগ করুন',
+            link: 'https://t.me/earnbd_support',
+            buttonText: 'সাপোর্ট'
         };
 
-        // রেফার চেইন ডাটা: { code: { referredBy: "PARENT_CODE", level1: [], level2: [], level3: [] } }
-        let referralTree = JSON.parse(localStorage.getItem('earnbd_referral_tree')) || {};
+        let catalogProducts = [...defaultProducts];
+        let paymentNumbersConfig = JSON.parse(JSON.stringify(defaultPaymentNumbers));
+        let supportConfig = { ...defaultSupportConfig };
+
+        function normalizePhone(phone) {
+            return String(phone || '').replace(/\s+/g, '').trim();
+        }
+
+        function normalizeCode(code) {
+            return String(code || '').trim().toUpperCase();
+        }
+
+        function normalizeTrx(trx) {
+            return String(trx || '').replace(/\s+/g, '').trim().toUpperCase();
+        }
+
+        function getTodayDateKey() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function generateUniqueCodeForPhone(phone) {
+            const clean = normalizePhone(phone).replace(/\D/g, '');
+            const tail = clean.slice(-4) || Math.floor(1000 + Math.random() * 9000);
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let rand = '';
+            for (let i = 0; i < 4; i++) {
+                rand += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return `EBD-${tail}${rand}`;
+        }
 
         function getOrCreateMemberRefCode() {
+            const accounts = getRegisteredAccounts();
+            const currentPhone = normalizePhone(userState.phone);
+            const matchedAcc = accounts.find((acc) => normalizePhone(acc.phone) === currentPhone);
+
+            if (matchedAcc && matchedAcc.myRefCode) {
+                userState.myRefCode = matchedAcc.myRefCode;
+                return matchedAcc.myRefCode;
+            }
+
+            if (userState.myRefCode) {
+                return userState.myRefCode;
+            }
+
             let code = localStorage.getItem('earnbd_my_unique_code');
             if (!code) {
-                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-                let randomPart = '';
-                for (let i = 0; i < 6; i++) {
-                    randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                code = 'EBD-' + randomPart;
+                code = generateUniqueCodeForPhone(currentPhone);
                 localStorage.setItem('earnbd_my_unique_code', code);
             }
-            if (!referralTree[code]) {
-                referralTree[code] = { referredBy: '', level1: [], level2: [], level3: [] };
-                localStorage.setItem('earnbd_referral_tree', JSON.stringify(referralTree));
-            }
+            userState.myRefCode = code;
             return code;
         }
 
-        let myOwnRefCode = getOrCreateMemberRefCode();
-        let balance = parseFloat(localStorage.getItem('earnbd_balance')) || 2600.00;
-        let referCommissionBalance = parseFloat(localStorage.getItem('earnbd_ref_commission')) || 0.00;
-        let hasBoughtFirstProduct = localStorage.getItem('earnbd_first_buy_done') === 'true';
-        let appliedRefCode = localStorage.getItem('earnbd_applied_ref') || '';
-
-        let depositHistory = JSON.parse(localStorage.getItem('earnbd_dep_hist')) || [];
-        let withdrawHistory = JSON.parse(localStorage.getItem('earnbd_with_hist')) || [];
-        let myProducts = JSON.parse(localStorage.getItem('earnbd_products')) || [];
-        let currentScreenshotBase64 = "";
-
-        function ensureNode(code) {
-            if (!code) return null;
-            const clean = code.trim().toUpperCase();
-            if (!referralTree[clean]) {
-                referralTree[clean] = { referredBy: '', level1: [], level2: [], level3: [] };
+        function getAdminState() {
+            try {
+                return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEY)) || {};
+            } catch (e) {
+                return {};
             }
-            return clean;
         }
 
-        // নতুন সদস্য (childCode) কোনো রেফারার (parentCode) এর অধীনে যুক্ত হলে ১ম, ২য়, ৩য় স্তরে গণনা করা
-        function registerReferralChain(childCode, parentCode) {
-            const child = ensureNode(childCode);
-            const parent = ensureNode(parentCode);
-            if (!child || !parent || child === parent) return;
+        function saveAdminState(adminState) {
+            try {
+                localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(adminState));
+            } catch (e) {
+                console.error('Admin state save error:', e);
+            }
+        }
 
-            // ইতিমধ্যে রেজিস্টার্ড থাকলে ডুপ্লিকেট গণনা হবে না
-            if (referralTree[child].referredBy) return;
+        function getDefaultUserState() {
+            return {
+                userName: 'Member',
+                phone: '',
+                myRefCode: '',
+                balance: 0,
+                referBalance: 0,
+                hasPurchasedBefore: false,
+                lastMidnightPayoutDate: getTodayDateKey(),
+                deposits: [],
+                withdrawals: [],
+                products: [],
+                teamStats: { lvl1: 0, lvl2: 0, lvl3: 0 },
+                appliedRefCode: ''
+            };
+        }
 
-            referralTree[child].referredBy = parent;
-            if (!referralTree[parent].level1.includes(child)) {
-                referralTree[parent].level1.push(child);
+        let userState = {
+            ...getDefaultUserState(),
+            ...(JSON.parse(localStorage.getItem(USER_STORAGE_KEY)) || {})
+        };
+
+        function saveUserState() {
+            try {
+                localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userState));
+            } catch (e) {
+                console.error('User state save error:', e);
+            }
+        }
+
+        function getRegisteredAccounts() {
+            try {
+                return JSON.parse(localStorage.getItem(USERS_ACCOUNTS_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveRegisteredAccounts(list) {
+            try {
+                localStorage.setItem(USERS_ACCOUNTS_KEY, JSON.stringify(list));
+            } catch (e) {
+                console.error('Accounts save error:', e);
+            }
+        }
+
+        function isUserLoggedIn() {
+            const activePhone = normalizePhone(userState.phone);
+            const accounts = getRegisteredAccounts();
+            const isRegistered = accounts.some((acc) => normalizePhone(acc.phone) === activePhone);
+            return localStorage.getItem(SESSION_KEY) === 'true' && Boolean(activePhone) && isRegistered;
+        }
+
+        // বর্তমান সদস্যের ১ম, ২য় ও ৩য় স্তরের রেফার সংখ্যা এবং সদস্য তালিকা হিসাব করা
+        function calculateReferralTreeForCurrentUser() {
+            const accounts = getRegisteredAccounts();
+            const myCode = normalizeCode(getOrCreateMemberRefCode());
+            const currentPhone = normalizePhone(userState.phone);
+
+            if (!myCode) {
+                return { lvl1List: [], lvl2List: [], lvl3List: [] };
             }
 
-            // Parent-এর যিনি রেফারার (Grandparent) -> তার ২য় স্তরে child যুক্ত হবে
-            const grandParent = ensureNode(referralTree[parent].referredBy);
-            if (grandParent && grandParent !== child) {
-                if (!referralTree[grandParent].level2.includes(child)) {
-                    referralTree[grandParent].level2.push(child);
-                }
+            const lvl1List = accounts.filter(
+                (acc) => normalizeCode(acc.refCode) === myCode && normalizePhone(acc.phone) !== currentPhone
+            );
+            const lvl1Codes = new Set(lvl1List.map((a) => normalizeCode(a.myRefCode)).filter(Boolean));
 
-                // Grandparent-এর যিনি রেফারার (Great-Grandparent) -> তার ৩য় স্তরে child যুক্ত হবে
-                const greatGrandParent = ensureNode(referralTree[grandParent].referredBy);
-                if (greatGrandParent && greatGrandParent !== child) {
-                    if (!referralTree[greatGrandParent].level3.includes(child)) {
-                        referralTree[greatGrandParent].level3.push(child);
+            const lvl2List = accounts.filter(
+                (acc) =>
+                    lvl1Codes.has(normalizeCode(acc.refCode)) &&
+                    normalizePhone(acc.phone) !== currentPhone &&
+                    !lvl1List.some((x) => normalizePhone(x.phone) === normalizePhone(acc.phone))
+            );
+            const lvl2Codes = new Set(lvl2List.map((a) => normalizeCode(a.myRefCode)).filter(Boolean));
+
+            const lvl3List = accounts.filter(
+                (acc) =>
+                    lvl2Codes.has(normalizeCode(acc.refCode)) &&
+                    normalizePhone(acc.phone) !== currentPhone &&
+                    !lvl1List.some((x) => normalizePhone(x.phone) === normalizePhone(acc.phone)) &&
+                    !lvl2List.some((x) => normalizePhone(x.phone) === normalizePhone(acc.phone))
+            );
+
+            return { lvl1List, lvl2List, lvl3List };
+        }
+
+        function applyMidnightDailyProductIncome() {
+            if (!isUserLoggedIn()) return;
+            if (!Array.isArray(userState.products) || userState.products.length === 0) {
+                userState.lastMidnightPayoutDate = getTodayDateKey();
+                saveUserState();
+                return;
+            }
+
+            const todayKey = getTodayDateKey();
+            if (!userState.lastMidnightPayoutDate) {
+                userState.lastMidnightPayoutDate = todayKey;
+                saveUserState();
+                return;
+            }
+
+            if (userState.lastMidnightPayoutDate !== todayKey) {
+                let totalDailyEarned = 0;
+                const updatedProducts = [];
+
+                userState.products.forEach((prod) => {
+                    const remainingDays = typeof prod.remainingDays === 'number' ? prod.remainingDays : (prod.days || 45);
+                    if (remainingDays > 0) {
+                        const daily = Number(prod.dailyIncome || 0);
+                        totalDailyEarned += daily;
+                        prod.remainingDays = remainingDays - 1;
+                        prod.earnedSoFar = Number(prod.earnedSoFar || 0) + daily;
+                    }
+                    updatedProducts.push(prod);
+                });
+
+                userState.products = updatedProducts;
+                userState.balance = Number(userState.balance || 0) + totalDailyEarned;
+                userState.lastMidnightPayoutDate = todayKey;
+                saveUserState();
+
+                const adminState = getAdminState();
+                if (Array.isArray(adminState.users)) {
+                    const u = adminState.users.find((item) => normalizePhone(item.phone) === normalizePhone(userState.phone));
+                    if (u) {
+                        u.balance = Number(userState.balance || 0);
+                        saveAdminState(adminState);
+                    }
+                }
+            }
+        }
+
+        // রেফার করা ব্যক্তি ১ম বার পণ্য কেনার সাথে সাথে রেফারারের ব্যালেন্স ও মোট রেফার কমিশন আয়ে টাকা যুক্ত হবে
+        function awardReferralCommissionOnFirstPurchase(purchasePrice) {
+            if (userState.hasPurchasedBefore) {
+                return 0;
+            }
+
+            const appliedCode = normalizeCode(userState.appliedRefCode);
+            if (!appliedCode) {
+                return 0;
+            }
+
+            const accounts = getRegisteredAccounts();
+            const adminState = getAdminState();
+            adminState.users = Array.isArray(adminState.users) ? adminState.users : [];
+
+            const level1Acc = accounts.find((acc) => normalizeCode(acc.myRefCode) === appliedCode);
+            if (!level1Acc) {
+                return 0;
+            }
+
+            const lvl1Commission = Number((purchasePrice * 0.20).toFixed(2));
+            level1Acc.balance = Number(level1Acc.balance || 0) + lvl1Commission;
+            level1Acc.referBalance = Number(level1Acc.referBalance || 0) + lvl1Commission;
+
+            const adminLvl1User = adminState.users.find(
+                (u) => normalizePhone(u.phone) === normalizePhone(level1Acc.phone)
+            );
+            if (adminLvl1User) {
+                adminLvl1User.balance = Number(adminLvl1User.balance || 0) + lvl1Commission;
+                adminLvl1User.referBalance = Number(adminLvl1User.referBalance || 0) + lvl1Commission;
+            }
+
+            if (normalizePhone(userState.phone) === normalizePhone(level1Acc.phone)) {
+                userState.balance = Number(userState.balance || 0) + lvl1Commission;
+                userState.referBalance = Number(userState.referBalance || 0) + lvl1Commission;
+            }
+
+            const lvl2Code = normalizeCode(level1Acc.refCode);
+            if (lvl2Code) {
+                const level2Acc = accounts.find((acc) => normalizeCode(acc.myRefCode) === lvl2Code);
+                if (level2Acc) {
+                    const lvl2Commission = Number((purchasePrice * 0.01).toFixed(2));
+                    level2Acc.balance = Number(level2Acc.balance || 0) + lvl2Commission;
+                    level2Acc.referBalance = Number(level2Acc.referBalance || 0) + lvl2Commission;
+
+                    const adminLvl2User = adminState.users.find(
+                        (u) => normalizePhone(u.phone) === normalizePhone(level2Acc.phone)
+                    );
+                    if (adminLvl2User) {
+                        adminLvl2User.balance = Number(adminLvl2User.balance || 0) + lvl2Commission;
+                        adminLvl2User.referBalance = Number(adminLvl2User.referBalance || 0) + lvl2Commission;
+                    }
+
+                    if (normalizePhone(userState.phone) === normalizePhone(level2Acc.phone)) {
+                        userState.balance = Number(userState.balance || 0) + lvl2Commission;
+                        userState.referBalance = Number(userState.referBalance || 0) + lvl2Commission;
+                    }
+
+                    const lvl3Code = normalizeCode(level2Acc.refCode);
+                    if (lvl3Code) {
+                        const level3Acc = accounts.find((acc) => normalizeCode(acc.myRefCode) === lvl3Code);
+                        if (level3Acc) {
+                            const lvl3Commission = Number((purchasePrice * 0.01).toFixed(2));
+                            level3Acc.balance = Number(level3Acc.balance || 0) + lvl3Commission;
+                            level3Acc.referBalance = Number(level3Acc.referBalance || 0) + lvl3Commission;
+
+                            const adminLvl3User = adminState.users.find(
+                                (u) => normalizePhone(u.phone) === normalizePhone(level3Acc.phone)
+                            );
+                            if (adminLvl3User) {
+                                adminLvl3User.balance = Number(adminLvl3User.balance || 0) + lvl3Commission;
+                                adminLvl3User.referBalance = Number(adminLvl3User.referBalance || 0) + lvl3Commission;
+                            }
+
+                            if (normalizePhone(userState.phone) === normalizePhone(level3Acc.phone)) {
+                                userState.balance = Number(userState.balance || 0) + lvl3Commission;
+                                userState.referBalance = Number(userState.referBalance || 0) + lvl3Commission;
+                            }
+                        }
                     }
                 }
             }
 
-            localStorage.setItem('earnbd_referral_tree', JSON.stringify(referralTree));
+            saveRegisteredAccounts(accounts);
+            saveAdminState(adminState);
+            return lvl1Commission;
         }
 
-        function applyReferrerCode(rawCode) {
-            const code = (rawCode || '').trim().toUpperCase();
-            if (!code || code === myOwnRefCode) return;
+        function switchAuthTab(mode) {
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
 
-            appliedRefCode = code;
-            localStorage.setItem('earnbd_applied_ref', appliedRefCode);
-
-            // একটি সিমুলেটেড রেফার সদস্য তৈরি করে রেফারার কোডের ১ম স্তরে যুক্ত করা
-            const visitorCode = 'MEM-' + code.slice(-4);
-            registerReferralChain(visitorCode, appliedRefCode);
-            // বর্তমান ইউজার কোডকেও লিংক করা
-            registerReferralChain(myOwnRefCode, appliedRefCode);
-
-            saveData();
-            syncReferralUI();
+            if (mode === 'register') {
+                loginBtn.classList.remove('active');
+                regBtn.classList.add('active');
+                loginForm.classList.remove('active');
+                regForm.classList.add('active');
+            } else {
+                regBtn.classList.remove('active');
+                loginBtn.classList.add('active');
+                regForm.classList.remove('active');
+                loginForm.classList.add('active');
+            }
         }
 
-        function copyText(text, label) {
-            if (!text) return;
-            navigator.clipboard.writeText(text).then(() => {
-                alert(label + ' কপি হয়েছে: ' + text);
-            }).catch(() => {
-                prompt('কপি করুন:', text);
-            });
-        }
+        function handleUserRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const phone = normalizePhone(document.getElementById('regPhone').value);
+            const password = document.getElementById('regPassword').value;
+            const refCode = normalizeCode(document.getElementById('regRefCode').value);
 
-        function updatePayNumber() {
-            paymentConfig = {
-                ...defaultPaymentConfig,
-                ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {})
+            if (!name || !phone || !password) {
+                openCleanModal('সব প্রয়োজনীয় তথ্য পূরণ করুন!');
+                return;
+            }
+
+            if (phone.length < 10) {
+                openCleanModal('সঠিক মোবাইল নম্বর লিখুন!');
+                return;
+            }
+
+            const accounts = getRegisteredAccounts();
+            const exists = accounts.find((acc) => normalizePhone(acc.phone) === phone);
+            if (exists) {
+                openCleanModal('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে অ্যাকাউন্ট রেজিস্ট্রেশন করা আছে। অনুগ্রহ করে লগইন করুন।', () => {
+                    switchAuthTab('login');
+                    document.getElementById('loginPhone').value = phone;
+                    document.getElementById('loginPassword').value = '';
+                });
+                return;
+            }
+
+            const myUniqueCode = generateUniqueCodeForPhone(phone);
+
+            const newAccount = {
+                name,
+                phone,
+                password,
+                myRefCode: myUniqueCode,
+                refCode,
+                balance: REGISTRATION_BONUS,
+                referBalance: 0
             };
-            const method = document.getElementById('depMethod').value;
-            const container = document.getElementById('adminPayNumber');
+            accounts.push(newAccount);
+            saveRegisteredAccounts(accounts);
 
-            if (method === 'বিকাশ (bKash)') {
-                container.innerHTML = `
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">বিকাশ এজেন্ট নাম্বার (Cash Out)</span>
-                            <div class="number-value">${paymentConfig.bkashAgent || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.bkashAgent}', 'বিকাশ এজেন্ট নাম্বার')">কপি</button>
-                    </div>
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">বিকাশ পারসোনাল নাম্বার (Send Money)</span>
-                            <div class="number-value">${paymentConfig.bkashPersonal || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.bkashPersonal}', 'বিকাশ পারসোনাল নাম্বার')">কপি</button>
-                    </div>
-                `;
-            } else if (method === 'নগদ (Nagad)') {
-                container.innerHTML = `
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">নগদ এজেন্ট নাম্বার (Cash Out)</span>
-                            <div class="number-value">${paymentConfig.nagadAgent || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.nagadAgent}', 'নগদ এজেন্ট নাম্বার')">কপি</button>
-                    </div>
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">নগদ পারসোনাল নাম্বার (Send Money)</span>
-                            <div class="number-value">${paymentConfig.nagadPersonal || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.nagadPersonal}', 'নগদ পারসোনাল নাম্বার')">কপি</button>
-                    </div>
-                `;
+            userState = {
+                ...getDefaultUserState(),
+                userName: name,
+                phone,
+                myRefCode: myUniqueCode,
+                balance: REGISTRATION_BONUS,
+                referBalance: 0,
+                lastMidnightPayoutDate: getTodayDateKey(),
+                appliedRefCode: refCode
+            };
+            saveUserState();
+
+            const adminState = getAdminState();
+            adminState.users = Array.isArray(adminState.users) ? adminState.users : [];
+            adminState.users.unshift({
+                id: 'U-' + Date.now(),
+                name,
+                phone,
+                email: `${phone}@earnbd.local`,
+                myRefCode: myUniqueCode,
+                balance: REGISTRATION_BONUS,
+                referBalance: 0,
+                refCode: refCode || 'নেই',
+                active: true
+            });
+            saveAdminState(adminState);
+
+            localStorage.setItem(SESSION_KEY, 'true');
+            document.getElementById('registerForm').reset();
+            syncWithAdminPanel();
+            updateUI();
+            showPage('homePage');
+            openCleanModal(`অভিনন্দন! রেজিস্ট্রেশন সফল হয়েছে এবং আপনার একাউন্টে ৳${REGISTRATION_BONUS} বোনাস যুক্ত হয়েছে!`);
+        }
+
+        function handleUserLogin(event) {
+            event.preventDefault();
+            const phone = normalizePhone(document.getElementById('loginPhone').value);
+            const password = document.getElementById('loginPassword').value;
+
+            if (!phone || !password) {
+                openCleanModal('মোবাইল নম্বর এবং পাসওয়ার্ড লিখুন!');
+                return;
+            }
+
+            const accounts = getRegisteredAccounts();
+            const matchedPhoneAccount = accounts.find((acc) => normalizePhone(acc.phone) === phone);
+
+            if (!matchedPhoneAccount) {
+                openCleanModal('এই মোবাইল নম্বরে কোনো অ্যাকাউন্ট রেজিস্ট্রেশন করা নেই! লগইন করতে আগে রেজিস্ট্রেশন করুন।');
+                return;
+            }
+
+            if (matchedPhoneAccount.password !== password) {
+                openCleanModal('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড লিখুন।');
+                return;
+            }
+
+            const uniqueCode = matchedPhoneAccount.myRefCode || generateUniqueCodeForPhone(phone);
+            if (!matchedPhoneAccount.myRefCode) {
+                matchedPhoneAccount.myRefCode = uniqueCode;
+                saveRegisteredAccounts(accounts);
+            }
+
+            userState.userName = matchedPhoneAccount.name || 'Member';
+            userState.phone = matchedPhoneAccount.phone;
+            userState.myRefCode = uniqueCode;
+            userState.balance = typeof matchedPhoneAccount.balance === 'number' ? matchedPhoneAccount.balance : userState.balance;
+            userState.referBalance = typeof matchedPhoneAccount.referBalance === 'number' ? matchedPhoneAccount.referBalance : 0;
+            if (matchedPhoneAccount.refCode) {
+                userState.appliedRefCode = matchedPhoneAccount.refCode;
+            }
+
+            saveUserState();
+            localStorage.setItem(SESSION_KEY, 'true');
+            document.getElementById('loginForm').reset();
+            applyMidnightDailyProductIncome();
+            syncWithAdminPanel();
+            updateUI();
+            showPage('homePage');
+        }
+
+        function logoutUser() {
+            localStorage.removeItem(SESSION_KEY);
+            showPage('authPage');
+        }
+
+        function handleHeaderBrandClick() {
+            if (isUserLoggedIn()) {
+                showPage('homePage');
             } else {
-                container.innerHTML = `
-                    <div class="number-option-card">
-                        <div>
-                            <span class="number-type-tag">TRX (TRC20) Wallet Address</span>
-                            <div class="number-value">${paymentConfig.trxAddress || 'সেট করা হয়নি'}</div>
-                        </div>
-                        <button type="button" class="copy-mini-btn" onclick="copyText('${paymentConfig.trxAddress}', 'TRX অ্যাড্রেস')">কপি</button>
-                    </div>
-                `;
+                showPage('authPage');
             }
         }
 
-        function detectParamsFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const refParam = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('code');
-            if (refParam && refParam.trim() !== '') {
-                applyReferrerCode(refParam.trim());
+        function syncWithAdminPanel() {
+            const adminState = getAdminState();
+            const accounts = getRegisteredAccounts();
+
+            if (Array.isArray(adminState.products) && adminState.products.length > 0) {
+                catalogProducts = adminState.products.map((p, idx) => ({
+                    id: p.id || `PROD-${idx + 1}`,
+                    name: p.name || 'প্যাকেজ',
+                    price: Number(p.price || 0),
+                    dailyIncome: Number(p.dailyIncome || 0),
+                    days: Number(p.days || 45),
+                    icon: p.icon || '🎁',
+                    theme: p.theme || 'plan-custom',
+                    badge: p.badge || ''
+                }));
+            } else if (Array.isArray(adminState.products) && adminState.products.length === 0 && adminState.productsSynced) {
+                catalogProducts = [];
             } else {
-                syncReferralUI();
+                catalogProducts = [...defaultProducts];
+            }
+
+            paymentNumbersConfig = JSON.parse(JSON.stringify(defaultPaymentNumbers));
+            if (adminState.paymentNumbers) {
+                const pn = adminState.paymentNumbers;
+                if (Array.isArray(pn.bkashAgentList) && pn.bkashAgentList.length) {
+                    paymentNumbersConfig.bkashAgent = pn.bkashAgentList.filter(Boolean);
+                } else if (pn.bkashAgent) {
+                    paymentNumbersConfig.bkashAgent = [pn.bkashAgent];
+                }
+
+                if (Array.isArray(pn.nagadPersonalList) && pn.nagadPersonalList.length) {
+                    paymentNumbersConfig.nagadPersonal = pn.nagadPersonalList.filter(Boolean);
+                } else if (pn.nagadPersonal || pn.nagad) {
+                    paymentNumbersConfig.nagadPersonal = [pn.nagadPersonal || pn.nagad];
+                }
+            }
+
+            supportConfig = { ...defaultSupportConfig };
+            if (adminState.supportConfig) {
+                supportConfig = {
+                    title: adminState.supportConfig.title || defaultSupportConfig.title,
+                    subtitle: adminState.supportConfig.subtitle || defaultSupportConfig.subtitle,
+                    link: adminState.supportConfig.link || defaultSupportConfig.link,
+                    buttonText: adminState.supportConfig.buttonText || defaultSupportConfig.buttonText
+                };
+            } else if (adminState.siteSettings && adminState.siteSettings.supportLink) {
+                supportConfig.link = adminState.siteSettings.supportLink;
+            }
+
+            if (userState.phone) {
+                const matchedAcc = accounts.find(
+                    (a) => normalizePhone(a.phone) === normalizePhone(userState.phone)
+                );
+                if (matchedAcc) {
+                    if (typeof matchedAcc.balance === 'number') {
+                        userState.balance = matchedAcc.balance;
+                    }
+                    if (typeof matchedAcc.referBalance === 'number') {
+                        userState.referBalance = matchedAcc.referBalance;
+                    }
+                }
+            }
+
+            if (Array.isArray(adminState.users) && userState.phone) {
+                const matchedUser = adminState.users.find(
+                    (u) => normalizePhone(u.phone) === normalizePhone(userState.phone)
+                );
+                if (matchedUser && typeof matchedUser.balance === 'number') {
+                    userState.balance = matchedUser.balance;
+                }
+                if (matchedUser && typeof matchedUser.referBalance === 'number') {
+                    userState.referBalance = Math.max(Number(userState.referBalance || 0), Number(matchedUser.referBalance || 0));
+                }
+            }
+
+            if (Array.isArray(adminState.requests) && userState.phone) {
+                const userReqs = adminState.requests.filter(
+                    (r) => normalizePhone(r.phone) === normalizePhone(userState.phone) || r.userName === userState.userName
+                );
+
+                userReqs.forEach((r) => {
+                    if (r.type === 'ডিপোজিট') {
+                        const idx = userState.deposits.findIndex((d) => d.id === r.id);
+                        const mappedStatus = r.status === 'approved' ? 'success' : r.status === 'rejected' ? 'rejected' : 'pending';
+                        if (idx > -1) {
+                            userState.deposits[idx].status = mappedStatus;
+                        }
+                    } else if (r.type === 'উইথড্র') {
+                        const idx = userState.withdrawals.findIndex((w) => w.id === r.id);
+                        const mappedStatus = r.status === 'approved' ? 'success' : r.status === 'rejected' ? 'rejected' : 'pending';
+                        if (idx > -1) {
+                            userState.withdrawals[idx].status = mappedStatus;
+                        }
+                    }
+                });
+            }
+
+            saveUserState();
+            applySupportUI();
+            renderCatalogPlans();
+            updateUI();
+            renderHistories();
+            updatePayNumber();
+        }
+
+        function applySupportUI() {
+            const titleEl = document.getElementById('supportTitleText');
+            const subEl = document.getElementById('supportSubText');
+            const linkEl = document.getElementById('customerSupportLink');
+            if (titleEl) titleEl.textContent = supportConfig.title;
+            if (subEl) subEl.textContent = supportConfig.subtitle;
+            if (linkEl) {
+                linkEl.textContent = supportConfig.buttonText;
+                const rawLink = supportConfig.link.trim();
+                if (/^\+?\d{7,15}$/.test(rawLink.replace(/[\s-]/g, ''))) {
+                    const cleanNum = rawLink.replace(/\D/g, '');
+                    linkEl.href = `https://wa.me/${cleanNum}`;
+                } else {
+                    linkEl.href = rawLink.startsWith('http') ? rawLink : `https://${rawLink}`;
+                }
             }
         }
 
-        function syncReferralUI() {
-            referralTree = JSON.parse(localStorage.getItem('earnbd_referral_tree')) || referralTree;
-            const node = referralTree[myOwnRefCode] || { level1: [], level2: [], level3: [] };
+        function renderCatalogPlans() {
+            const container = document.getElementById('plansList');
+            if (!container) return;
 
-            const l1Count = node.level1.length;
-            const l2Count = node.level2.length;
-            const l3Count = node.level3.length;
+            if (!catalogProducts.length) {
+                container.innerHTML = `<div class="empty-msg">বর্তমানে কোনো পণ্য আপলোড করা হয়নি। অ্যাডমিন প্যানেল থেকে পণ্য যুক্ত করুন।</div>`;
+                return;
+            }
 
-            document.getElementById('myUniqueRefCode').innerText = myOwnRefCode;
-            const baseUrl = window.location.origin + window.location.pathname;
-            document.getElementById('referLink').value = baseUrl + '?ref=' + myOwnRefCode;
+            container.innerHTML = catalogProducts.map((p) => {
+                const safeName = String(p.name).replace(/'/g, "\\'");
+                const safeIcon = String(p.icon || '🎁').replace(/'/g, "\\'");
+                return `
+                    <div class="plan-card ${p.theme || 'plan-custom'}">
+                        ${p.badge ? `<div class="badge">${p.badge}</div>` : ''}
+                        <div class="plan-content">
+                            <div class="plan-icon">${p.icon || '🎁'}</div>
+                            <div class="plan-details">
+                                <h3>${p.name} (${p.days} দিন)</h3>
+                                <p>💰 দাম: ৳ ${Number(p.price).toLocaleString('bn-BD')}</p>
+                                <p>📅 দৈনিক ইনকাম (রাত ১২টায়): ৳ ${Number(p.dailyIncome).toLocaleString('bn-BD')}</p>
+                                <button class="buy-btn" onclick="buyPlan('${safeName}', ${Number(p.price)}, ${Number(p.dailyIncome)}, ${Number(p.days)}, '${safeIcon}')">🛒 কিনুন →</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
 
-            document.getElementById('level1Count').innerText = l1Count;
-            document.getElementById('level2Count').innerText = l2Count;
-            document.getElementById('level3Count').innerText = l3Count;
-            document.getElementById('lvl1Inline').innerText = l1Count + ' জন';
-            document.getElementById('lvl2Inline').innerText = l2Count + ' জন';
-            document.getElementById('lvl3Inline').innerText = l3Count + ' জন';
+        function pushRequestToAdmin(reqObj) {
+            const adminState = getAdminState();
+            adminState.requests = Array.isArray(adminState.requests) ? adminState.requests : [];
+            adminState.users = Array.isArray(adminState.users) ? adminState.users : [];
 
-            document.getElementById('activeRefCodeDisplay').innerText = appliedRefCode || 'নেই';
-            document.getElementById('appliedRefCodeInput').value = appliedRefCode;
+            const existingUser = adminState.users.find(
+                (u) => normalizePhone(u.phone) === normalizePhone(userState.phone)
+            );
+            if (existingUser) {
+                existingUser.balance = Number(userState.balance || 0);
+                existingUser.referBalance = Number(userState.referBalance || 0);
+            } else {
+                adminState.users.unshift({
+                    id: 'U-' + Date.now(),
+                    name: userState.userName || 'Member',
+                    phone: userState.phone || '',
+                    email: `${userState.phone || 'user'}@earnbd.local`,
+                    myRefCode: userState.myRefCode || '',
+                    balance: Number(userState.balance || 0),
+                    referBalance: Number(userState.referBalance || 0),
+                    active: true
+                });
+            }
+
+            adminState.requests.unshift(reqObj);
+            saveAdminState(adminState);
+        }
+
+        let currentScreenshotBase64 = '';
+        let currentScreenshotMeta = '';
+
+        function updateUI() {
+            document.getElementById('userNameDisplay').textContent = userState.userName || 'Member';
+            document.getElementById('userBalance').textContent = Number(userState.balance || 0).toFixed(2);
+            document.getElementById('referBalance').textContent = Number(userState.referBalance || 0).toFixed(2);
+
+            const myCode = getOrCreateMemberRefCode();
+            document.getElementById('myUniqueRefCode').textContent = myCode;
+            const baseUrl = window.location.href.split('?')[0];
+            document.getElementById('referLink').value = `${baseUrl}?ref=${encodeURIComponent(myCode)}`;
+
+            const tree = calculateReferralTreeForCurrentUser();
+            const c1 = tree.lvl1List.length;
+            const c2 = tree.lvl2List.length;
+            const c3 = tree.lvl3List.length;
+            userState.teamStats = { lvl1: c1, lvl2: c2, lvl3: c3 };
+
+            document.getElementById('level1Count').textContent = c1;
+            document.getElementById('level2Count').textContent = c2;
+            document.getElementById('level3Count').textContent = c3;
+
+            document.getElementById('lvl1Inline').textContent = `${c1} জন`;
+            document.getElementById('lvl2Inline').textContent = `${c2} জন`;
+            document.getElementById('lvl3Inline').textContent = `${c3} জন`;
+
+            const membersContainer = document.getElementById('referredMembersList');
+            if (membersContainer) {
+                const allRefs = [
+                    ...tree.lvl1List.map((m) => ({ ...m, levelLabel: '১ম স্তর' })),
+                    ...tree.lvl2List.map((m) => ({ ...m, levelLabel: '২য় স্তর' })),
+                    ...tree.lvl3List.map((m) => ({ ...m, levelLabel: '৩য় স্তর' }))
+                ];
+                if (!allRefs.length) {
+                    membersContainer.innerHTML = `<p style="font-size:13px; color:#64748b;">এখনো কেউ আপনার রেফার কোড দিয়ে একাউন্ট করেনি।</p>`;
+                } else {
+                    membersContainer.innerHTML = allRefs.map((m) => `
+                        <div class="ref-member-row">
+                            <div>
+                                <strong>${m.name || 'Member'}</strong><br>
+                                <span style="color:#64748b; font-size:12px;">${m.phone || ''}</span>
+                            </div>
+                            <span class="status-badge status-success">${m.levelLabel}</span>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            const activeRef = userState.appliedRefCode || '';
+            document.getElementById('activeRefCodeDisplay').textContent = activeRef ? activeRef : 'নেই';
+            const refInput = document.getElementById('appliedRefCodeInput');
+            if (refInput && document.activeElement !== refInput) {
+                refInput.value = activeRef;
+            }
+            const regRefInput = document.getElementById('regRefCode');
+            if (regRefInput && document.activeElement !== regRefInput && activeRef) {
+                regRefInput.value = activeRef;
+            }
+
+            const withdrawBox = document.getElementById('withdrawEligibilityBox');
+            if (withdrawBox) {
+                const boughtCount = Array.isArray(userState.products) ? userState.products.length : 0;
+                if (boughtCount > 0) {
+                    withdrawBox.style.background = '#f0fdf4';
+                    withdrawBox.style.borderColor = '#86efac';
+                    withdrawBox.style.color = '#166534';
+                    withdrawBox.textContent = `✅ আপনার ${boughtCount}টি পণ্য কেনা আছে — আপনি টাকা উত্তোলনের আবেদন করতে পারবেন।`;
+                } else {
+                    withdrawBox.style.background = '#fff7ed';
+                    withdrawBox.style.borderColor = '#fdba74';
+                    withdrawBox.style.color = '#9a3412';
+                    withdrawBox.textContent = '⚠️ শর্ত: টাকা উত্তোলন করতে হলে আগে যেকোনো ১টি পণ্য কিনতে হবে।';
+                }
+            }
+        }
+
+        function initReferralFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const refParam = normalizeCode(params.get('ref') || '');
+            if (refParam) {
+                userState.appliedRefCode = refParam;
+                saveUserState();
+                switchAuthTab('register');
+            }
+        }
+
+        function manualSetRefCode(val) {
+            userState.appliedRefCode = normalizeCode(val);
+            saveUserState();
+            document.getElementById('activeRefCodeDisplay').textContent = userState.appliedRefCode || 'নেই';
         }
 
         function copyReferLink() {
             const input = document.getElementById('referLink');
-            copyText(input.value, 'রেফার লিংক');
-        }
-
-        function saveData() {
-            document.getElementById('userBalance').innerText = balance.toFixed(2);
-            document.getElementById('referBalance').innerText = referCommissionBalance.toFixed(2);
-            localStorage.setItem('earnbd_balance', balance);
-            localStorage.setItem('earnbd_ref_commission', referCommissionBalance);
-            localStorage.setItem('earnbd_first_buy_done', hasBoughtFirstProduct ? 'true' : 'false');
-            localStorage.setItem('earnbd_referral_tree', JSON.stringify(referralTree));
-            localStorage.setItem('earnbd_dep_hist', JSON.stringify(depositHistory));
-            localStorage.setItem('earnbd_with_hist', JSON.stringify(withdrawHistory));
-            localStorage.setItem('earnbd_products', JSON.stringify(myProducts));
+            input.select();
+            input.setSelectionRange(0, 99999);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(input.value).catch(() => {});
+            }
+            openCleanModal('আপনার রেফার লিংক কপি হয়েছে: ' + input.value);
         }
 
         function showPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0, 0);
+            const loggedIn = isUserLoggedIn();
+            const bottomNav = document.getElementById('bottomNavBar');
+            const logoutBtn = document.getElementById('headerLogoutBtn');
 
-            if (pageId === 'depositPage') updatePayNumber();
-            if (pageId === 'depositHistoryPage') renderDepositHistory();
-            if (pageId === 'withdrawHistoryPage') renderWithdrawHistory();
-            if (pageId === 'myProductsPage') renderMyProducts();
-            if (pageId === 'referPage') syncReferralUI();
+            if (!loggedIn && pageId !== 'authPage') {
+                pageId = 'authPage';
+            }
 
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if (pageId === 'authPage') {
+                bottomNav.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            } else {
+                bottomNav.style.display = 'flex';
+                logoutBtn.style.display = 'inline-block';
+                applyMidnightDailyProductIncome();
+                syncWithAdminPanel();
+            }
+
+            document.querySelectorAll('.page-section').forEach((sec) => {
+                sec.classList.remove('active');
+            });
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach((item) => item.classList.remove('active'));
             if (pageId === 'homePage') document.getElementById('nav-home').classList.add('active');
-            if (pageId === 'depositPage') document.getElementById('nav-deposit').classList.add('active');
+            if (pageId === 'depositPage') {
+                document.getElementById('nav-deposit').classList.add('active');
+                updatePayNumber();
+            }
             if (pageId === 'withdrawPage') document.getElementById('nav-withdraw').classList.add('active');
             if (pageId === 'referPage') document.getElementById('nav-refer').classList.add('active');
             if (pageId === 'myProductsPage') document.getElementById('nav-products').classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderHistories();
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(() => {});
+            }
+            openCleanModal('কপি হয়েছে: ' + text);
+        }
+
+        function updatePayNumber() {
+            const method = document.getElementById('depMethod').value;
+            const box = document.getElementById('adminPayNumber');
+            const intro = document.getElementById('paymentIntroLabel');
+            if (!box) return;
+
+            let list = [];
+            let tag = method;
+
+            if (method === 'বিকাশ এজেন্ট') {
+                list = paymentNumbersConfig.bkashAgent || [];
+                tag = 'বিকাশ এজেন্ট';
+            } else if (method === 'নগদ পারসোনাল') {
+                list = paymentNumbersConfig.nagadPersonal || [];
+                tag = 'নগদ পারসোনাল';
+            }
+
+            if (intro) {
+                intro.textContent = `${tag} — নির্ধারিত নম্বরে পেমেন্ট করুন:`;
+            }
+
+            const validNumbers = list.map((n) => String(n || '').trim()).filter(Boolean);
+            if (!validNumbers.length) {
+                box.innerHTML = `<div class="empty-msg" style="padding:12px;">এই মেথডের নম্বর এখনো অ্যাডমিন প্যানেলে সেট করা হয়নি।</div>`;
+                return;
+            }
+
+            box.innerHTML = validNumbers.map((num, index) => {
+                const safeNum = num.replace(/'/g, "\\'");
+                return `
+                    <div class="number-option-card">
+                        <div>
+                            <span class="number-type-tag">${tag}${validNumbers.length > 1 ? ` — নম্বর ${index + 1}` : ''}</span>
+                            <span class="number-value">${num}</span>
+                        </div>
+                        <button type="button" class="copy-mini-btn" onclick="copyText('${safeNum}')">কপি</button>
+                    </div>
+                `;
+            }).join('');
         }
 
         function previewScreenshot(event) {
             const file = event.target.files[0];
             const img = document.getElementById('ssPreview');
             if (!file) {
-                currentScreenshotBase64 = "";
+                currentScreenshotBase64 = '';
+                currentScreenshotMeta = '';
                 img.style.display = 'none';
                 return;
             }
+            currentScreenshotMeta = `${file.name}__${file.size}`;
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 currentScreenshotBase64 = e.target.result;
                 img.src = currentScreenshotBase64;
                 img.style.display = 'block';
             };
             reader.readAsDataURL(file);
+        }
+
+        function isDuplicateDepositTrxOrScreenshot(trxCode, screenshotData, screenshotMeta) {
+            const cleanTrx = normalizeTrx(trxCode);
+            const adminState = getAdminState();
+            const adminReqs = Array.isArray(adminState.requests) ? adminState.requests : [];
+            const localDeps = Array.isArray(userState.deposits) ? userState.deposits : [];
+
+            const trxUsedInAdmin = adminReqs.some((r) => normalizeTrx(r.trxId) === cleanTrx);
+            const trxUsedLocally = localDeps.some((d) => normalizeTrx(d.trx) === cleanTrx);
+            if (trxUsedInAdmin || trxUsedLocally) {
+                return 'এই Transaction ID (TrxID) ইতিমধ্যে একবার ব্যবহার করা হয়েছে! একই TrxID একাধিকবার দেওয়া যাবে না।';
+            }
+
+            if (screenshotData) {
+                const ssUsedInAdmin = adminReqs.some((r) => r.screenshot && r.screenshot === screenshotData);
+                const ssUsedLocally = localDeps.some((d) => d.screenshot && d.screenshot === screenshotData);
+                const metaUsedLocally = screenshotMeta && localDeps.some((d) => d.screenshotMeta && d.screenshotMeta === screenshotMeta);
+
+                if (ssUsedInAdmin || ssUsedLocally || metaUsedLocally) {
+                    return 'এই স্ক্রিনশটটি ইতিমধ্যে একবার জমা দেওয়া হয়েছে! একই স্ক্রিনশট একাধিকবার দেওয়া যাবে না।';
+                }
+            }
+
+            return '';
         }
 
         function submitDeposit() {
@@ -1019,184 +1951,263 @@
             const trx = document.getElementById('depTrx').value.trim();
 
             if (!amount || amount <= 0) {
-                alert('সঠিক টাকার পরিমাণ লিখুন।');
+                openCleanModal('সঠিক টাকার পরিমাণ লিখুন!');
                 return;
             }
             if (!trx) {
-                alert('Transaction ID (TrxID) লিখুন।');
+                openCleanModal('Transaction ID (TrxID) লিখুন!');
+                return;
+            }
+            if (!currentScreenshotBase64) {
+                openCleanModal('অনুগ্রহ করে পেমেন্টের স্ক্রিনশট আপলোড করুন!');
                 return;
             }
 
-            depositHistory.unshift({
+            const duplicateError = isDuplicateDepositTrxOrScreenshot(trx, currentScreenshotBase64, currentScreenshotMeta);
+            if (duplicateError) {
+                openCleanModal(duplicateError);
+                return;
+            }
+
+            const reqId = 'REQ-' + Date.now();
+            const dateStr = new Date().toLocaleString('bn-BD');
+
+            userState.deposits.unshift({
+                id: reqId,
                 method,
                 amount,
                 trx,
                 screenshot: currentScreenshotBase64,
-                status: 'Pending',
-                time: new Date().toLocaleString('bn-BD')
+                screenshotMeta: currentScreenshotMeta,
+                status: 'pending',
+                date: dateStr
+            });
+            saveUserState();
+
+            pushRequestToAdmin({
+                id: reqId,
+                type: 'ডিপোজিট',
+                userName: userState.userName,
+                phone: userState.phone,
+                method,
+                amount,
+                trxId: trx,
+                screenshot: currentScreenshotBase64 || '',
+                status: 'pending',
+                createdAt: dateStr,
+                screenshotText: `${method} • ৳${amount} • TrxID: ${trx} (স্ক্রিনশট যুক্ত)`
             });
 
-            saveData();
             document.getElementById('depAmount').value = '';
             document.getElementById('depTrx').value = '';
             document.getElementById('depScreenshot').value = '';
             document.getElementById('ssPreview').style.display = 'none';
             currentScreenshotBase64 = '';
+            currentScreenshotMeta = '';
 
-            alert('ডিপোজিট রিকোয়েস্ট জমা হয়েছে!');
-            showPage('depositHistoryPage');
+            openCleanModal('আবেদন জমা হয়েছে অপেক্ষা করেন', () => {
+                showPage('depositHistoryPage');
+            });
         }
 
         function submitWithdraw() {
+            const hasBoughtProduct = Array.isArray(userState.products) && userState.products.length > 0;
+            if (!hasBoughtProduct) {
+                openCleanModal('টাকা উত্তোলন করার জন্য আগে যেকোনো একটি পণ্য কিনতে হবে!', () => {
+                    showPage('homePage');
+                });
+                return;
+            }
+
             const method = document.getElementById('withMethod').value;
-            const number = document.getElementById('withNumber').value.trim();
+            const number = normalizePhone(document.getElementById('withNumber').value);
             const amount = parseFloat(document.getElementById('withAmount').value);
 
-            if (!number) {
-                alert('আপনার একাউন্ট নম্বর লিখুন।');
+            if (!number || number.length < 6) {
+                openCleanModal('সঠিক একাউন্ট নম্বর লিখুন!');
                 return;
             }
             if (!amount || amount < 300) {
-                alert('সর্বনিম্ন ৩০০ টাকা উত্তোলন করতে পারবেন।');
+                openCleanModal('সর্বনিম্ন ৩০০ টাকা উত্তোলন করা যাবে!');
                 return;
             }
-            if (amount > balance) {
-                alert('আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই।');
+            if (amount > userState.balance) {
+                openCleanModal('আপনার পর্যাপ্ত ব্যালেন্স নেই!');
                 return;
             }
 
-            balance -= amount;
-            withdrawHistory.unshift({
+            const reqId = 'REQ-' + Date.now();
+            const dateStr = new Date().toLocaleString('bn-BD');
+
+            userState.balance -= amount;
+            userState.withdrawals.unshift({
+                id: reqId,
                 method,
                 number,
                 amount,
-                status: 'Pending',
-                time: new Date().toLocaleString('bn-BD')
+                status: 'pending',
+                date: dateStr
+            });
+            saveUserState();
+
+            pushRequestToAdmin({
+                id: reqId,
+                type: 'উইথড্র',
+                userName: userState.userName,
+                phone: userState.phone || number,
+                method,
+                amount,
+                trxId: `WITHDRAW-${method} (${number})`,
+                status: 'pending',
+                createdAt: dateStr,
+                screenshotText: `Withdraw to ${number} via ${method} — ৳${amount}`
             });
 
-            saveData();
+            updateUI();
+
             document.getElementById('withNumber').value = '';
             document.getElementById('withAmount').value = '';
-            alert('উত্তোলন রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!');
-            showPage('withdrawHistoryPage');
+
+            openCleanModal('আবেদন জমা হয়েছে অপেক্ষা করেন', () => {
+                showPage('withdrawHistoryPage');
+            });
         }
 
-        // পণ্য কেনার সাথে সাথে ১ম স্তর (২০%), ২য় স্তর (১%), ৩য় স্তর (১%) কমিশন জমা হবে
-        function buyPlan(name, price, dailyIncome, days) {
-            if (balance < price) {
-                alert('আপনার ব্যালেন্স কম আছে। আগে ডিপোজিট করুন।');
-                showPage('depositPage');
+        function buyPlan(planName, price, dailyIncome, days, icon = '🎁') {
+            if (userState.balance < price) {
+                openCleanModal('আপনার ব্যালেন্সে পর্যাপ্ত টাকা নেই! অনুগ্রহ করে ডিপোজিট করুন।', () => {
+                    showPage('depositPage');
+                });
                 return;
             }
 
-            balance -= price;
-            myProducts.unshift({
-                name,
+            userState.balance -= price;
+
+            const earnedRefBonus = awardReferralCommissionOnFirstPurchase(price);
+            userState.hasPurchasedBefore = true;
+
+            userState.products.unshift({
+                name: planName,
                 price,
                 dailyIncome,
                 days,
+                remainingDays: days,
+                earnedSoFar: 0,
+                icon,
                 date: new Date().toLocaleString('bn-BD')
             });
 
-            let earnedNow = 0;
-            if (!hasBoughtFirstProduct) {
-                const node = referralTree[myOwnRefCode] || { level1: [], level2: [], level3: [] };
-
-                if (node.level1.length > 0 || appliedRefCode) {
-                    earnedNow += price * 0.20;
-                }
-                if (node.level2.length > 0) {
-                    earnedNow += price * 0.01 * node.level2.length;
-                }
-                if (node.level3.length > 0) {
-                    earnedNow += price * 0.01 * node.level3.length;
-                }
-
-                if (earnedNow > 0) {
-                    referCommissionBalance += earnedNow;
-                    balance += earnedNow; // কমিশন সাথে সাথে ব্যালেন্সেও যুক্ত হবে
-                }
-                hasBoughtFirstProduct = true;
+            // বর্তমান সদস্যের ব্যালেন্স রেজিস্টার্ড অ্যাকাউন্ট লিস্টে সেভ করা
+            const accounts = getRegisteredAccounts();
+            const currentAcc = accounts.find((a) => normalizePhone(a.phone) === normalizePhone(userState.phone));
+            if (currentAcc) {
+                currentAcc.balance = Number(userState.balance || 0);
+                currentAcc.referBalance = Number(userState.referBalance || 0);
+                saveRegisteredAccounts(accounts);
             }
 
-            saveData();
-            alert(
-                name + ' সফলভাবে কেনা হয়েছে!' +
-                (earnedNow > 0 ? `\n🎉 রেফার কমিশন জমা হয়েছে: ৳ ${earnedNow.toFixed(2)}` : '')
-            );
-            showPage('myProductsPage');
+            saveUserState();
+            const adminState = getAdminState();
+            if (Array.isArray(adminState.users)) {
+                const u = adminState.users.find((item) => normalizePhone(item.phone) === normalizePhone(userState.phone));
+                if (u) {
+                    u.balance = Number(userState.balance || 0);
+                    u.referBalance = Number(userState.referBalance || 0);
+                    saveAdminState(adminState);
+                }
+            }
+
+            updateUI();
+            const bonusText = earnedRefBonus > 0 ? `\n১ম বার কেনায় রেফার কমিশন জমা হয়েছে: ৳${earnedRefBonus}` : '';
+            openCleanModal(`অভিনন্দন! আপনি "${planName}" সফলভাবে কিনেছেন। প্রতিদিন রাত ১২টায় ৳${dailyIncome} করে ইনকাম যুক্ত হবে।${bonusText}`, () => {
+                showPage('myProductsPage');
+            });
         }
 
-        function renderDepositHistory() {
-            const list = document.getElementById('depositHistoryList');
-            if (depositHistory.length === 0) {
-                list.innerHTML = '<div class="empty-msg">কোনো ডিপোজিট হিস্ট্রি পাওয়া যায়নি।</div>';
-                return;
-            }
-            list.innerHTML = depositHistory.map(item => `
-                <div class="list-item">
-                    <div class="list-top">
-                        <div>
-                            <h4>${item.method} — ৳ ${item.amount}</h4>
-                            <p>TrxID: ${item.trx}</p>
-                            <p>${item.time}</p>
+        function renderHistories() {
+            const depList = document.getElementById('depositHistoryList');
+            if (!userState.deposits.length) {
+                depList.innerHTML = `<div class="empty-msg">কোনো ডিপোজিট হিস্ট্রি পাওয়া যায়নি।</div>`;
+            } else {
+                depList.innerHTML = userState.deposits.map((d) => {
+                    const badgeClass = d.status === 'success' ? 'status-success' : d.status === 'rejected' ? 'status-rejected' : 'status-pending';
+                    const badgeText = d.status === 'success' ? 'সফল' : d.status === 'rejected' ? 'বাতিল' : 'পেন্ডিং';
+                    return `
+                        <div class="list-item">
+                            <div class="list-top">
+                                <div>
+                                    <h4>${d.method} — ৳ ${d.amount}</h4>
+                                    <p>TrxID: <strong>${d.trx}</strong></p>
+                                    <p>${d.date}</p>
+                                </div>
+                                <span class="status-badge ${badgeClass}">${badgeText}</span>
+                            </div>
+                            ${d.screenshot ? `<img src="${d.screenshot}" class="ss-thumb" alt="Deposit Screenshot">` : ''}
                         </div>
-                        <span class="status-badge status-pending">${item.status}</span>
-                    </div>
-                    ${item.screenshot ? `<img src="${item.screenshot}" class="ss-thumb" alt="Screenshot">` : ''}
-                </div>
-            `).join('');
-        }
-
-        function renderWithdrawHistory() {
-            const list = document.getElementById('withdrawHistoryList');
-            if (withdrawHistory.length === 0) {
-                list.innerHTML = '<div class="empty-msg">কোনো উত্তোলন হিস্ট্রি পাওয়া যায়নি।</div>';
-                return;
+                    `;
+                }).join('');
             }
-            list.innerHTML = withdrawHistory.map(item => `
-                <div class="list-item">
-                    <div class="list-top">
-                        <div>
-                            <h4>${item.method} — ৳ ${item.amount}</h4>
-                            <p>নম্বর: ${item.number}</p>
-                            <p>${item.time}</p>
-                        </div>
-                        <span class="status-badge status-pending">${item.status}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
 
-        function renderMyProducts() {
-            const list = document.getElementById('myProductsList');
-            if (myProducts.length === 0) {
-                list.innerHTML = '<div class="empty-msg">আপনি এখনো কোনো পণ্য কেনেননি।</div>';
-                return;
+            const withList = document.getElementById('withdrawHistoryList');
+            if (!userState.withdrawals.length) {
+                withList.innerHTML = `<div class="empty-msg">কোনো উত্তোলন হিস্ট্রি পাওয়া যায়নি।</div>`;
+            } else {
+                withList.innerHTML = userState.withdrawals.map((w) => {
+                    const badgeClass = w.status === 'success' ? 'status-success' : w.status === 'rejected' ? 'status-rejected' : 'status-pending';
+                    const badgeText = w.status === 'success' ? 'সফল' : w.status === 'rejected' ? 'বাতিল' : 'পেন্ডিং';
+                    return `
+                        <div class="list-item">
+                            <div class="list-top">
+                                <div>
+                                    <h4>${w.method} — ৳ ${w.amount}</h4>
+                                    <p>নম্বর: <strong>${w.number}</strong></p>
+                                    <p>${w.date}</p>
+                                </div>
+                                <span class="status-badge ${badgeClass}">${badgeText}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
-            list.innerHTML = myProducts.map(item => `
-                <div class="list-item">
-                    <div class="list-top">
-                        <div>
-                            <h4>${item.name}</h4>
-                            <p>দাম: ৳ ${item.price} | দৈনিক আয়: ৳ ${item.dailyIncome}</p>
-                            <p>মেয়াদ: ${item.days} দিন | কেনার সময়: ${item.date}</p>
+
+            const prodList = document.getElementById('myProductsList');
+            if (!userState.products.length) {
+                prodList.innerHTML = `<div class="empty-msg">আপনি এখনো কোনো পণ্য কেনেননি।</div>`;
+            } else {
+                prodList.innerHTML = userState.products.map((p) => {
+                    const rem = typeof p.remainingDays === 'number' ? p.remainingDays : p.days;
+                    return `
+                        <div class="list-item">
+                            <div class="list-top">
+                                <div>
+                                    <h4>${p.icon || '🎁'} ${p.name}</h4>
+                                    <p>দাম: ৳ ${p.price} | দৈনিক ইনকাম: ৳ ${p.dailyIncome}</p>
+                                    <p>অবশিষ্ট দিন: ${rem} / ${p.days} দিন | কেনার সময়: ${p.date}</p>
+                                </div>
+                                <span class="status-badge status-success">${rem > 0 ? 'সক্রিয়' : 'সম্পন্ন'}</span>
+                            </div>
                         </div>
-                        <span class="status-badge status-success">Active</span>
-                    </div>
-                </div>
-            `).join('');
+                    `;
+                }).join('');
+            }
         }
 
-        // অন্য ট্যাব বা অ্যাডমিন প্যানেল থেকে ডাটা পরিবর্তন হলে সাথে সাথে রিফ্রেশ
-        window.addEventListener('storage', () => {
-            syncReferralUI();
-            updatePayNumber();
+        window.addEventListener('storage', function (event) {
+            if (event.key === ADMIN_STORAGE_KEY || event.key === USERS_ACCOUNTS_KEY) {
+                applyMidnightDailyProductIncome();
+                syncWithAdminPanel();
+            }
         });
 
-        saveData();
-        updatePayNumber();
-        detectParamsFromURL();
+        initReferralFromURL();
+        applyMidnightDailyProductIncome();
+        syncWithAdminPanel();
+
+        if (isUserLoggedIn()) {
+            showPage('homePage');
+        } else {
+            showPage('authPage');
+        }
     </script>
 </body>
 </html>
