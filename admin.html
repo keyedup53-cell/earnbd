@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnBD - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="[https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap)" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -143,6 +143,16 @@
             color: white;
         }
 
+        .btn-add-prod {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .btn-sync {
+            background: #0284c7;
+            color: white;
+        }
+
         .plan-editor-box {
             background: #f8fafc;
             border: 1.5px solid #cbd5e1;
@@ -151,11 +161,28 @@
             margin-bottom: 14px;
         }
 
+        .plan-editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
         .plan-editor-box h4 {
             font-size: 16px;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 10px;
+        }
+
+        .del-plan-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         .grid-2 {
@@ -285,6 +312,13 @@
             margin-top: 8px;
             display: none;
         }
+
+        .help-note {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 12px;
+            line-height: 1.45;
+        }
     </style>
 </head>
 <body>
@@ -298,7 +332,6 @@
 
     <div class="container">
 
-        <!-- PIN Lock -->
         <div id="loginCard" class="card">
             <div class="section-title">অ্যাডমিন প্যানেলে প্রবেশ করুন</div>
             <div class="form-group">
@@ -309,16 +342,30 @@
             <button class="big-btn btn-save" onclick="unlockAdmin()">🔓 প্যানেল খুলুন</button>
         </div>
 
-        <!-- Main Admin Dashboard -->
         <div id="adminPanel" style="display: none;">
 
-            <!-- Total Registered Members -->
             <div class="total-members-banner">
                 <span>মোট রেজিস্ট্রেশনকৃত সদস্য</span>
                 <h2 id="totalMembersCount">0</h2>
             </div>
 
-            <!-- 1. Deposit Numbers Setup -->
+            <!-- Cloud Multi-Device Sync -->
+            <div class="card">
+                <div class="section-title">☁️ সব মোবাইল থেকে রেফার ও সদস্য সিঙ্ক (JSONBin)</div>
+                <p class="help-note">অন্য ফোন থেকে করা একাউন্ট, রেফার স্তর, ডিপোজিট ও উত্তোলন আপনার ফোনে এবং অ্যাডমিন প্যানেলে পেতে JSONBin Bin ID ও X-Master-Key দিন।</p>
+                <div class="form-group">
+                    <label>JSONBin Bin ID</label>
+                    <input type="text" id="cloudBinIdInput" placeholder="যেমন: 674a1b2c...">
+                </div>
+                <div class="form-group">
+                    <label>JSONBin X-Master-Key</label>
+                    <input type="password" id="cloudApiKeyInput" placeholder="$2a$10$...">
+                </div>
+                <button class="big-btn btn-save" onclick="saveCloudConfig()">☁️ ক্লাউড সেটিংস সেভ করুন</button>
+                <button class="big-btn btn-sync" onclick="syncFromCloudNow()">🔄 এখনই ক্লাউড থেকে রিফ্রেশ করুন</button>
+            </div>
+
+            <!-- 1. Deposit Numbers -->
             <div class="card">
                 <div class="section-title">💳 ডিপোজিট নম্বর অ্যাড / পরিবর্তন</div>
                 <div class="form-group">
@@ -332,25 +379,25 @@
                 <button class="big-btn btn-save" onclick="savePaymentNumbers()">✅ ডিপোজিট নম্বর সেভ করুন</button>
             </div>
 
-            <!-- 2. Telegram Personal ID & Group Setup -->
+            <!-- 2. Telegram Personal ID & Group -->
             <div class="card">
                 <div class="section-title">✈️ কাস্টমার সাপোর্ট (টেলিগ্রাম পারসোনাল ও গ্রুপ)</div>
                 <div class="form-group">
                     <label>টেলিগ্রাম পারসোনাল আইডি লিংক</label>
-                    <input type="text" id="tgPersonalInput" placeholder="যেমন: https://t.me/username">
+                    <input type="text" id="tgPersonalInput" placeholder="যেমন: [https://t.me/username](https://t.me/username)">
                 </div>
                 <div class="form-group">
                     <label>টেলিগ্রাম গ্রুপ লিংক</label>
-                    <input type="text" id="tgGroupInput" placeholder="যেমন: https://t.me/yourgroup">
+                    <input type="text" id="tgGroupInput" placeholder="যেমন: [https://t.me/yourgroup](https://t.me/yourgroup)">
                 </div>
                 <button class="big-btn btn-save" onclick="saveSupportLinks()">✅ সাপোর্ট লিংক সেভ করুন</button>
             </div>
 
-            <!-- 3. Give Bonus to Member -->
+            <!-- 3. Give Bonus -->
             <div class="card">
                 <div class="section-title">🎁 সদস্যকে বোনাস দিন</div>
                 <div class="form-group">
-                    <label>সদস্য নির্বাচন করুন বা মোবাইল নম্বর লিখুন</label>
+                    <label>সদস্য নির্বাচন করুন</label>
                     <select id="bonusMemberSelect" onchange="syncBonusPhoneField()">
                         <option value="">-- সদস্য সিলেক্ট করুন --</option>
                     </select>
@@ -366,26 +413,56 @@
                 <button class="big-btn btn-bonus" onclick="giveBonusToMember()">💰 বোনাস পাঠান</button>
             </div>
 
-            <!-- 4. Pending Deposits Approval / Rejection -->
+            <!-- 4. Pending Deposits -->
             <div class="card">
                 <div class="section-title">📥 পেন্ডিং ডিপোজিট অনুমোদন / বাতিল</div>
                 <div id="pendingDepositsList"></div>
             </div>
 
-            <!-- 5. Pending Withdrawals Approval / Rejection -->
+            <!-- 5. Pending Withdrawals -->
             <div class="card">
                 <div class="section-title">📤 পেন্ডিং উত্তোলন অনুমোদন / বাতিল</div>
                 <div id="pendingWithdrawsList"></div>
             </div>
 
-            <!-- 6. Edit Packages -->
+            <!-- 6. Add New Product -->
             <div class="card">
-                <div class="section-title">📦 প্যাকেজ পরিবর্তন করুন</div>
+                <div class="section-title">➕ নতুন পণ্য অ্যাড করুন</div>
+                <div class="form-group">
+                    <label>নতুন পণ্যের নাম</label>
+                    <input type="text" id="newProdName" placeholder="যেমন: VIP Diamond Plan">
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>দাম (৳)</label>
+                        <input type="number" id="newProdPrice" placeholder="যেমন: 5000">
+                    </div>
+                    <div class="form-group">
+                        <label>দৈনিক ইনকাম (৳)</label>
+                        <input type="number" id="newProdDaily" placeholder="যেমন: 750">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>মেয়াদ (দিন)</label>
+                        <input type="number" id="newProdDays" placeholder="যেমন: 45">
+                    </div>
+                    <div class="form-group">
+                        <label>আইকন</label>
+                        <input type="text" id="newProdIcon" value="🚀" placeholder="যেমন: 🚀">
+                    </div>
+                </div>
+                <button class="big-btn btn-add-prod" onclick="addNewProduct()">➕ নতুন পণ্য যোগ করুন</button>
+            </div>
+
+            <!-- 7. Edit Existing Packages -->
+            <div class="card">
+                <div class="section-title">📦 বিদ্যমান প্যাকেজ পরিবর্তন করুন</div>
                 <div id="packageEditorList"></div>
                 <button class="big-btn btn-save" onclick="saveAllPackages()">✅ সব প্যাকেজ সেভ করুন</button>
             </div>
 
-            <!-- 7. Registered Members List -->
+            <!-- 8. Members List -->
             <div class="card">
                 <div class="section-title">👥 সকল সদস্যের তালিকা</div>
                 <div id="membersListBox"></div>
@@ -404,8 +481,8 @@
         };
 
         const defaultSupportConfig = {
-            personalUrl: 'https://t.me/',
-            groupUrl: 'https://t.me/'
+            personalUrl: '[https://t.me/](https://t.me/)',
+            groupUrl: '[https://t.me/](https://t.me/)'
         };
 
         const defaultPlans = [
@@ -414,6 +491,11 @@
             { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, badge: '', icon: '👑', theme: 'plan-gold' }
         ];
 
+        const defaultCloudConfig = {
+            binId: '6b06d1ddffd5d16053dcf15d',
+            apiKey: '$2a$10$3.BbHD8KyzSufz2khSKM6uOsQzSMMpWAOLAGX2SlsFiR8SlS35XPy'
+        };
+
         function showToast(text) {
             const el = document.getElementById('toastMsg');
             el.innerText = text;
@@ -421,13 +503,80 @@
             setTimeout(() => { el.style.display = 'none'; }, 2400);
         }
 
-        function unlockAdmin() {
+        function getCloudConfig() {
+            return { ...defaultCloudConfig, ...(JSON.parse(localStorage.getItem('earnbd_cloud_config')) || {}) };
+        }
+
+        async function saveCloudConfig() {
+            const binId = document.getElementById('cloudBinIdInput').value.trim();
+            const apiKey = document.getElementById('cloudApiKeyInput').value.trim();
+            localStorage.setItem('earnbd_cloud_config', JSON.stringify({ binId, apiKey }));
+            await syncAllToCloud();
+            showToast('ক্লাউড সেটিংস সেভ ও সিঙ্ক হয়েছে!');
+        }
+
+        async function syncFromCloudNow() {
+            const cfg = getCloudConfig();
+            if (!cfg.binId || !cfg.apiKey) {
+                alert('আগে JSONBin Bin ID এবং X-Master-Key দিন।');
+                return;
+            }
+            try {
+                const res = await fetch(`[https://api.jsonbin.io/v3/b/$](https://api.jsonbin.io/v3/b/$){cfg.binId}/latest`, {
+                    headers: { 'X-Master-Key': cfg.apiKey }
+                });
+                if (!res.ok) {
+                    alert('ক্লাউড থেকে ডাটা আনা যায়নি। Bin ID বা Key চেক করুন।');
+                    return;
+                }
+                const data = await res.json();
+                const rec = data.record || {};
+                if (rec.usersDB) localStorage.setItem('earnbd_users_db', JSON.stringify(rec.usersDB));
+                if (rec.paymentConfig) localStorage.setItem('earnbd_payment_config', JSON.stringify(rec.paymentConfig));
+                if (rec.supportConfig) localStorage.setItem('earnbd_support_config', JSON.stringify(rec.supportConfig));
+                if (rec.plansConfig) localStorage.setItem('earnbd_plans_config', JSON.stringify(rec.plansConfig));
+                refreshAdminAll();
+                showToast('সব মোবাইল থেকে আসা ডাটা আপডেট হয়েছে!');
+            } catch (e) {
+                alert('নেটওয়ার্ক সমস্যা হয়েছে।');
+            }
+        }
+
+        async function syncAllToCloud() {
+            const cfg = getCloudConfig();
+            if (!cfg.binId || !cfg.apiKey) return;
+            try {
+                const payload = {
+                    usersDB: getUsersDB(),
+                    paymentConfig: { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) },
+                    supportConfig: { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) },
+                    plansConfig: JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans,
+                    updatedAt: Date.now()
+                };
+                await fetch(`[https://api.jsonbin.io/v3/b/$](https://api.jsonbin.io/v3/b/$){cfg.binId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': cfg.apiKey
+                    },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) {
+                // ignore network error
+            }
+        }
+
+        async function unlockAdmin() {
             const pin = document.getElementById('pinInput').value.trim();
             if (pin === ADMIN_PIN) {
                 document.getElementById('loginCard').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
                 sessionStorage.setItem('earnbd_admin_logged_in', 'true');
                 refreshAdminAll();
+                const cfg = getCloudConfig();
+                if (cfg.binId && cfg.apiKey) {
+                    await syncFromCloudNow();
+                }
             } else {
                 document.getElementById('pinError').style.display = 'block';
             }
@@ -444,14 +593,19 @@
             return JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
         }
 
-        function saveUsersDB(db) {
+        async function saveUsersDB(db) {
             localStorage.setItem('earnbd_users_db', JSON.stringify(db));
+            await syncAllToCloud();
         }
 
         function refreshAdminAll() {
             const db = getUsersDB();
             const users = Object.values(db);
             document.getElementById('totalMembersCount').innerText = users.length;
+
+            const cloudCfg = getCloudConfig();
+            document.getElementById('cloudBinIdInput').value = cloudCfg.binId || '';
+            document.getElementById('cloudApiKeyInput').value = cloudCfg.apiKey || '';
 
             const payCfg = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
             document.getElementById('bkashAgentInput').value = payCfg.bkashAgent || '';
@@ -474,21 +628,23 @@
             renderMembersList(users);
         }
 
-        function savePaymentNumbers() {
+        async function savePaymentNumbers() {
             const cfg = {
                 bkashAgent: document.getElementById('bkashAgentInput').value.trim(),
                 nagadPersonal: document.getElementById('nagadPersonalInput').value.trim()
             };
             localStorage.setItem('earnbd_payment_config', JSON.stringify(cfg));
+            await syncAllToCloud();
             showToast('ডিপোজিট নম্বর আপডেট হয়েছে!');
         }
 
-        function saveSupportLinks() {
+        async function saveSupportLinks() {
             const cfg = {
-                personalUrl: document.getElementById('tgPersonalInput').value.trim() || 'https://t.me/',
-                groupUrl: document.getElementById('tgGroupInput').value.trim() || 'https://t.me/'
+                personalUrl: document.getElementById('tgPersonalInput').value.trim() || '[https://t.me/](https://t.me/)',
+                groupUrl: document.getElementById('tgGroupInput').value.trim() || '[https://t.me/](https://t.me/)'
             };
             localStorage.setItem('earnbd_support_config', JSON.stringify(cfg));
+            await syncAllToCloud();
             showToast('টেলিগ্রাম সাপোর্ট লিংক আপডেট হয়েছে!');
         }
 
@@ -499,7 +655,7 @@
             }
         }
 
-        function giveBonusToMember() {
+        async function giveBonusToMember() {
             const phone = document.getElementById('bonusPhoneInput').value.trim();
             const amount = parseFloat(document.getElementById('bonusAmountInput').value);
 
@@ -515,7 +671,7 @@
             }
 
             db[phone].balance = (parseFloat(db[phone].balance) || 0) + amount;
-            saveUsersDB(db);
+            await saveUsersDB(db);
             document.getElementById('bonusAmountInput').value = '';
             refreshAdminAll();
             showToast(`${db[phone].name}-কে ৳ ${amount} বোনাস দেওয়া হয়েছে!`);
@@ -553,7 +709,7 @@
             `).join('');
         }
 
-        function handleDepositAction(phone, index, action) {
+        async function handleDepositAction(phone, index, action) {
             const db = getUsersDB();
             const user = db[phone];
             if (!user || !user.depositHistory || !user.depositHistory[index]) return;
@@ -570,7 +726,7 @@
                 showToast('ডিপোজিট বাতিল করা হয়েছে!');
             }
 
-            saveUsersDB(db);
+            await saveUsersDB(db);
             refreshAdminAll();
         }
 
@@ -595,7 +751,7 @@
                 <div class="req-card">
                     <h4>${user.name} (${user.phone})</h4>
                     <p><strong>মেথড:</strong> ${item.method} | <strong>পরিমাণ:</strong> ৳ ${item.amount}</p>
-                    <p><strong>অ্যাকাউন্ট নম্বর:</strong> ${item.number}</p>
+                    <p><strong>${item.method} নম্বর:</strong> ${item.number}</p>
                     <p><strong>সময়:</strong> ${item.time}</p>
                     <div class="req-actions">
                         <button class="btn-approve" onclick="handleWithdrawAction('${user.phone}', ${idx}, 'approve')">✅ অনুমোদন</button>
@@ -605,7 +761,7 @@
             `).join('');
         }
 
-        function handleWithdrawAction(phone, index, action) {
+        async function handleWithdrawAction(phone, index, action) {
             const db = getUsersDB();
             const user = db[phone];
             if (!user || !user.withdrawHistory || !user.withdrawHistory[index]) return;
@@ -622,8 +778,51 @@
                 showToast('উত্তোলন বাতিল করা হয়েছে ও টাকা ফেরত দেওয়া হয়েছে!');
             }
 
-            saveUsersDB(db);
+            await saveUsersDB(db);
             refreshAdminAll();
+        }
+
+        async function addNewProduct() {
+            const name = document.getElementById('newProdName').value.trim();
+            const price = parseFloat(document.getElementById('newProdPrice').value);
+            const dailyIncome = parseFloat(document.getElementById('newProdDaily').value);
+            const days = parseInt(document.getElementById('newProdDays').value, 10);
+            const icon = document.getElementById('newProdIcon').value.trim() || '🚀';
+
+            if (!name || !price || price <= 0 || !dailyIncome || dailyIncome < 0 || !days || days <= 0) {
+                alert('নতুন পণ্যের নাম, দাম, দৈনিক ইনকাম ও মেয়াদ সঠিকভাবে দিন।');
+                return;
+            }
+
+            const plans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
+            plans.push({
+                id: 'prod-' + Date.now(),
+                name,
+                price,
+                dailyIncome,
+                days,
+                badge: 'NEW',
+                icon,
+                theme: 'plan-extra'
+            });
+
+            localStorage.setItem('earnbd_plans_config', JSON.stringify(plans));
+            document.getElementById('newProdName').value = '';
+            document.getElementById('newProdPrice').value = '';
+            document.getElementById('newProdDaily').value = '';
+            document.getElementById('newProdDays').value = '';
+            renderPackageEditors();
+            await syncAllToCloud();
+            showToast('নতুন পণ্য সফলভাবে অ্যাড হয়েছে!');
+        }
+
+        async function deleteProduct(index) {
+            const plans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
+            plans.splice(index, 1);
+            localStorage.setItem('earnbd_plans_config', JSON.stringify(plans));
+            renderPackageEditors();
+            await syncAllToCloud();
+            showToast('পণ্যটি মুছে ফেলা হয়েছে!');
         }
 
         function renderPackageEditors() {
@@ -631,7 +830,10 @@
             const box = document.getElementById('packageEditorList');
             box.innerHTML = plans.map((p, i) => `
                 <div class="plan-editor-box">
-                    <h4>প্যাকেজ #${i + 1} (${p.icon || '🎁'})</h4>
+                    <div class="plan-editor-header">
+                        <h4>প্যাকেজ #${i + 1} (${p.icon || '🎁'})</h4>
+                        <button type="button" class="del-plan-btn" onclick="deleteProduct(${i})">🗑️ মুছুন</button>
+                    </div>
                     <div class="form-group">
                         <label>প্যাকেজের নাম</label>
                         <input type="text" id="planName_${i}" value="${p.name}">
@@ -654,18 +856,19 @@
             `).join('');
         }
 
-        function saveAllPackages() {
+        async function saveAllPackages() {
             const currentPlans = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
             const updated = currentPlans.map((p, i) => ({
                 ...p,
                 name: document.getElementById(`planName_${i}`).value.trim() || p.name,
                 price: Math.max(1, parseFloat(document.getElementById(`planPrice_${i}`).value) || p.price),
                 dailyIncome: Math.max(0, parseFloat(document.getElementById(`planDaily_${i}`).value) || p.dailyIncome),
-                days: Math.max(1, parseInt(document.getElementById(`planDays_${i}`).value) || p.days)
+                days: Math.max(1, parseInt(document.getElementById(`planDays_${i}`).value, 10) || p.days)
             }));
 
             localStorage.setItem('earnbd_plans_config', JSON.stringify(updated));
             renderPackageEditors();
+            await syncAllToCloud();
             showToast('সব প্যাকেজ পরিবর্তন সেভ হয়েছে!');
         }
 
