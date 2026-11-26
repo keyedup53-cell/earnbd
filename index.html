@@ -552,6 +552,11 @@
             margin-top: 6px;
         }
 
+        .submit-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
         .list-item {
             background: white;
             border: 1px solid #e2e8f0;
@@ -720,7 +725,7 @@
                         <label>পাসওয়ার্ড</label>
                         <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" required>
                     </div>
-                    <button type="submit" class="submit-btn">লগইন করুন</button>
+                    <button type="submit" id="loginSubmitBtn" class="submit-btn">লগইন করুন</button>
                     <p class="auth-helper-note">রেজিস্ট্রেশন করা নম্বর ও পাসওয়ার্ড দিয়ে লগইন করুন। অ্যাকাউন্ট না থাকলে উপরে <strong>রেজিস্ট্রেশন</strong> ট্যাবে চাপুন।</p>
                 </form>
 
@@ -742,7 +747,7 @@
                         <label>রেফার কোড (ঐচ্ছিক)</label>
                         <input type="text" id="regRefCode" placeholder="রেফার কোড থাকলে লিখুন (যেমন: EBD-123456)">
                     </div>
-                    <button type="submit" class="submit-btn">রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন</button>
+                    <button type="submit" id="regSubmitBtn" class="submit-btn">রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন</button>
                 </form>
             </div>
         </div>
@@ -1015,6 +1020,8 @@
     </div>
 
     <script>
+        const DEFAULT_FIREBASE_URL = 'https://eranbd-e2e10-default-rtdb.firebaseio.com';
+
         const defaultPaymentConfig = {
             bkashAgent: '01700-000001',
             nagadPersonal: '01800-000002'
@@ -1031,83 +1038,81 @@
             { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, badge: '', icon: '👑', theme: 'plan-gold' }
         ];
 
-        const defaultCloudConfig = {
-            binId: '6b06d1ddffd5d16053dcf15d',
-            apiKey: '$2a$10$3.BbHD8KyzSufz2khSKM6uOsQzSMMpWAOLAGX2SlsFiR8SlS35XPy'
-        };
-
         let paymentConfig = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
         let supportConfig = { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) };
         let plansConfig = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
-        let cloudConfig = { ...defaultCloudConfig, ...(JSON.parse(localStorage.getItem('earnbd_cloud_config')) || {}) };
         let usersDB = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
         let currentUserPhone = localStorage.getItem('earnbd_current_user_phone') || '';
         let currentScreenshotBase64 = '';
+
+        function getFirebaseBaseUrl() {
+            const saved = (localStorage.getItem('earnbd_firebase_url') || DEFAULT_FIREBASE_URL).trim().replace(/\/+$/, '');
+            if (!saved || saved.includes('YOUR-PROJECT-ID')) return '';
+            return saved;
+        }
+
+        function sanitizePhoneKey(phone) {
+            return (phone || '').replace(/[^0-9a-zA-Z]/g, '');
+        }
 
         function reloadLocalConfigs() {
             paymentConfig = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
             supportConfig = { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) };
             plansConfig = JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans;
-            cloudConfig = { ...defaultCloudConfig, ...(JSON.parse(localStorage.getItem('earnbd_cloud_config')) || {}) };
             usersDB = JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
         }
 
-        function hasCloudConfigured() {
-            reloadLocalConfigs();
-            return Boolean(cloudConfig.binId && cloudConfig.apiKey);
-        }
-
-        async function pullFromCloud() {
-            if (!hasCloudConfigured()) return false;
+        async function pullAllFromFirebase() {
+            const baseUrl = getFirebaseBaseUrl();
+            if (!baseUrl) return false;
             try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${cloudConfig.binId}/latest`, {
-                    headers: { 'X-Master-Key': cloudConfig.apiKey }
-                });
+                const res = await fetch(`${baseUrl}/earnbd.json`);
                 if (!res.ok) return false;
                 const data = await res.json();
-                const record = data.record || {};
-                if (record.usersDB) {
-                    usersDB = record.usersDB;
+                if (!data) return true;
+
+                if (data.users) {
+                    const mergedUsers = {};
+                    Object.values(data.users).forEach(u => {
+                        if (u && u.phone) mergedUsers[u.phone] = u;
+                    });
+                    usersDB = mergedUsers;
                     localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
                 }
-                if (record.paymentConfig) {
-                    paymentConfig = { ...defaultPaymentConfig, ...record.paymentConfig };
+                if (data.paymentConfig) {
+                    paymentConfig = { ...defaultPaymentConfig, ...data.paymentConfig };
                     localStorage.setItem('earnbd_payment_config', JSON.stringify(paymentConfig));
                 }
-                if (record.supportConfig) {
-                    supportConfig = { ...defaultSupportConfig, ...record.supportConfig };
+                if (data.supportConfig) {
+                    supportConfig = { ...defaultSupportConfig, ...data.supportConfig };
                     localStorage.setItem('earnbd_support_config', JSON.stringify(supportConfig));
                 }
-                if (record.plansConfig) {
-                    plansConfig = record.plansConfig;
+                if (data.plansConfig) {
+                    plansConfig = Array.isArray(data.plansConfig) ? data.plansConfig : Object.values(data.plansConfig);
                     localStorage.setItem('earnbd_plans_config', JSON.stringify(plansConfig));
                 }
                 return true;
-            } catch (err) {
+            } catch (e) {
                 return false;
             }
         }
 
-        async function pushToCloud() {
-            if (!hasCloudConfigured()) return false;
+        async function saveUserToFirebase(user) {
+            if (!user || !user.phone) return false;
+            usersDB[user.phone] = user;
+            localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
+
+            const baseUrl = getFirebaseBaseUrl();
+            if (!baseUrl) return false;
             try {
-                const payload = {
-                    usersDB,
-                    paymentConfig,
-                    supportConfig,
-                    plansConfig,
-                    updatedAt: Date.now()
-                };
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${cloudConfig.binId}`, {
+                const key = sanitizePhoneKey(user.phone);
+                const res = await fetch(`${baseUrl}/earnbd/users/${key}.json`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': cloudConfig.apiKey
-                    },
-                    body: JSON.stringify(payload)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
                 });
                 return res.ok;
-            } catch (err) {
+            } catch (e) {
                 return false;
             }
         }
@@ -1165,8 +1170,12 @@
 
         async function handleUserRegister(e) {
             e.preventDefault();
+            const btn = document.getElementById('regSubmitBtn');
+            btn.disabled = true;
+            btn.innerText = 'অপেক্ষা করুন...';
+
             reloadLocalConfigs();
-            await pullFromCloud();
+            await pullAllFromFirebase();
 
             const name = document.getElementById('regName').value.trim();
             const phone = document.getElementById('regPhone').value.trim();
@@ -1174,10 +1183,14 @@
             const rawRefInput = document.getElementById('regRefCode').value.trim().toUpperCase();
 
             if (!name || !phone || !password) {
+                btn.disabled = false;
+                btn.innerText = 'রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন';
                 showCleanModal('সব তথ্য সঠিকভাবে পূরণ করুন।');
                 return;
             }
             if (usersDB[phone]) {
+                btn.disabled = false;
+                btn.innerText = 'রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন';
                 showCleanModal('এই মোবাইল নম্বর দিয়ে ইতিমধ্যে একাউন্ট আছে। অনুগ্রহ করে লগইন করুন।');
                 switchAuthTab('login');
                 document.getElementById('loginPhone').value = phone;
@@ -1204,12 +1217,12 @@
                 myProducts: []
             };
 
-            usersDB[phone] = newUser;
+            await saveUserToFirebase(newUser);
             currentUserPhone = phone;
-            localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
             localStorage.setItem('earnbd_current_user_phone', currentUserPhone);
-            await pushToCloud();
 
+            btn.disabled = false;
+            btn.innerText = 'রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন';
             document.getElementById('registerForm').reset();
             enterDashboard();
             showCleanModal('অভিনন্দন! আপনার একাউন্টে ৩০০ টাকা বোনাস যুক্ত হয়েছে।');
@@ -1217,13 +1230,20 @@
 
         async function handleUserLogin(e) {
             e.preventDefault();
+            const btn = document.getElementById('loginSubmitBtn');
+            btn.disabled = true;
+            btn.innerText = 'লগইন হচ্ছে...';
+
             reloadLocalConfigs();
-            await pullFromCloud();
+            await pullAllFromFirebase();
 
             const phone = document.getElementById('loginPhone').value.trim();
             const password = document.getElementById('loginPassword').value;
 
             const user = usersDB[phone];
+            btn.disabled = false;
+            btn.innerText = 'লগইন করুন';
+
             if (!user || user.password !== password) {
                 showCleanModal('ভুল মোবাইল নম্বর বা পাসওয়ার্ড! আগে রেজিস্ট্রেশন করে থাকলে সঠিক তথ্য দিন।');
                 return;
@@ -1252,10 +1272,8 @@
 
         async function saveCurrentUser(user) {
             if (!user || !user.phone) return;
-            usersDB[user.phone] = user;
-            localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
+            await saveUserToFirebase(user);
             syncDashboardUI();
-            await pushToCloud();
         }
 
         function renderPlans() {
@@ -1293,7 +1311,7 @@
             document.getElementById('bottomNav').classList.add('visible');
             showPage('homePage');
             syncDashboardUI();
-            pullFromCloud().then(() => {
+            pullAllFromFirebase().then(() => {
                 syncDashboardUI();
                 updatePayNumber();
             });
@@ -1433,13 +1451,17 @@
             document.getElementById('withNumber').placeholder = `${method} নম্বর (017XXXXXXXX)`;
         }
 
-        function showPage(pageId) {
+        async function showPage(pageId) {
             if (!currentUserPhone || !usersDB[currentUserPhone]) {
                 pageId = 'authPage';
             }
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo(0, 0);
+
+            if (pageId !== 'authPage') {
+                await pullAllFromFirebase();
+            }
 
             if (pageId === 'homePage') syncDashboardUI();
             if (pageId === 'depositPage') updatePayNumber();
@@ -1509,7 +1531,7 @@
             document.getElementById('ssPreview').style.display = 'none';
             currentScreenshotBase64 = '';
 
-            showPage('depositHistoryPage');
+            await showPage('depositHistoryPage');
             showCleanModal('আবেদন জমা হয়েছে অপেক্ষা করেন');
         }
 
@@ -1554,11 +1576,11 @@
             document.getElementById('withNumber').value = '';
             document.getElementById('withAmount').value = '';
 
-            showPage('withdrawHistoryPage');
+            await showPage('withdrawHistoryPage');
             showCleanModal('উত্তোলন আবেদন জমা হয়েছে অপেক্ষা করেন');
         }
 
-        function distributeReferralCommissionsOnFirstBuy(buyerUser, price) {
+        async function distributeReferralCommissionsOnFirstBuy(buyerUser, price) {
             if (!buyerUser || buyerUser.firstBuyDone) return;
             buyerUser.firstBuyDone = true;
 
@@ -1569,7 +1591,7 @@
             const comm1 = price * 0.20;
             ref1User.balance = (parseFloat(ref1User.balance) || 0) + comm1;
             ref1User.referCommission = (parseFloat(ref1User.referCommission) || 0) + comm1;
-            usersDB[ref1User.phone] = ref1User;
+            await saveUserToFirebase(ref1User);
 
             const ref2Code = (ref1User.referredBy || ref1User.appliedRef || '').trim().toUpperCase();
             const ref2User = getUserByRefCode(ref2Code);
@@ -1577,7 +1599,7 @@
                 const comm2 = price * 0.01;
                 ref2User.balance = (parseFloat(ref2User.balance) || 0) + comm2;
                 ref2User.referCommission = (parseFloat(ref2User.referCommission) || 0) + comm2;
-                usersDB[ref2User.phone] = ref2User;
+                await saveUserToFirebase(ref2User);
 
                 const ref3Code = (ref2User.referredBy || ref2User.appliedRef || '').trim().toUpperCase();
                 const ref3User = getUserByRefCode(ref3Code);
@@ -1585,20 +1607,19 @@
                     const comm3 = price * 0.01;
                     ref3User.balance = (parseFloat(ref3User.balance) || 0) + comm3;
                     ref3User.referCommission = (parseFloat(ref3User.referCommission) || 0) + comm3;
-                    usersDB[ref3User.phone] = ref3User;
+                    await saveUserToFirebase(ref3User);
                 }
             }
-
-            localStorage.setItem('earnbd_users_db', JSON.stringify(usersDB));
         }
 
         async function buyPlan(name, price, dailyIncome, days) {
+            await pullAllFromFirebase();
             const user = getCurrentUser();
             if (!user) return;
 
             if ((parseFloat(user.balance) || 0) < price) {
                 showCleanModal('আপনার ব্যালেন্স কম আছে। আগে ডিপোজিট করুন।');
-                showPage('depositPage');
+                await showPage('depositPage');
                 return;
             }
 
@@ -1612,10 +1633,10 @@
                 date: new Date().toLocaleString('bn-BD')
             });
 
-            distributeReferralCommissionsOnFirstBuy(user, price);
+            await distributeReferralCommissionsOnFirstBuy(user, price);
             await saveCurrentUser(user);
 
-            showPage('myProductsPage');
+            await showPage('myProductsPage');
             showCleanModal(name + ' সফলভাবে কেনা হয়েছে!');
         }
 
@@ -1698,11 +1719,6 @@
             `).join('');
         }
 
-        window.addEventListener('storage', () => {
-            syncDashboardUI();
-            updatePayNumber();
-        });
-
         (async function initApp() {
             const urlParams = new URLSearchParams(window.location.search);
             const refParam = (urlParams.get('ref') || '').trim().toUpperCase();
@@ -1710,7 +1726,7 @@
                 document.getElementById('regRefCode').value = refParam;
             }
 
-            await pullFromCloud();
+            await pullAllFromFirebase();
             renderPlans();
             renderSupportLinks();
 
