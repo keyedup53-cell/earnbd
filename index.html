@@ -1045,6 +1045,14 @@
         let currentUserPhone = localStorage.getItem('earnbd_current_user_phone') || '';
         let currentScreenshotBase64 = '';
 
+        function getTodayDateKey() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
         function getFirebaseBaseUrl() {
             const saved = (localStorage.getItem('earnbd_firebase_url') || DEFAULT_FIREBASE_URL).trim().replace(/\/+$/, '');
             if (!saved || saved.includes('YOUR-PROJECT-ID')) return '';
@@ -1115,6 +1123,44 @@
             } catch (e) {
                 return false;
             }
+        }
+
+        // ২৬/১১/২০২৬-এ কেনা বা আগের দিনের পণ্যের ইনকাম আজকে (নতুন দিনে) অটোমেটিক যুক্ত করে
+        async function applyDailyProductIncome(user) {
+            if (!user || !Array.isArray(user.myProducts) || user.myProducts.length === 0) {
+                return false;
+            }
+
+            const todayKey = getTodayDateKey();
+            let changed = false;
+
+            for (const prod of user.myProducts) {
+                const daily = parseFloat(prod.dailyIncome) || 0;
+                const maxDays = parseInt(prod.days, 10) || 45;
+                const creditedDays = parseInt(prod.creditedDays, 10) || 0;
+                const lastCreditDate = prod.lastCreditDate || '';
+                const purchaseDateKey = prod.purchaseDateKey || '';
+
+                // যদি আজকেই কেনা হয়ে থাকে এবং আগে কখনো ক্রেডিট না হয়ে থাকে, তবে কেনার দিনেই জমা হবে না; পরের দিন থেকে জমা হবে
+                const boughtTodayWithoutCredit = (purchaseDateKey === todayKey && creditedDays === 0);
+
+                if (
+                    daily > 0 &&
+                    creditedDays < maxDays &&
+                    lastCreditDate !== todayKey &&
+                    !boughtTodayWithoutCredit
+                ) {
+                    user.balance = (parseFloat(user.balance) || 0) + daily;
+                    prod.creditedDays = creditedDays + 1;
+                    prod.lastCreditDate = todayKey;
+                    changed = true;
+                }
+            }
+
+            if (changed) {
+                await saveUserToFirebase(user);
+            }
+            return changed;
         }
 
         function showCleanModal(message) {
@@ -1224,7 +1270,7 @@
             btn.disabled = false;
             btn.innerText = 'রেজিস্ট্রেশন ও ৩০০ টাকা বোনাস নিন';
             document.getElementById('registerForm').reset();
-            enterDashboard();
+            await enterDashboard();
             showCleanModal('অভিনন্দন! আপনার একাউন্টে ৩০০ টাকা বোনাস যুক্ত হয়েছে।');
         }
 
@@ -1252,7 +1298,7 @@
             currentUserPhone = phone;
             localStorage.setItem('earnbd_current_user_phone', currentUserPhone);
             document.getElementById('loginForm').reset();
-            enterDashboard();
+            await enterDashboard();
         }
 
         function logoutUser() {
@@ -1273,7 +1319,7 @@
         async function saveCurrentUser(user) {
             if (!user || !user.phone) return;
             await saveUserToFirebase(user);
-            syncDashboardUI();
+            await syncDashboardUI();
         }
 
         function renderPlans() {
@@ -1304,22 +1350,32 @@
             document.getElementById('telegramGroupLink').href = supportConfig.groupUrl || 'https://t.me/';
         }
 
-        function enterDashboard() {
-            const user = getCurrentUser();
+        async function enterDashboard() {
+            let user = getCurrentUser();
             if (!user) return;
+            await applyDailyProductIncome(user);
+            user = getCurrentUser();
+
             document.getElementById('headerLogoutBtn').style.display = 'inline-block';
             document.getElementById('bottomNav').classList.add('visible');
-            showPage('homePage');
-            syncDashboardUI();
-            pullAllFromFirebase().then(() => {
-                syncDashboardUI();
-                updatePayNumber();
-            });
+            await showPage('homePage');
+            await syncDashboardUI();
+
+            await pullAllFromFirebase();
+            user = getCurrentUser();
+            if (user) {
+                await applyDailyProductIncome(user);
+            }
+            await syncDashboardUI();
+            updatePayNumber();
         }
 
-        function syncDashboardUI() {
-            const user = getCurrentUser();
+        async function syncDashboardUI() {
+            let user = getCurrentUser();
             if (!user) return;
+
+            await applyDailyProductIncome(user);
+            user = getCurrentUser();
 
             renderPlans();
             renderSupportLinks();
@@ -1461,11 +1517,13 @@
 
             if (pageId !== 'authPage') {
                 await pullAllFromFirebase();
+                const u = getCurrentUser();
+                if (u) await applyDailyProductIncome(u);
             }
 
-            if (pageId === 'homePage') syncDashboardUI();
+            if (pageId === 'homePage') await syncDashboardUI();
             if (pageId === 'depositPage') updatePayNumber();
-            if (pageId === 'withdrawPage') { syncDashboardUI(); updateWithdrawPlaceholder(); }
+            if (pageId === 'withdrawPage') { await syncDashboardUI(); updateWithdrawPlaceholder(); }
             if (pageId === 'referPage') syncReferralUI();
             if (pageId === 'depositHistoryPage') renderDepositHistory();
             if (pageId === 'withdrawHistoryPage') renderWithdrawHistory();
@@ -1630,6 +1688,9 @@
                 price,
                 dailyIncome,
                 days,
+                purchaseDateKey: getTodayDateKey(),
+                creditedDays: 0,
+                lastCreditDate: '',
                 date: new Date().toLocaleString('bn-BD')
             });
 
@@ -1705,18 +1766,22 @@
                 list.innerHTML = '<div class="empty-msg">আপনি এখনো কোনো পণ্য কেনেননি।</div>';
                 return;
             }
-            list.innerHTML = items.map(item => `
-                <div class="list-item">
-                    <div class="list-top">
-                        <div>
-                            <h4>${item.name}</h4>
-                            <p>দাম: ৳ ${item.price} | দৈনিক আয়: ৳ ${item.dailyIncome}</p>
-                            <p>মেয়াদ: ${item.days} দিন | কেনার সময়: ${item.date}</p>
+            list.innerHTML = items.map(item => {
+                const doneDays = parseInt(item.creditedDays, 10) || 0;
+                const totalDays = parseInt(item.days, 10) || 45;
+                return `
+                    <div class="list-item">
+                        <div class="list-top">
+                            <div>
+                                <h4>${item.name}</h4>
+                                <p>দাম: ৳ ${item.price} | দৈনিক আয়: ৳ ${item.dailyIncome}</p>
+                                <p>মেয়াদ: ${doneDays}/${totalDays} দিন | কেনার সময়: ${item.date}</p>
+                            </div>
+                            <span class="status-badge status-success">Active</span>
                         </div>
-                        <span class="status-badge status-success">Active</span>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         (async function initApp() {
@@ -1731,7 +1796,7 @@
             renderSupportLinks();
 
             if (currentUserPhone && usersDB[currentUserPhone]) {
-                enterDashboard();
+                await enterDashboard();
             } else {
                 document.getElementById('authPage').classList.add('active');
             }
