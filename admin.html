@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnBD - Admin Panel</title>
-    <link href="[https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap)" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -349,20 +349,16 @@
                 <h2 id="totalMembersCount">0</h2>
             </div>
 
-            <!-- Cloud Multi-Device Sync -->
+            <!-- Firebase Realtime Database Sync -->
             <div class="card">
-                <div class="section-title">☁️ সব মোবাইল থেকে রেফার ও সদস্য সিঙ্ক (JSONBin)</div>
-                <p class="help-note">অন্য ফোন থেকে করা একাউন্ট, রেফার স্তর, ডিপোজিট ও উত্তোলন আপনার ফোনে এবং অ্যাডমিন প্যানেলে পেতে JSONBin Bin ID ও X-Master-Key দিন।</p>
+                <div class="section-title">🔥 Firebase ডাটাবেজ সংযোগ</div>
+                <p class="help-note">সব মোবাইল থেকে রেফার, একাউন্ট ও লেনদেন সিঙ্ক করতে আপনার Firebase Realtime Database URL সংযুক্ত আছে।</p>
                 <div class="form-group">
-                    <label>JSONBin Bin ID</label>
-                    <input type="text" id="cloudBinIdInput" placeholder="যেমন: 674a1b2c...">
+                    <label>Firebase Database URL</label>
+                    <input type="url" id="firebaseUrlInput" placeholder="https://eranbd-e2e10-default-rtdb.firebaseio.com">
                 </div>
-                <div class="form-group">
-                    <label>JSONBin X-Master-Key</label>
-                    <input type="password" id="cloudApiKeyInput" placeholder="$2a$10$...">
-                </div>
-                <button class="big-btn btn-save" onclick="saveCloudConfig()">☁️ ক্লাউড সেটিংস সেভ করুন</button>
-                <button class="big-btn btn-sync" onclick="syncFromCloudNow()">🔄 এখনই ক্লাউড থেকে রিফ্রেশ করুন</button>
+                <button class="big-btn btn-save" onclick="saveFirebaseUrl()">✅ Firebase URL সেভ ও সিঙ্ক করুন</button>
+                <button class="big-btn btn-sync" onclick="syncFromFirebaseNow()">🔄 এখনই Firebase থেকে রিফ্রেশ করুন</button>
             </div>
 
             <!-- 1. Deposit Numbers -->
@@ -384,11 +380,11 @@
                 <div class="section-title">✈️ কাস্টমার সাপোর্ট (টেলিগ্রাম পারসোনাল ও গ্রুপ)</div>
                 <div class="form-group">
                     <label>টেলিগ্রাম পারসোনাল আইডি লিংক</label>
-                    <input type="text" id="tgPersonalInput" placeholder="যেমন: [https://t.me/username](https://t.me/username)">
+                    <input type="text" id="tgPersonalInput" placeholder="যেমন: https://t.me/username">
                 </div>
                 <div class="form-group">
                     <label>টেলিগ্রাম গ্রুপ লিংক</label>
-                    <input type="text" id="tgGroupInput" placeholder="যেমন: [https://t.me/yourgroup](https://t.me/yourgroup)">
+                    <input type="text" id="tgGroupInput" placeholder="যেমন: https://t.me/yourgroup">
                 </div>
                 <button class="big-btn btn-save" onclick="saveSupportLinks()">✅ সাপোর্ট লিংক সেভ করুন</button>
             </div>
@@ -474,6 +470,7 @@
 
     <script>
         const ADMIN_PIN = '1234';
+        const DEFAULT_FIREBASE_URL = 'https://eranbd-e2e10-default-rtdb.firebaseio.com';
 
         const defaultPaymentConfig = {
             bkashAgent: '01700-000001',
@@ -481,8 +478,8 @@
         };
 
         const defaultSupportConfig = {
-            personalUrl: '[https://t.me/](https://t.me/)',
-            groupUrl: '[https://t.me/](https://t.me/)'
+            personalUrl: 'https://t.me/',
+            groupUrl: 'https://t.me/'
         };
 
         const defaultPlans = [
@@ -491,11 +488,6 @@
             { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, badge: '', icon: '👑', theme: 'plan-gold' }
         ];
 
-        const defaultCloudConfig = {
-            binId: '6b06d1ddffd5d16053dcf15d',
-            apiKey: '$2a$10$3.BbHD8KyzSufz2khSKM6uOsQzSMMpWAOLAGX2SlsFiR8SlS35XPy'
-        };
-
         function showToast(text) {
             const el = document.getElementById('toastMsg');
             el.innerText = text;
@@ -503,38 +495,55 @@
             setTimeout(() => { el.style.display = 'none'; }, 2400);
         }
 
-        function getCloudConfig() {
-            return { ...defaultCloudConfig, ...(JSON.parse(localStorage.getItem('earnbd_cloud_config')) || {}) };
+        function getFirebaseBaseUrl() {
+            const saved = (localStorage.getItem('earnbd_firebase_url') || DEFAULT_FIREBASE_URL).trim().replace(/\/+$/, '');
+            if (!saved || saved.includes('YOUR-PROJECT-ID')) return '';
+            return saved;
         }
 
-        async function saveCloudConfig() {
-            const binId = document.getElementById('cloudBinIdInput').value.trim();
-            const apiKey = document.getElementById('cloudApiKeyInput').value.trim();
-            localStorage.setItem('earnbd_cloud_config', JSON.stringify({ binId, apiKey }));
-            await syncAllToCloud();
-            showToast('ক্লাউড সেটিংস সেভ ও সিঙ্ক হয়েছে!');
+        function sanitizePhoneKey(phone) {
+            return (phone || '').replace(/[^0-9a-zA-Z]/g, '');
         }
 
-        async function syncFromCloudNow() {
-            const cfg = getCloudConfig();
-            if (!cfg.binId || !cfg.apiKey) {
-                alert('আগে JSONBin Bin ID এবং X-Master-Key দিন।');
+        async function saveFirebaseUrl() {
+            const url = document.getElementById('firebaseUrlInput').value.trim().replace(/\/+$/, '');
+            if (!url || !url.startsWith('https://')) {
+                alert('সঠিক Firebase Database URL দিন (https:// দিয়ে শুরু)।');
+                return;
+            }
+            localStorage.setItem('earnbd_firebase_url', url);
+            await syncAllToFirebase();
+            showToast('Firebase URL সেভ ও ডাটা সিঙ্ক হয়েছে!');
+        }
+
+        async function syncFromFirebaseNow() {
+            const baseUrl = getFirebaseBaseUrl();
+            if (!baseUrl) {
+                alert('আগে Firebase Database URL দিন।');
                 return;
             }
             try {
-                const res = await fetch(`[https://api.jsonbin.io/v3/b/$](https://api.jsonbin.io/v3/b/$){cfg.binId}/latest`, {
-                    headers: { 'X-Master-Key': cfg.apiKey }
-                });
+                const res = await fetch(`${baseUrl}/earnbd.json`);
                 if (!res.ok) {
-                    alert('ক্লাউড থেকে ডাটা আনা যায়নি। Bin ID বা Key চেক করুন।');
+                    alert('Firebase থেকে ডাটা আনা যায়নি। Database URL বা Rules চেক করুন।');
                     return;
                 }
                 const data = await res.json();
-                const rec = data.record || {};
-                if (rec.usersDB) localStorage.setItem('earnbd_users_db', JSON.stringify(rec.usersDB));
-                if (rec.paymentConfig) localStorage.setItem('earnbd_payment_config', JSON.stringify(rec.paymentConfig));
-                if (rec.supportConfig) localStorage.setItem('earnbd_support_config', JSON.stringify(rec.supportConfig));
-                if (rec.plansConfig) localStorage.setItem('earnbd_plans_config', JSON.stringify(rec.plansConfig));
+                if (data) {
+                    if (data.users) {
+                        const merged = {};
+                        Object.values(data.users).forEach(u => {
+                            if (u && u.phone) merged[u.phone] = u;
+                        });
+                        localStorage.setItem('earnbd_users_db', JSON.stringify(merged));
+                    }
+                    if (data.paymentConfig) localStorage.setItem('earnbd_payment_config', JSON.stringify(data.paymentConfig));
+                    if (data.supportConfig) localStorage.setItem('earnbd_support_config', JSON.stringify(data.supportConfig));
+                    if (data.plansConfig) {
+                        const plansArr = Array.isArray(data.plansConfig) ? data.plansConfig : Object.values(data.plansConfig);
+                        localStorage.setItem('earnbd_plans_config', JSON.stringify(plansArr));
+                    }
+                }
                 refreshAdminAll();
                 showToast('সব মোবাইল থেকে আসা ডাটা আপডেট হয়েছে!');
             } catch (e) {
@@ -542,27 +551,44 @@
             }
         }
 
-        async function syncAllToCloud() {
-            const cfg = getCloudConfig();
-            if (!cfg.binId || !cfg.apiKey) return;
+        async function syncAllToFirebase() {
+            const baseUrl = getFirebaseBaseUrl();
+            if (!baseUrl) return;
             try {
+                const db = getUsersDB();
+                const usersObj = {};
+                Object.values(db).forEach(u => {
+                    if (u && u.phone) usersObj[sanitizePhoneKey(u.phone)] = u;
+                });
+
                 const payload = {
-                    usersDB: getUsersDB(),
+                    users: usersObj,
                     paymentConfig: { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) },
                     supportConfig: { ...defaultSupportConfig, ...(JSON.parse(localStorage.getItem('earnbd_support_config')) || {}) },
-                    plansConfig: JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans,
-                    updatedAt: Date.now()
+                    plansConfig: JSON.parse(localStorage.getItem('earnbd_plans_config')) || defaultPlans
                 };
-                await fetch(`[https://api.jsonbin.io/v3/b/$](https://api.jsonbin.io/v3/b/$){cfg.binId}`, {
+
+                await fetch(`${baseUrl}/earnbd.json`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': cfg.apiKey
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
             } catch (e) {
                 // ignore network error
+            }
+        }
+
+        async function saveSingleUserToFirebase(user) {
+            const baseUrl = getFirebaseBaseUrl();
+            if (!baseUrl || !user || !user.phone) return;
+            try {
+                await fetch(`${baseUrl}/earnbd/users/${sanitizePhoneKey(user.phone)}.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                });
+            } catch (e) {
+                // ignore
             }
         }
 
@@ -573,9 +599,8 @@
                 document.getElementById('adminPanel').style.display = 'block';
                 sessionStorage.setItem('earnbd_admin_logged_in', 'true');
                 refreshAdminAll();
-                const cfg = getCloudConfig();
-                if (cfg.binId && cfg.apiKey) {
-                    await syncFromCloudNow();
+                if (getFirebaseBaseUrl()) {
+                    await syncFromFirebaseNow();
                 }
             } else {
                 document.getElementById('pinError').style.display = 'block';
@@ -593,19 +618,12 @@
             return JSON.parse(localStorage.getItem('earnbd_users_db')) || {};
         }
 
-        async function saveUsersDB(db) {
-            localStorage.setItem('earnbd_users_db', JSON.stringify(db));
-            await syncAllToCloud();
-        }
-
         function refreshAdminAll() {
             const db = getUsersDB();
             const users = Object.values(db);
             document.getElementById('totalMembersCount').innerText = users.length;
 
-            const cloudCfg = getCloudConfig();
-            document.getElementById('cloudBinIdInput').value = cloudCfg.binId || '';
-            document.getElementById('cloudApiKeyInput').value = cloudCfg.apiKey || '';
+            document.getElementById('firebaseUrlInput').value = getFirebaseBaseUrl();
 
             const payCfg = { ...defaultPaymentConfig, ...(JSON.parse(localStorage.getItem('earnbd_payment_config')) || {}) };
             document.getElementById('bkashAgentInput').value = payCfg.bkashAgent || '';
@@ -634,17 +652,31 @@
                 nagadPersonal: document.getElementById('nagadPersonalInput').value.trim()
             };
             localStorage.setItem('earnbd_payment_config', JSON.stringify(cfg));
-            await syncAllToCloud();
+            const baseUrl = getFirebaseBaseUrl();
+            if (baseUrl) {
+                await fetch(`${baseUrl}/earnbd/paymentConfig.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cfg)
+                });
+            }
             showToast('ডিপোজিট নম্বর আপডেট হয়েছে!');
         }
 
         async function saveSupportLinks() {
             const cfg = {
-                personalUrl: document.getElementById('tgPersonalInput').value.trim() || '[https://t.me/](https://t.me/)',
-                groupUrl: document.getElementById('tgGroupInput').value.trim() || '[https://t.me/](https://t.me/)'
+                personalUrl: document.getElementById('tgPersonalInput').value.trim() || 'https://t.me/',
+                groupUrl: document.getElementById('tgGroupInput').value.trim() || 'https://t.me/'
             };
             localStorage.setItem('earnbd_support_config', JSON.stringify(cfg));
-            await syncAllToCloud();
+            const baseUrl = getFirebaseBaseUrl();
+            if (baseUrl) {
+                await fetch(`${baseUrl}/earnbd/supportConfig.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cfg)
+                });
+            }
             showToast('টেলিগ্রাম সাপোর্ট লিংক আপডেট হয়েছে!');
         }
 
@@ -671,7 +703,8 @@
             }
 
             db[phone].balance = (parseFloat(db[phone].balance) || 0) + amount;
-            await saveUsersDB(db);
+            localStorage.setItem('earnbd_users_db', JSON.stringify(db));
+            await saveSingleUserToFirebase(db[phone]);
             document.getElementById('bonusAmountInput').value = '';
             refreshAdminAll();
             showToast(`${db[phone].name}-কে ৳ ${amount} বোনাস দেওয়া হয়েছে!`);
@@ -726,7 +759,8 @@
                 showToast('ডিপোজিট বাতিল করা হয়েছে!');
             }
 
-            await saveUsersDB(db);
+            localStorage.setItem('earnbd_users_db', JSON.stringify(db));
+            await saveSingleUserToFirebase(user);
             refreshAdminAll();
         }
 
@@ -778,8 +812,19 @@
                 showToast('উত্তোলন বাতিল করা হয়েছে ও টাকা ফেরত দেওয়া হয়েছে!');
             }
 
-            await saveUsersDB(db);
+            localStorage.setItem('earnbd_users_db', JSON.stringify(db));
+            await saveSingleUserToFirebase(user);
             refreshAdminAll();
+        }
+
+        async function syncPlansToFirebase(plans) {
+            const baseUrl = getFirebaseBaseUrl();
+            if (!baseUrl) return;
+            await fetch(`${baseUrl}/earnbd/plansConfig.json`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(plans)
+            });
         }
 
         async function addNewProduct() {
@@ -812,7 +857,7 @@
             document.getElementById('newProdDaily').value = '';
             document.getElementById('newProdDays').value = '';
             renderPackageEditors();
-            await syncAllToCloud();
+            await syncPlansToFirebase(plans);
             showToast('নতুন পণ্য সফলভাবে অ্যাড হয়েছে!');
         }
 
@@ -821,7 +866,7 @@
             plans.splice(index, 1);
             localStorage.setItem('earnbd_plans_config', JSON.stringify(plans));
             renderPackageEditors();
-            await syncAllToCloud();
+            await syncPlansToFirebase(plans);
             showToast('পণ্যটি মুছে ফেলা হয়েছে!');
         }
 
@@ -868,7 +913,7 @@
 
             localStorage.setItem('earnbd_plans_config', JSON.stringify(updated));
             renderPackageEditors();
-            await syncAllToCloud();
+            await syncPlansToFirebase(updated);
             showToast('সব প্যাকেজ পরিবর্তন সেভ হয়েছে!');
         }
 
@@ -888,12 +933,6 @@
                 </div>
             `).join('');
         }
-
-        window.addEventListener('storage', () => {
-            if (document.getElementById('adminPanel').style.display !== 'none') {
-                refreshAdminAll();
-            }
-        });
 
         if (sessionStorage.getItem('earnbd_admin_logged_in') === 'true') {
             document.getElementById('loginCard').style.display = 'none';
