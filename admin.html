@@ -351,14 +351,14 @@
 
             <!-- Firebase Realtime Database Sync -->
             <div class="card">
-                <div class="section-title">🔥 Firebase ডাটাবেজ সংযোগ</div>
-                <p class="help-note">সব মোবাইল থেকে রেফার, একাউন্ট ও লেনদেন সিঙ্ক করতে আপনার Firebase Realtime Database URL সংযুক্ত আছে।</p>
+                <div class="section-title">🔥 Firebase ডাটাবেজ সংযোগ ও দৈনিক ইনকাম সিঙ্ক</div>
+                <p class="help-note">রিফ্রেশ বা লগইন করার সাথে সাথে সব সদস্যের রাত ১২টার প্রাপ্য দৈনিক পণ্যের ইনকাম অটোমেটিক তাদের ব্যালেন্সে জমা হয়ে যাবে।</p>
                 <div class="form-group">
                     <label>Firebase Database URL</label>
                     <input type="url" id="firebaseUrlInput" placeholder="https://eranbd-e2e10-default-rtdb.firebaseio.com">
                 </div>
                 <button class="big-btn btn-save" onclick="saveFirebaseUrl()">✅ Firebase URL সেভ ও সিঙ্ক করুন</button>
-                <button class="big-btn btn-sync" onclick="syncFromFirebaseNow()">🔄 এখনই Firebase থেকে রিফ্রেশ করুন</button>
+                <button class="big-btn btn-sync" onclick="syncFromFirebaseNow()">🔄 এখনই Firebase থেকে রিফ্রেশ ও দৈনিক ইনকাম জমা করুন</button>
             </div>
 
             <!-- 1. Deposit Numbers -->
@@ -492,7 +492,15 @@
             const el = document.getElementById('toastMsg');
             el.innerText = text;
             el.style.display = 'block';
-            setTimeout(() => { el.style.display = 'none'; }, 2400);
+            setTimeout(() => { el.style.display = 'none'; }, 2800);
+        }
+
+        function getTodayDateKey() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
         }
 
         function getFirebaseBaseUrl() {
@@ -505,6 +513,55 @@
             return (phone || '').replace(/[^0-9a-zA-Z]/g, '');
         }
 
+        // সব সদস্যের কেনা পণ্যের রাত ১২টার দৈনিক ইনকাম অটোমেটিক তাদের ব্যালেন্সে যোগ করে
+        async function runMidnightIncomeForAllUsers() {
+            const db = getUsersDB();
+            const todayKey = getTodayDateKey();
+            let updatedCount = 0;
+
+            for (const phone of Object.keys(db)) {
+                const user = db[phone];
+                if (!user || !Array.isArray(user.myProducts) || user.myProducts.length === 0) {
+                    continue;
+                }
+
+                let userChanged = false;
+                for (const prod of user.myProducts) {
+                    const daily = parseFloat(prod.dailyIncome) || 0;
+                    const maxDays = parseInt(prod.days, 10) || 45;
+                    const creditedDays = parseInt(prod.creditedDays, 10) || 0;
+                    const lastCreditDate = prod.lastCreditDate || '';
+                    const purchaseDateKey = prod.purchaseDateKey || '';
+
+                    // আজকেই নতুন কেনা হয়ে থাকলে আজ নয়, আগামী রাত ১২টার পর থেকে ইনকাম যোগ হবে
+                    const boughtTodayWithoutCredit = (purchaseDateKey === todayKey && creditedDays === 0);
+
+                    if (
+                        daily > 0 &&
+                        creditedDays < maxDays &&
+                        lastCreditDate !== todayKey &&
+                        !boughtTodayWithoutCredit
+                    ) {
+                        user.balance = (parseFloat(user.balance) || 0) + daily;
+                        prod.creditedDays = creditedDays + 1;
+                        prod.lastCreditDate = todayKey;
+                        userChanged = true;
+                    }
+                }
+
+                if (userChanged) {
+                    db[phone] = user;
+                    await saveSingleUserToFirebase(user);
+                    updatedCount++;
+                }
+            }
+
+            if (updatedCount > 0) {
+                localStorage.setItem('earnbd_users_db', JSON.stringify(db));
+            }
+            return updatedCount;
+        }
+
         async function saveFirebaseUrl() {
             const url = document.getElementById('firebaseUrlInput').value.trim().replace(/\/+$/, '');
             if (!url || !url.startsWith('https://')) {
@@ -512,8 +569,10 @@
                 return;
             }
             localStorage.setItem('earnbd_firebase_url', url);
+            await runMidnightIncomeForAllUsers();
             await syncAllToFirebase();
-            showToast('Firebase URL সেভ ও ডাটা সিঙ্ক হয়েছে!');
+            refreshAdminAll();
+            showToast('Firebase URL সেভ ও সব সদস্যের ডাটা সিঙ্ক হয়েছে!');
         }
 
         async function syncFromFirebaseNow() {
@@ -544,8 +603,15 @@
                         localStorage.setItem('earnbd_plans_config', JSON.stringify(plansArr));
                     }
                 }
+
+                const creditedUsers = await runMidnightIncomeForAllUsers();
                 refreshAdminAll();
-                showToast('সব মোবাইল থেকে আসা ডাটা আপডেট হয়েছে!');
+
+                if (creditedUsers > 0) {
+                    showToast(`ডাটা রিফ্রেশ ও ${creditedUsers} জন সদস্যের দৈনিক ইনকাম জমা হয়েছে!`);
+                } else {
+                    showToast('সব মোবাইল থেকে আসা ডাটা আপডেট হয়েছে!');
+                }
             } catch (e) {
                 alert('নেটওয়ার্ক সমস্যা হয়েছে।');
             }
@@ -601,6 +667,9 @@
                 refreshAdminAll();
                 if (getFirebaseBaseUrl()) {
                     await syncFromFirebaseNow();
+                } else {
+                    await runMidnightIncomeForAllUsers();
+                    refreshAdminAll();
                 }
             } else {
                 document.getElementById('pinError').style.display = 'block';
@@ -923,22 +992,33 @@
                 box.innerHTML = '<div class="empty-text">এখনো কোনো সদস্য একাউন্ট করেনি।</div>';
                 return;
             }
-            box.innerHTML = users.map(u => `
-                <div class="member-item">
-                    <div>
-                        <strong>${u.name}</strong>
-                        <span>${u.phone} • কোড: ${u.refCode}</span>
+            box.innerHTML = users.map(u => {
+                const activeCount = Array.isArray(u.myProducts) ? u.myProducts.length : 0;
+                return `
+                    <div class="member-item">
+                        <div>
+                            <strong>${u.name}</strong>
+                            <span>${u.phone} • কোড: ${u.refCode} • পণ্য: ${activeCount}টি</span>
+                        </div>
+                        <span class="member-bal">৳ ${(parseFloat(u.balance) || 0).toFixed(2)}</span>
                     </div>
-                    <span class="member-bal">৳ ${(parseFloat(u.balance) || 0).toFixed(2)}</span>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        if (sessionStorage.getItem('earnbd_admin_logged_in') === 'true') {
-            document.getElementById('loginCard').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            refreshAdminAll();
-        }
+        (async function initAdmin() {
+            if (sessionStorage.getItem('earnbd_admin_logged_in') === 'true') {
+                document.getElementById('loginCard').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                refreshAdminAll();
+                if (getFirebaseBaseUrl()) {
+                    await syncFromFirebaseNow();
+                } else {
+                    await runMidnightIncomeForAllUsers();
+                    refreshAdminAll();
+                }
+            }
+        })();
     </script>
 </body>
 </html>
