@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnBD - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="[https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap)" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -355,7 +355,7 @@
                 <p class="help-note">রিফ্রেশ বা লগইন করার সাথে সাথে সব সদস্যের রাত ১২টার প্রাপ্য দৈনিক পণ্যের ইনকাম অটোমেটিক তাদের ব্যালেন্সে জমা হয়ে যাবে।</p>
                 <div class="form-group">
                     <label>Firebase Database URL</label>
-                    <input type="url" id="firebaseUrlInput" placeholder="https://eranbd-e2e10-default-rtdb.firebaseio.com">
+                    <input type="url" id="firebaseUrlInput" placeholder="[https://eranbd-e2e10-default-rtdb.firebaseio.com](https://eranbd-e2e10-default-rtdb.firebaseio.com)">
                 </div>
                 <button class="big-btn btn-save" onclick="saveFirebaseUrl()">✅ Firebase URL সেভ ও সিঙ্ক করুন</button>
                 <button class="big-btn btn-sync" onclick="syncFromFirebaseNow()">🔄 এখনই Firebase থেকে রিফ্রেশ ও দৈনিক ইনকাম জমা করুন</button>
@@ -378,13 +378,14 @@
             <!-- 2. Telegram Personal ID & Group -->
             <div class="card">
                 <div class="section-title">✈️ কাস্টমার সাপোর্ট (টেলিগ্রাম পারসোনাল ও গ্রুপ)</div>
+                <p class="help-note">শুধু টেলিগ্রাম ইউজারনেম (যেমন: <code>@username</code>) অথবা পুরো লিংক (<code>[https://t.me/username](https://t.me/username)</code>) দিলেই সব মোবাইলে অটোমেটিক টেলিগ্রামে নিয়ে যাবে।</p>
                 <div class="form-group">
-                    <label>টেলিগ্রাম পারসোনাল আইডি লিংক</label>
-                    <input type="text" id="tgPersonalInput" placeholder="যেমন: https://t.me/username">
+                    <label>টেলিগ্রাম পারসোনাল আইডি লিংক বা ইউজারনেম</label>
+                    <input type="text" id="tgPersonalInput" placeholder="যেমন: [https://t.me/username](https://t.me/username) বা @username">
                 </div>
                 <div class="form-group">
                     <label>টেলিগ্রাম গ্রুপ লিংক</label>
-                    <input type="text" id="tgGroupInput" placeholder="যেমন: https://t.me/yourgroup">
+                    <input type="text" id="tgGroupInput" placeholder="যেমন: [https://t.me/yourgroup](https://t.me/yourgroup)">
                 </div>
                 <button class="big-btn btn-save" onclick="saveSupportLinks()">✅ সাপোর্ট লিংক সেভ করুন</button>
             </div>
@@ -470,7 +471,7 @@
 
     <script>
         const ADMIN_PIN = '1234';
-        const DEFAULT_FIREBASE_URL = 'https://eranbd-e2e10-default-rtdb.firebaseio.com';
+        const DEFAULT_FIREBASE_URL = '[https://eranbd-e2e10-default-rtdb.firebaseio.com](https://eranbd-e2e10-default-rtdb.firebaseio.com)';
 
         const defaultPaymentConfig = {
             bkashAgent: '01700-000001',
@@ -478,8 +479,8 @@
         };
 
         const defaultSupportConfig = {
-            personalUrl: 'https://t.me/',
-            groupUrl: 'https://t.me/'
+            personalUrl: '[https://t.me/](https://t.me/)',
+            groupUrl: '[https://t.me/](https://t.me/)'
         };
 
         const defaultPlans = [
@@ -487,6 +488,19 @@
             { id: 'silver', name: 'Silver Plan', price: 1200, dailyIncome: 160, days: 45, badge: '', icon: '💎', theme: 'plan-silver' },
             { id: 'gold', name: 'Gold Plan', price: 2500, dailyIncome: 350, days: 45, badge: '', icon: '👑', theme: 'plan-gold' }
         ];
+
+        function normalizeTelegramUrl(rawUrl) {
+            let val = (rawUrl || '').trim().replace(/\s+/g, '');
+            if (!val) return '';
+            if (val.startsWith('http://')) {
+                val = 'https://' + val.slice(7);
+            }
+            if (!val.startsWith('https://')) {
+                val = val.replace(/^@+/, '').replace(/^t\.me\//i, '');
+                return val ? `[https://t.me/$](https://t.me/$){val}` : '';
+            }
+            return val;
+        }
 
         function showToast(text) {
             const el = document.getElementById('toastMsg');
@@ -513,7 +527,6 @@
             return (phone || '').replace(/[^0-9a-zA-Z]/g, '');
         }
 
-        // সব সদস্যের কেনা পণ্যের রাত ১২টার দৈনিক ইনকাম অটোমেটিক তাদের ব্যালেন্সে যোগ করে
         async function runMidnightIncomeForAllUsers() {
             const db = getUsersDB();
             const todayKey = getTodayDateKey();
@@ -533,7 +546,6 @@
                     const lastCreditDate = prod.lastCreditDate || '';
                     const purchaseDateKey = prod.purchaseDateKey || '';
 
-                    // আজকেই নতুন কেনা হয়ে থাকলে আজ নয়, আগামী রাত ১২টার পর থেকে ইনকাম যোগ হবে
                     const boughtTodayWithoutCredit = (purchaseDateKey === todayKey && creditedDays === 0);
 
                     if (
@@ -582,7 +594,7 @@
                 return;
             }
             try {
-                const res = await fetch(`${baseUrl}/earnbd.json`);
+                const res = await fetch(`${baseUrl}/earnbd.json?t=${Date.now()}`);
                 if (!res.ok) {
                     alert('Firebase থেকে ডাটা আনা যায়নি। Database URL বা Rules চেক করুন।');
                     return;
@@ -733,9 +745,15 @@
         }
 
         async function saveSupportLinks() {
+            const normalizedPersonal = normalizeTelegramUrl(document.getElementById('tgPersonalInput').value) || '[https://t.me/](https://t.me/)';
+            const normalizedGroup = normalizeTelegramUrl(document.getElementById('tgGroupInput').value) || '[https://t.me/](https://t.me/)';
+
+            document.getElementById('tgPersonalInput').value = normalizedPersonal;
+            document.getElementById('tgGroupInput').value = normalizedGroup;
+
             const cfg = {
-                personalUrl: document.getElementById('tgPersonalInput').value.trim() || 'https://t.me/',
-                groupUrl: document.getElementById('tgGroupInput').value.trim() || 'https://t.me/'
+                personalUrl: normalizedPersonal,
+                groupUrl: normalizedGroup
             };
             localStorage.setItem('earnbd_support_config', JSON.stringify(cfg));
             const baseUrl = getFirebaseBaseUrl();
@@ -746,7 +764,7 @@
                     body: JSON.stringify(cfg)
                 });
             }
-            showToast('টেলিগ্রাম সাপোর্ট লিংক আপডেট হয়েছে!');
+            showToast('টেলিগ্রাম সাপোর্ট লিংক সেভ ও সব মোবাইলে সিঙ্ক হয়েছে!');
         }
 
         function syncBonusPhoneField() {
