@@ -767,8 +767,8 @@
                     <p>টেলিগ্রাম পারসোনাল আইডি ও গ্রুপে যোগাযোগ করুন</p>
                 </div>
                 <div class="support-btn-group">
-                    <a id="telegramPersonalLink" href="https://t.me/" target="_blank" class="support-btn">পারসোনাল আইডি</a>
-                    <a id="telegramGroupLink" href="https://t.me/" target="_blank" class="support-btn group-btn">টেলিগ্রাম গ্রুপ</a>
+                    <a id="telegramPersonalLink" href="https://t.me/" target="_blank" rel="noopener noreferrer" onclick="openTelegramSupport('personal', event)" class="support-btn">পারসোনাল আইডি</a>
+                    <a id="telegramGroupLink" href="https://t.me/" target="_blank" rel="noopener noreferrer" onclick="openTelegramSupport('group', event)" class="support-btn group-btn">টেলিগ্রাম গ্রুপ</a>
                 </div>
             </div>
 
@@ -1045,6 +1045,25 @@
         let currentUserPhone = localStorage.getItem('earnbd_current_user_phone') || '';
         let currentScreenshotBase64 = '';
 
+        function normalizeTelegramUrl(rawUrl) {
+            let val = (rawUrl || '').trim().replace(/\s+/g, '');
+            if (!val) return '';
+            if (val.startsWith('http://')) {
+                val = 'https://' + val.slice(7);
+            }
+            if (!val.startsWith('https://')) {
+                val = val.replace(/^@+/, '').replace(/^t\.me\//i, '');
+                return val ? `https://t.me/${val}` : '';
+            }
+            return val;
+        }
+
+        function isValidTelegramTarget(url) {
+            if (!url) return false;
+            const cleaned = url.replace(/\/+$/, '');
+            return cleaned !== 'https://t.me' && cleaned.length > 13;
+        }
+
         function getTodayDateKey() {
             const now = new Date();
             const y = now.getFullYear();
@@ -1074,7 +1093,7 @@
             const baseUrl = getFirebaseBaseUrl();
             if (!baseUrl) return false;
             try {
-                const res = await fetch(`${baseUrl}/earnbd.json`);
+                const res = await fetch(`${baseUrl}/earnbd.json?t=${Date.now()}`);
                 if (!res.ok) return false;
                 const data = await res.json();
                 if (!data) return true;
@@ -1125,7 +1144,6 @@
             }
         }
 
-        // ২৬/১১/২০২৬-এ কেনা বা আগের দিনের পণ্যের ইনকাম আজকে (নতুন দিনে) অটোমেটিক যুক্ত করে
         async function applyDailyProductIncome(user) {
             if (!user || !Array.isArray(user.myProducts) || user.myProducts.length === 0) {
                 return false;
@@ -1141,7 +1159,6 @@
                 const lastCreditDate = prod.lastCreditDate || '';
                 const purchaseDateKey = prod.purchaseDateKey || '';
 
-                // যদি আজকেই কেনা হয়ে থাকে এবং আগে কখনো ক্রেডিট না হয়ে থাকে, তবে কেনার দিনেই জমা হবে না; পরের দিন থেকে জমা হবে
                 const boughtTodayWithoutCredit = (purchaseDateKey === todayKey && creditedDays === 0);
 
                 if (
@@ -1346,8 +1363,28 @@
 
         function renderSupportLinks() {
             reloadLocalConfigs();
-            document.getElementById('telegramPersonalLink').href = supportConfig.personalUrl || 'https://t.me/';
-            document.getElementById('telegramGroupLink').href = supportConfig.groupUrl || 'https://t.me/';
+            const pUrl = normalizeTelegramUrl(supportConfig.personalUrl) || 'https://t.me/';
+            const gUrl = normalizeTelegramUrl(supportConfig.groupUrl) || 'https://t.me/';
+            document.getElementById('telegramPersonalLink').href = pUrl;
+            document.getElementById('telegramGroupLink').href = gUrl;
+        }
+
+        async function openTelegramSupport(type, event) {
+            if (event) event.preventDefault();
+            await pullAllFromFirebase();
+            renderSupportLinks();
+
+            const raw = type === 'group' ? supportConfig.groupUrl : supportConfig.personalUrl;
+            const targetUrl = normalizeTelegramUrl(raw);
+
+            if (!isValidTelegramTarget(targetUrl)) {
+                showCleanModal(type === 'group'
+                    ? 'অ্যাডমিন প্যানেল থেকে টেলিগ্রাম গ্রুপ লিংক এখনো সেট করা হয়নি।'
+                    : 'অ্যাডমিন প্যানেল থেকে টেলিগ্রাম পারসোনাল আইডি লিংক এখনো সেট করা হয়নি।');
+                return;
+            }
+
+            window.open(targetUrl, '_blank', 'noopener,noreferrer');
         }
 
         async function enterDashboard() {
